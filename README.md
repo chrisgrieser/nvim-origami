@@ -1,5 +1,5 @@
-# {{plugin-name}}
-{{plugin-desc}}
+# nvim-origami
+Fold with elegance.
 
 <!--toc:start-->
 - [Features](#features)
@@ -16,7 +16,7 @@
 ```lua
 -- lazy.nvim
 {
-	"chrisgrieser/{{plugin-name}}",
+	"chrisgrieser/nvim-origami",
 	opts = {
 		
 	},
@@ -24,9 +24,9 @@
 
 -- packer
 use {
-	"chrisgrieser/{{plugin-name}}",
+	"chrisgrieser/nvim-origami",
 	config = function () 
-		require("{{plugin-name-short}}").setup ({
+		require("origami").setup ({
 			
 		})
 	end,
