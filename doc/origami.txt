@@ -3,15 +3,16 @@
 ==============================================================================
 Table of Contents                                  *origami-table-of-contents*
 
-1. nvim-origami                                         |origami-nvim-origami|
-  - Features                                   |origami-nvim-origami-features|
-  - Installation                           |origami-nvim-origami-installation|
-  - Configuration                         |origami-nvim-origami-configuration|
-  - Limitations                             |origami-nvim-origami-limitations|
-  - Credits                                     |origami-nvim-origami-credits|
+1. nvim-origami                                        |origami-nvim-origami-|
+  - Features                                  |origami-nvim-origami--features|
+  - Installation                          |origami-nvim-origami--installation|
+  - Configuration                        |origami-nvim-origami--configuration|
+  - Limitations                            |origami-nvim-origami--limitations|
+  - Other Folding Plugins        |origami-nvim-origami--other-folding-plugins|
+  - Credits                                    |origami-nvim-origami--credits|
 
 ==============================================================================
-1. nvim-origami                                         *origami-nvim-origami*
+1. nvim-origami                                        *origami-nvim-origami-*
 
 Fold with elegance.
 
@@ -22,46 +23,68 @@ Fold with elegance.
 - |origami-credits|
 
 
-FEATURES                                       *origami-nvim-origami-features*
+FEATURES                                      *origami-nvim-origami--features*
+
+- Remember folds across sessions.
+- Pause folds while searching, restore folds when done with searching.
+- Use `h` at the first non-blank character of a line (or before) to fold.
+- Use `l` anywhere on a folded line to unfold it.
 
 
-INSTALLATION                               *origami-nvim-origami-installation*
+INSTALLATION                              *origami-nvim-origami--installation*
 
 >lua
     -- lazy.nvim
     {
         "chrisgrieser/nvim-origami",
-        opts = {
-            
-        },
+        event = "BufReadPost", -- later or key would prevent saving folds
+        opts = true, -- needed even when using default config
     },
     
     -- packer
     use {
         "chrisgrieser/nvim-origami",
         config = function () 
-            require("origami").setup ({
-                
-            })
+            require("origami").setup ({}) -- setup call needed
         end,
     }
 <
 
 
-CONFIGURATION                             *origami-nvim-origami-configuration*
+CONFIGURATION                            *origami-nvim-origami--configuration*
 
 >lua
     -- default values
     opts = {
-    
+        keepFoldsAcrossSessions = true,
+        pauseFoldsOnSearch = {
+            enabled = true,
+            forwardKey = "/",
+            backwardKey = "?",
+        },
     }
 <
 
+>lua
+    vim.keymap.set("n", "h", function() require("origami").h() end, { desc = "Origami h" })
+    vim.keymap.set("n", "l", function() require("origami").l() end, { desc = "Origami l" })
+<
 
-LIMITATIONS                                 *origami-nvim-origami-limitations*
+
+LIMITATIONS                                *origami-nvim-origami--limitations*
+
+Running a formatter, which changes something inside a fold can result in
+unintentionally opening that fold. This plugin does not have a feature yet to
+prevent that.
 
 
-CREDITS                                         *origami-nvim-origami-credits*
+OTHER FOLDING PLUGINS            *origami-nvim-origami--other-folding-plugins*
+
+- fold-cycle.nvim <https://github.com/jghauser/fold-cycle.nvim>
+- nvim-ufo <https://github.com/kevinhwang91/nvim-ufo>
+
+
+CREDITS                                        *origami-nvim-origami--credits*
 
 **About Me** In my day job, I am a sociologist studying the social mechanisms
 underlying the digital economy. For my PhD project, I investigate the
