@@ -1,4 +1,5 @@
-# nvim-origami
+<!-- LTeX: enabled=false -->
+# nvim-origami <!-- LTeX: enabled=true -->
 Fold with elegance.
 
 <!--toc:start-->
@@ -10,6 +11,11 @@ Fold with elegance.
 <!--toc:end-->
 
 ## Features
+- Remember folds across sessions.
+- Pause folds while searching, restore folds when done with searching.
+- Use `h` at the first non-blank character of a line (or before) to fold.
+- Use `l` anywhere on a folded line to unfold it.
+
 
 ## Installation
 
@@ -17,18 +23,15 @@ Fold with elegance.
 -- lazy.nvim
 {
 	"chrisgrieser/nvim-origami",
-	opts = {
-		
-	},
+	event = "BufReadPost", -- later or key would prevent saving folds
+	opts = true, -- needed even when using default config
 },
 
 -- packer
 use {
 	"chrisgrieser/nvim-origami",
 	config = function () 
-		require("origami").setup ({
-			
-		})
+		require("origami").setup ({}) -- setup call needed
 	end,
 }
 ```
@@ -38,11 +41,26 @@ use {
 ```lua
 -- default values
 opts = {
-
+	keepFoldsAcrossSessions = true,
+	pauseFoldsOnSearch = {
+		enabled = true,
+		forwardKey = "/",
+		backwardKey = "?",
+	},
 }
 ```
 
+```lua
+vim.keymap.set("n", "h", function() require("origami").h() end, { desc = "Origami h" })
+vim.keymap.set("n", "l", function() require("origami").l() end, { desc = "Origami l" })
+```
+
 ## Limitations
+Running a formatter, which changes something inside a fold can result in unintentionally opening that fold. This plugin does not have a feature yet to prevent that.
+
+## Other Folding Plugins
+- [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
+- [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
 
 ## Credits
 <!-- vale Google.FirstPerson = NO -->
