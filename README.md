@@ -1,21 +1,11 @@
 <!-- LTeX: enabled=false -->
 # nvim-origami <!-- LTeX: enabled=true -->
-Fold with elegance.
-
-<!--toc:start-->
-- [Features](#features)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Limitations](#limitations)
-- [Credits](#credits)
-<!--toc:end-->
+Fold with relentless elegance.
 
 ## Features
+- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it.
+- Pause folds while searching, restore folds when done with searching. 
 - Remember folds across sessions.
-- Pause folds while searching, restore folds when done with searching.
-- Use `h` at the first non-blank character of a line (or before) to fold.
-- Use `l` anywhere on a folded line to unfold it.
-
 
 ## Installation
 
@@ -23,7 +13,7 @@ Fold with elegance.
 -- lazy.nvim
 {
 	"chrisgrieser/nvim-origami",
-	event = "BufReadPost", -- later or key would prevent saving folds
+	event = "BufReadPost", -- later or on keypress would prevent saving folds
 	opts = true, -- needed even when using default config
 },
 
@@ -36,23 +26,24 @@ use {
 }
 ```
 
+The `.setup()` call or `lazy`'s `opts` is required. Otherwise the plugin works out the box without any necessary further configuration.
+
 ## Configuration
 
 ```lua
 -- default values
 require("origami").setup ({
 	keepFoldsAcrossSessions = true,
-	pauseFoldsOnSearch = {
-		enabled = true,
-		forwardKey = "/",
-		backwardKey = "?",
-	},
+	pauseFoldsOnSearch = true,
+	setupFoldKeymaps = true,
 })
 ```
 
+If you use other keys than `h` and `l` for vertical movement, set `setupFoldKeymaps` to false and map the keys yourself:
+
 ```lua
-vim.keymap.set("n", "h", function() require("origami").h() end, { desc = "Origami h" })
-vim.keymap.set("n", "l", function() require("origami").l() end, { desc = "Origami l" })
+require("origami").h()
+require("origami").l()
 ```
 
 ## Limitations

@@ -3,6 +3,8 @@ local M = {}
 local fn = vim.fn
 local cmd = vim.cmd
 local bo = vim.bo
+local autocmd = vim.nvim_create_autocmd
+local augroup = vim.nvim_create_augroup
 
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
@@ -14,7 +16,7 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 function M.h()
 	-- `virtcol` accounts for tab indentation
 	local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1 ---@diagnostic disable-line: param-type-mismatch
-	if onIndentOrFirstNonBlank then 
+	if onIndentOrFirstNonBlank then
 		local wasFolded = pcall(normal, "zc")
 		if wasFolded then return end
 	end
@@ -47,13 +49,13 @@ local function remember(mode)
 end
 
 local function keepFoldsAcrossSessions()
-	vim.api.nvim_create_augroup("origami-keep-folds", {})
-	vim.api.nvim_create_autocmd("BufWinLeave", {
+	augroup("origami-keep-folds", {})
+	autocmd("BufWinLeave", {
 		pattern = "?*",
 		callback = function() remember("save") end,
 		group = "origami-keep-folds",
 	})
-	vim.api.nvim_create_autocmd("BufWinEnter", {
+	autocmd("BufWinEnter", {
 		pattern = "?*",
 		callback = function() remember("load") end,
 		group = "origami-keep-folds",
@@ -67,17 +69,24 @@ end
 -- opening all your folds as soon as you search. This snippet fixes this by
 -- pausing folds while searching, but restoring them when you are done
 -- searching.
-local function pauseFoldOnSearch(forwardSearchKey, backwardSearchKey)
-	-- disable auto-open when searching, since the following snippet does that better
+local function pauseFoldOnSearch()
+	-- disable auto-open when searching, since we take care of that
 	vim.opt.foldopen:remove { "search" }
 
-	vim.keymap.set("n", forwardSearchKey, "zn/", { desc = "Origami /" })
-	vim.keymap.set("n", backwardSearchKey, "zn?", { desc = "Origami ?" })
+	augroup("origami-pause-folds", {})
+	autocmd("CmdlineEnter", {
+		pattern = "?*",
+		callback = function()
+			-- for whatever reason, using `foldenable=false` does not work here? 🤔
+			if fn.getcmdtype():find("[/?]") then normal("zn") end
+		end,
+		group = "origami-pause-folds",
+	})
 
 	vim.on_key(function(char)
 		if vim.g.scrollview_refreshing then return end -- FIX https://github.com/dstein64/nvim-scrollview/issues/88#issuecomment-1570400161
 		local key = fn.keytrans(char)
-		local searchKeys = { "n", "N", "*", "#", "/", "?" }
+		local searchKeys = { "n", "N", "*", "#" }
 		local searchConfirmed = (key == "<CR>" and fn.getcmdtype():find("[/?]") ~= nil)
 		if not (searchConfirmed or fn.mode() == "n") then return end
 		local searchKeyUsed = searchConfirmed or (vim.tbl_contains(searchKeys, key))
@@ -96,20 +105,17 @@ end
 function M.setup(userConfig)
 	local defaultConfig = {
 		keepFoldsAcrossSessions = true,
-		pauseFoldsOnSearch = {
-			enabled = true,
-			forwardKey = "/",
-			backwardKey = "?",
-		},
+		pauseFoldsOnSearch = true,
+		setupFoldKeymaps = true,
 	}
 	local config = vim.tbl_deep_extend("keep", userConfig, defaultConfig)
 
-	if config.pauseFoldsOnSearch.enabled then
-		local forwardKey = config.pauseFoldsOnSearch.forwardKey
-		local backwardKey = config.pauseFoldsOnSearch.backwardKey
-		pauseFoldOnSearch(forwardKey, backwardKey)
-	end
+	if config.pauseFoldsOnSearch then pauseFoldOnSearch() end
 	if config.keepFoldsAcrossSessions then keepFoldsAcrossSessions() end
+	if config.setupFoldKeymaps then
+		vim.keymap.set("n", "h", M.h, { desc = "Origami h" })
+		vim.keymap.set("n", "l", M.l, { desc = "Origami l" })
+	end
 end
 
 --------------------------------------------------------------------------------
