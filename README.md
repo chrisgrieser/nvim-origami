@@ -1,5 +1,6 @@
 <!-- LTeX: enabled=false -->
 # nvim-origami <!-- LTeX: enabled=true -->
+<a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami"><img src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield" /></a>
 Fold with relentless elegance.
 
 ## Features
