@@ -14,8 +14,6 @@ Table of Contents                                  *origami-table-of-contents*
 ==============================================================================
 1. nvim-origami                                        *origami-nvim-origami-*
 
-
-
 Fold with relentless elegance.
 
 
