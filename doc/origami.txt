@@ -14,21 +14,14 @@ Table of Contents                                  *origami-table-of-contents*
 ==============================================================================
 1. nvim-origami                                        *origami-nvim-origami-*
 
-Fold with elegance.
-
-- |origami-features|
-- |origami-installation|
-- |origami-configuration|
-- |origami-limitations|
-- |origami-credits|
+Fold with relentless elegance.
 
 
 FEATURES                                      *origami-nvim-origami--features*
 
-- Remember folds across sessions.
+- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it.
 - Pause folds while searching, restore folds when done with searching.
-- Use `h` at the first non-blank character of a line (or before) to fold.
-- Use `l` anywhere on a folded line to unfold it.
+- Remember folds across sessions.
 
 
 INSTALLATION                              *origami-nvim-origami--installation*
@@ -37,7 +30,7 @@ INSTALLATION                              *origami-nvim-origami--installation*
     -- lazy.nvim
     {
         "chrisgrieser/nvim-origami",
-        event = "BufReadPost", -- later or key would prevent saving folds
+        event = "BufReadPost", -- later or on keypress would prevent saving folds
         opts = true, -- needed even when using default config
     },
     
@@ -50,6 +43,9 @@ INSTALLATION                              *origami-nvim-origami--installation*
     }
 <
 
+The `.setup()` call or `lazy`’s `opts` is required. Otherwise the plugin
+works out the box without any necessary further configuration.
+
 
 CONFIGURATION                            *origami-nvim-origami--configuration*
 
@@ -57,17 +53,17 @@ CONFIGURATION                            *origami-nvim-origami--configuration*
     -- default values
     require("origami").setup ({
         keepFoldsAcrossSessions = true,
-        pauseFoldsOnSearch = {
-            enabled = true,
-            forwardKey = "/",
-            backwardKey = "?",
-        },
+        pauseFoldsOnSearch = true,
+        setupFoldKeymaps = true,
     })
 <
 
+If you use other keys than `h` and `l` for vertical movement, set
+`setupFoldKeymaps` to false and map the keys yourself:
+
 >lua
-    vim.keymap.set("n", "h", function() require("origami").h() end, { desc = "Origami h" })
-    vim.keymap.set("n", "l", function() require("origami").l() end, { desc = "Origami l" })
+    require("origami").h()
+    require("origami").l()
 <
 
 
