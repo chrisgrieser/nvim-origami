@@ -1,4 +1,4 @@
-*origami.txt*             For NVIM v0.8.0            Last change: 2023 July 27
+*origami.txt*             For NVIM v0.8.0            Last change: 2023 July 28
 
 ==============================================================================
 Table of Contents                                  *origami-table-of-contents*
@@ -55,14 +55,14 @@ CONFIGURATION                            *origami-nvim-origami--configuration*
 
 >lua
     -- default values
-    opts = {
+    require("origami").setup ({
         keepFoldsAcrossSessions = true,
         pauseFoldsOnSearch = {
             enabled = true,
             forwardKey = "/",
             backwardKey = "?",
         },
-    }
+    })
 <
 
 >lua
