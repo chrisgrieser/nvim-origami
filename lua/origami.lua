@@ -3,8 +3,8 @@ local M = {}
 local fn = vim.fn
 local cmd = vim.cmd
 local bo = vim.bo
-local autocmd = vim.nvim_create_autocmd
-local augroup = vim.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
 
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
