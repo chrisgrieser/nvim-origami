@@ -40,14 +40,14 @@ use {
 
 ```lua
 -- default values
-opts = {
+require("origami").setup ({
 	keepFoldsAcrossSessions = true,
 	pauseFoldsOnSearch = {
 		enabled = true,
 		forwardKey = "/",
 		backwardKey = "?",
 	},
-}
+})
 ```
 
 ```lua
