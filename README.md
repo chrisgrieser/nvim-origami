@@ -5,8 +5,8 @@
 Fold with relentless elegance.
 
 ## Features
-- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it.[^1]
-- Pause folds while searching, restore folds when done with searching. 
+- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it.[^1] This allows you to ditch `zc`, `zo`, and `za` – you can just use `h` and `l` to work with folds.
+- Pause folds while searching, restore folds when done with searching. (Normally, folds are lost when you search for some text throughout the file, which is very annoying.)
 - Remember folds across sessions.
 
 ## Installation
