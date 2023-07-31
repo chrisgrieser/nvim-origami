@@ -1,4 +1,4 @@
-*origami.txt*             For NVIM v0.8.0            Last change: 2023 July 28
+*origami.txt*             For NVIM v0.8.0            Last change: 2023 July 31
 
 ==============================================================================
 Table of Contents                                  *origami-table-of-contents*
@@ -13,6 +13,8 @@ Table of Contents                                  *origami-table-of-contents*
 
 ==============================================================================
 1. nvim-origami                                        *origami-nvim-origami-*
+
+
 
 Fold with relentless elegance.
 
@@ -58,6 +60,9 @@ CONFIGURATION                            *origami-nvim-origami--configuration*
     })
 <
 
+_Recommendation:_ By setting |'startofline'| to `true`, bigger movements move
+you to the start of the line, which works well with this plugin’s `h` key.
+
 If you use other keys than `h` and `l` for vertical movement, set
 `setupFoldKeymaps` to false and map the keys yourself:
 
@@ -69,9 +74,9 @@ If you use other keys than `h` and `l` for vertical movement, set
 
 LIMITATIONS                                *origami-nvim-origami--limitations*
 
-Running a formatter, which changes something inside a fold can result in
-unintentionally opening that fold. This plugin does not have a feature yet to
-prevent that.
+With certain formatter setups, formatting a buffer can open folds if text
+inside the fold was changed. This plugin does not have a feature to prevent
+that yet.
 
 
 OTHER FOLDING PLUGINS            *origami-nvim-origami--other-folding-plugins*
