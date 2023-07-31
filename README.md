@@ -1,11 +1,11 @@
 <!-- LTeX: enabled=false -->
 # nvim-origami <!-- LTeX: enabled=true -->
-<!-- <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami"><img src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield" /></a> -->
+<a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami"><img src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield" /></a>
 
 Fold with relentless elegance.
 
 ## Features
-- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it.
+- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it.[^1]
 - Pause folds while searching, restore folds when done with searching. 
 - Remember folds across sessions.
 
@@ -41,6 +41,8 @@ require("origami").setup ({
 })
 ```
 
+*Recommendation:* By setting ['startofline'](https://neovim.io/doc/user/options.html#'startofline') to `true`, bigger movements move you to the start of the line, which works well with this plugin's `h` key.
+
 If you use other keys than `h` and `l` for vertical movement, set `setupFoldKeymaps` to false and map the keys yourself:
 
 ```lua
@@ -49,7 +51,7 @@ require("origami").l()
 ```
 
 ## Limitations
-Running a formatter, which changes something inside a fold can result in unintentionally opening that fold. This plugin does not have a feature yet to prevent that.
+With certain formatter setups, formatting a buffer can open folds if text inside the fold was changed. This plugin does not have a feature to prevent that yet.
 
 ## Other Folding Plugins
 - [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
@@ -75,3 +77,5 @@ __Profiles__
 __Buy Me a Coffee__  
 <br>
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
+[^1]: Technically, unfolding with `l` is already a built-in vim feature when `foldopen` includes `hor`. However, this plugin still sets up an `l` key replicating that behavior, since the built-in version still moves you to one character to the side, which can be considered a bit counterintuitive.
