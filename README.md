@@ -28,7 +28,7 @@ use {
 }
 ```
 
-The `.setup()` call or `lazy`'s `opts` is required. Otherwise the plugin works out the box without any necessary further configuration.
+The `.setup()` call or `lazy`'s `opts` is required. Otherwise the plugin works out of the box without any necessary further configuration.
 
 ## Configuration
 
