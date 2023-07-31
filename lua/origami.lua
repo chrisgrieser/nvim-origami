@@ -14,23 +14,29 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 -- `h` closes folds when at the beginning of a line (similar to how `l` opens
 -- with `vim.opt.foldopen="hor"`). Works well with `vim.opt.startofline = true`
 function M.h()
-	-- `virtcol` accounts for tab indentation
-	local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1 ---@diagnostic disable-line: param-type-mismatch
-	if onIndentOrFirstNonBlank then
-		local wasFolded = pcall(normal, "zc")
-		if wasFolded then return end
+	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
+	for _ = 1, count, 1 do
+		local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1 ---@diagnostic disable-line: param-type-mismatch
+		if onIndentOrFirstNonBlank then
+			local wasFolded = pcall(normal, "zc")
+			if not wasFolded then normal("h") end
+		else
+			normal("h")
+		end
 	end
-	normal("h")
 end
 
 -- ensure that `l` does not move to the right when opening a fold, otherwise
 -- this is the same behavior as with foldopen="hor" already
 function M.l()
-	local isOnFold = fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
-	if isOnFold then
-		pcall(normal, "zo")
-	else
-		normal("l")
+	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
+	for _ = 1, count, 1 do
+		local isOnFold = fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
+		if isOnFold then
+			pcall(normal, "zo")
+		else
+			normal("l")
+		end
 	end
 end
 
@@ -77,7 +83,7 @@ local function pauseFoldOnSearch()
 	autocmd("CmdlineEnter", {
 		pattern = "?*",
 		callback = function()
-			-- for whatever reason, using `foldenable=false` does not work here? 🤔
+			-- for whatever reason, using `foldenable=false` does not work here
 			if fn.getcmdtype():find("[/?]") then normal("zn") end
 		end,
 		group = "origami-pause-folds",
