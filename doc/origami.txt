@@ -21,8 +21,8 @@ Fold with relentless elegance.
 
 FEATURES                                      *origami-nvim-origami--features*
 
-- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it. This allows you to ditch `zc`, `zo`, and `za` – you can just use `h` and `l` to work with folds.
-- Pause folds while searching, restore folds when done with searching. (Normally, folds are lost when you search for some text throughout the file, which is very annoying.)
+- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it. This allows you to ditch `zc`, `zo`, and `za` – you can just use `h` and `l` to work with folds. (`h` still moves left if not at the beginning of a line, and `l` still moves right when on an unfolded line – this plugin basically "overloads" those keys.)
+- Pause folds while searching, restore folds when done with searching. (Normally, folds are opened when you search for some text inside a fold, and _stay_ open afterwards.)
 - Remember folds across sessions.
 
 
