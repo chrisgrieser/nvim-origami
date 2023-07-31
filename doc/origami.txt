@@ -46,7 +46,7 @@ INSTALLATION                              *origami-nvim-origami--installation*
 <
 
 The `.setup()` call or `lazy`’s `opts` is required. Otherwise the plugin
-works out the box without any necessary further configuration.
+works out of the box without any necessary further configuration.
 
 
 CONFIGURATION                            *origami-nvim-origami--configuration*
