@@ -86,7 +86,7 @@ local function pauseFoldOnSearch()
 		local isCmdlineSearch = fn.getcmdtype():find("[/?]") ~= nil
 		local searchMvKeys = { "n", "N", "*", "#" } -- works for RHS, therefore no need to consider remaps
 
-		local searchStarted = (key == "/" or key == "?" and isCmdlineSearch)
+		local searchStarted = (key == "/" or key == "?") and isCmdlineSearch
 		local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
 		local searchCancelled = (key == "<Esc>" and isCmdlineSearch)
 		if not (searchStarted or searchConfirmed or searchCancelled or fn.mode() == "n") then return end
