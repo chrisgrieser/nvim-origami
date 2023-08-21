@@ -75,30 +75,29 @@ end
 -- opening all your folds as soon as you search. This snippet fixes this by
 -- pausing folds while searching, but restoring them when you are done
 -- searching.
-local function pauseFoldOnSearch()
-	-- disable auto-open when searching, since we take care of that
-	vim.opt.foldopen:remove { "search" }
 
-	augroup("origami-pause-folds", {})
-	autocmd("CmdlineEnter", {
-		pattern = "?*",
-		callback = function()
-			-- for whatever reason, using `foldenable=false` does not work here
-			if fn.getcmdtype():find("[/?]") then normal("zn") end
-		end,
-		group = "origami-pause-folds",
-	})
+local function pauseFoldOnSearch()
+	-- disable auto-open when searching, since we take care of that in a better way
+	vim.opt.foldopen:remove { "search" }
 
 	vim.on_key(function(char)
 		if vim.g.scrollview_refreshing then return end -- FIX https://github.com/dstein64/nvim-scrollview/issues/88#issuecomment-1570400161
 		local key = fn.keytrans(char)
-		local searchKeys = { "n", "N", "*", "#" }
-		local searchConfirmed = (key == "<CR>" and fn.getcmdtype():find("[/?]") ~= nil)
-		if not (searchConfirmed or fn.mode() == "n") then return end
-		local searchKeyUsed = searchConfirmed or (vim.tbl_contains(searchKeys, key))
+		local isCmdlineSearch = fn.getcmdtype():find("[/?]") ~= nil
+		local searchMvKeys = { "n", "N", "*", "#" } -- works for RHS, therefore no need to consider remaps
 
-		local pauseFold = vim.opt.foldenable:get() and searchKeyUsed
-		local unpauseFold = not (vim.opt.foldenable:get()) and not searchKeyUsed
+		local searchStarted = (key == "/" or key == "?" and isCmdlineSearch)
+		local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
+		local searchCancelled = (key == "<Esc>" and isCmdlineSearch)
+		if not (searchStarted or searchConfirmed or searchCancelled or fn.mode() == "n") then return end
+		local foldsArePaused = not (vim.opt.foldenable:get())
+		local searchMovement = vim.tbl_contains(searchMvKeys, key)
+
+		local pauseFold = (searchConfirmed or searchStarted or searchMovement) and not foldsArePaused
+		local unpauseFold = (searchCancelled or not searchMovement)
+			and foldsArePaused
+			and not searchConfirmed
+
 		if pauseFold then
 			vim.opt.foldenable = false
 		elseif unpauseFold then
