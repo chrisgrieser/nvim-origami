@@ -75,8 +75,8 @@ If you use other keys than `h` and `l` for vertical movement, set
 LIMITATIONS                                *origami-nvim-origami--limitations*
 
 Using formatting plugins will still open all your folds
-<Using%20formatting%20plugins%20will%20still%20open%20all%20your%20folds> and
-unfortunately, there is nothing this plugin can do about it. Using
+<https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/>
+and unfortunately, there is nothing this plugin can do about it. Using
 |lsp.buf.format()| preserves folds, so you should consider switching to the efm
 LSP <https://github.com/mattn/efm-langserver>, if you want your folds to resist
 formatting.
