@@ -51,7 +51,7 @@ require("origami").l()
 ```
 
 ## Limitations
-With certain formatter setups, formatting a buffer can open folds if text inside the fold was changed. This plugin does not have a feature to prevent that yet.
+[Using formatting plugins will still open all your folds](Using formatting plugins will still open all your folds) and unfortunately, there is nothing this plugin can do about it. Using [lsp.buf.format()](https://neovim.io/doc/user/lsp.html#vim.lsp.buf.format()) preserves folds, so you should consider switching to [the efm LSP](https://github.com/mattn/efm-langserver), if you want your folds to resist formatting.
 
 ## Other Folding Plugins
 - [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
