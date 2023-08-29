@@ -51,7 +51,7 @@ require("origami").l()
 ```
 
 ## Limitations
-[Using formatting plugins will still open all your folds](Using formatting plugins will still open all your folds) and unfortunately, there is nothing this plugin can do about it. Using [lsp.buf.format()](https://neovim.io/doc/user/lsp.html#vim.lsp.buf.format()) preserves folds, so you should consider switching to [the efm LSP](https://github.com/mattn/efm-langserver), if you want your folds to resist formatting.
+[Using formatting plugins will still open all your folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/) and unfortunately, there is nothing this plugin can do about it. Using [lsp.buf.format()](https://neovim.io/doc/user/lsp.html#vim.lsp.buf.format()) preserves folds, so you should consider switching to [the efm LSP](https://github.com/mattn/efm-langserver), if you want your folds to resist formatting.
 
 ## Other Folding Plugins
 - [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
