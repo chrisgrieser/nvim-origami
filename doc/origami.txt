@@ -1,4 +1,4 @@
-*origami.txt*            For NVIM v0.8.0           Last change: 2023 August 21
+*origami.txt*            For NVIM v0.8.0           Last change: 2023 August 29
 
 ==============================================================================
 Table of Contents                                  *origami-table-of-contents*
@@ -74,9 +74,12 @@ If you use other keys than `h` and `l` for vertical movement, set
 
 LIMITATIONS                                *origami-nvim-origami--limitations*
 
-With certain formatter setups, formatting a buffer can open folds if text
-inside the fold was changed. This plugin does not have a feature to prevent
-that yet.
+Using formatting plugins will still open all your folds
+<Using%20formatting%20plugins%20will%20still%20open%20all%20your%20folds> and
+unfortunately, there is nothing this plugin can do about it. Using
+|lsp.buf.format()| preserves folds, so you should consider switching to the efm
+LSP <https://github.com/mattn/efm-langserver>, if you want your folds to resist
+formatting.
 
 
 OTHER FOLDING PLUGINS            *origami-nvim-origami--other-folding-plugins*
