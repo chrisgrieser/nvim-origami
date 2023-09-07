@@ -1,4 +1,4 @@
-*origami.txt*            For NVIM v0.8.0           Last change: 2023 August 29
+*origami.txt*          For NVIM v0.8.0          Last change: 2023 September 07
 
 ==============================================================================
 Table of Contents                                  *origami-table-of-contents*
