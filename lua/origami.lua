@@ -86,7 +86,7 @@ local function pauseFoldOnSearch()
 		local isCmdlineSearch = fn.getcmdtype():find("[/?]") ~= nil
 		local searchMvKeys = { "n", "N", "*", "#" } -- works for RHS, therefore no need to consider remaps
 
-		local searchStarted = (key == "/" or key == "?") and isCmdlineSearch
+		local searchStarted = (key == "/" or key == "?") and fn.mode() == "n"
 		local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
 		local searchCancelled = (key == "<Esc>" and isCmdlineSearch)
 		if not (searchStarted or searchConfirmed or searchCancelled or fn.mode() == "n") then return end
@@ -94,10 +94,7 @@ local function pauseFoldOnSearch()
 		local searchMovement = vim.tbl_contains(searchMvKeys, key)
 
 		local pauseFold = (searchConfirmed or searchStarted or searchMovement) and not foldsArePaused
-		local unpauseFold = (searchCancelled or not searchMovement)
-			and foldsArePaused
-			and not searchConfirmed
-
+		local unpauseFold = foldsArePaused and (searchCancelled or not searchMovement)
 		if pauseFold then
 			vim.opt.foldenable = false
 		elseif unpauseFold then
