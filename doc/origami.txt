@@ -1,4 +1,4 @@
-*origami.txt*          For NVIM v0.8.0          Last change: 2023 September 07
+*origami.txt*          For NVIM v0.8.0          Last change: 2023 September 14
 
 ==============================================================================
 Table of Contents                                  *origami-table-of-contents*
@@ -15,8 +15,6 @@ Table of Contents                                  *origami-table-of-contents*
 1. nvim-origami                                        *origami-nvim-origami-*
 
 
-
-Fold with relentless elegance.
 
 
 FEATURES                                      *origami-nvim-origami--features*
@@ -74,12 +72,12 @@ If you use other keys than `h` and `l` for vertical movement, set
 
 LIMITATIONS                                *origami-nvim-origami--limitations*
 
-Using formatting plugins will still open all your folds
+Many formatting plugins will open all your folds
 <https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/>
-and unfortunately, there is nothing this plugin can do about it. Using
-|lsp.buf.format()| preserves folds, so you should consider switching to the efm
-LSP <https://github.com/mattn/efm-langserver>, if you want your folds to resist
-formatting.
+and unfortunately, there is nothing this plugin can do about it. The only two
+tools that are able to preserve folds are the efm-language-server
+<https://github.com/mattn/efm-langserver> and conform.nvim
+<https://github.com/stevearc/conform.nvim>.
 
 
 OTHER FOLDING PLUGINS            *origami-nvim-origami--other-folding-plugins*
