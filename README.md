@@ -2,8 +2,6 @@
 # nvim-origami <!-- LTeX: enabled=true -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami"><img src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield" /></a>
 
-Fold with relentless elegance.
-
 ## Features
 - Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it.[^1] This allows you to ditch `zc`, `zo`, and `za` – you can just use `h` and `l` to work with folds. (`h` still moves left if not at the beginning of a line, and `l` still moves right when on an unfolded line – this plugin basically "overloads" those keys.)
 - Pause folds while searching, restore folds when done with searching. (Normally, folds are opened when you search for some text inside a fold, and *stay* open afterwards.)
@@ -51,7 +49,7 @@ require("origami").l()
 ```
 
 ## Limitations
-[Using formatting plugins will still open all your folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/) and unfortunately, there is nothing this plugin can do about it. Using [lsp.buf.format()](https://neovim.io/doc/user/lsp.html#vim.lsp.buf.format()) preserves folds, so you should consider switching to [the efm LSP](https://github.com/mattn/efm-langserver), if you want your folds to resist formatting.
+[Many formatting plugins will open all your folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/) and unfortunately, there is nothing this plugin can do about it. The only two tools that are able to preserve folds are the [efm-language-server](https://github.com/mattn/efm-langserver) and [conform.nvim](https://github.com/stevearc/conform.nvim).
 
 ## Other Folding Plugins
 - [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
