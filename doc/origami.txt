@@ -1,30 +1,37 @@
-*origami.txt*          For NVIM v0.8.0          Last change: 2023 September 14
+*origami.txt*           For NVIM v0.8.0           Last change: 2024 January 10
 
 ==============================================================================
 Table of Contents                                  *origami-table-of-contents*
 
-1. nvim-origami                                        |origami-nvim-origami-|
-  - Features                                  |origami-nvim-origami--features|
-  - Installation                          |origami-nvim-origami--installation|
-  - Configuration                        |origami-nvim-origami--configuration|
-  - Limitations                            |origami-nvim-origami--limitations|
-  - Other Folding Plugins        |origami-nvim-origami--other-folding-plugins|
-  - Credits                                    |origami-nvim-origami--credits|
+1. nvim-origami                                         |origami-nvim-origami|
+  - Features                                   |origami-nvim-origami-features|
+  - Installation                           |origami-nvim-origami-installation|
+  - Configuration                         |origami-nvim-origami-configuration|
+  - Limitations                             |origami-nvim-origami-limitations|
+  - Other Folding Plugins         |origami-nvim-origami-other-folding-plugins|
+  - Credits                                     |origami-nvim-origami-credits|
 
 ==============================================================================
-1. nvim-origami                                        *origami-nvim-origami-*
+1. nvim-origami                                         *origami-nvim-origami*
 
 
 
 
-FEATURES                                      *origami-nvim-origami--features*
+FEATURES                                       *origami-nvim-origami-features*
 
-- Use `h` at the first non-blank character of a line (or before) to fold. Use `l` anywhere on a folded line to unfold it. This allows you to ditch `zc`, `zo`, and `za` – you can just use `h` and `l` to work with folds. (`h` still moves left if not at the beginning of a line, and `l` still moves right when on an unfolded line – this plugin basically "overloads" those keys.)
-- Pause folds while searching, restore folds when done with searching. (Normally, folds are opened when you search for some text inside a fold, and _stay_ open afterwards.)
-- Remember folds across sessions.
+- Use `h` at the first non-blank character of a line (or before) to fold. Use
+    `l` anywhere on a folded line to unfold it. This allows you to ditch `zc`,
+    `zo`, and `za` – you can just use `h` and `l` to work with folds. (`h` still
+    moves left if not at the beginning of a line, and `l` still moves right when
+    on an unfolded line – this plugin basically "overloads" those keys.)
+- Pause folds while searching, restore folds when done with searching.
+    (Normally, folds are opened when you search for some text inside a fold, and
+    _stay_ open afterward.)
+- Remember folds across sessions. (Note that this uses `mkview` and thus also
+    saves the current directory and the cursor position.)
 
 
-INSTALLATION                              *origami-nvim-origami--installation*
+INSTALLATION                               *origami-nvim-origami-installation*
 
 >lua
     -- lazy.nvim
@@ -43,19 +50,19 @@ INSTALLATION                              *origami-nvim-origami--installation*
     }
 <
 
-The `.setup()` call or `lazy`’s `opts` is required. Otherwise the plugin
+The `.setup()` call or `lazy`’s `opts` is required. Otherwise, the plugin
 works out of the box without any necessary further configuration.
 
 
-CONFIGURATION                            *origami-nvim-origami--configuration*
+CONFIGURATION                             *origami-nvim-origami-configuration*
 
 >lua
     -- default values
-    require("origami").setup ({
+    require("origami").setup {
         keepFoldsAcrossSessions = true,
         pauseFoldsOnSearch = true,
         setupFoldKeymaps = true,
-    })
+    }
 <
 
 _Recommendation:_ By setting |'startofline'| to `true`, bigger movements move
@@ -70,7 +77,7 @@ If you use other keys than `h` and `l` for vertical movement, set
 <
 
 
-LIMITATIONS                                *origami-nvim-origami--limitations*
+LIMITATIONS                                 *origami-nvim-origami-limitations*
 
 Many formatting plugins will open all your folds
 <https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/>
@@ -80,13 +87,13 @@ tools that are able to preserve folds are the efm-language-server
 <https://github.com/stevearc/conform.nvim>.
 
 
-OTHER FOLDING PLUGINS            *origami-nvim-origami--other-folding-plugins*
+OTHER FOLDING PLUGINS             *origami-nvim-origami-other-folding-plugins*
 
 - fold-cycle.nvim <https://github.com/jghauser/fold-cycle.nvim>
 - nvim-ufo <https://github.com/kevinhwang91/nvim-ufo>
 
 
-CREDITS                                        *origami-nvim-origami--credits*
+CREDITS                                         *origami-nvim-origami-credits*
 
 **About Me** In my day job, I am a sociologist studying the social mechanisms
 underlying the digital economy. For my PhD project, I investigate the
