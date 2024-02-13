@@ -46,9 +46,16 @@ end
 local function remember(mode)
 	-- stylua: ignore
 	local ignoredFts = { "TelescopePrompt", "DressingSelect", "DressingInput", "toggleterm", "gitcommit", "replacer", "harpoon", "help", "qf" }
-	if vim.tbl_contains(ignoredFts, bo.filetype) or bo.buftype ~= "" or not bo.modifiable then return end
+	if vim.tbl_contains(ignoredFts, bo.filetype) or bo.buftype ~= "" or not bo.modifiable then
+		return
+	end
 	if mode == "save" then
+		-- only save folds and cursor, do not save options or the cwd, as that
+		-- leads to unpredictable behavior
+		local viewOptsBefore = vim.opt.viewoptions:get()
+		vim.opt.viewoptions = { "cursor", "folds" }
 		cmd.mkview(1)
+		vim.opt.viewoptions = viewOptsBefore
 	else
 		pcall(function() cmd.loadview(1) end) -- pcall, since new files have no view yet
 	end
@@ -89,7 +96,9 @@ local function pauseFoldOnSearch()
 		local searchStarted = (key == "/" or key == "?") and fn.mode() == "n"
 		local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
 		local searchCancelled = (key == "<Esc>" and isCmdlineSearch)
-		if not (searchStarted or searchConfirmed or searchCancelled or fn.mode() == "n") then return end
+		if not (searchStarted or searchConfirmed or searchCancelled or fn.mode() == "n") then
+			return
+		end
 		local foldsArePaused = not (vim.opt.foldenable:get())
 		local searchMovement = vim.tbl_contains(searchMvKeys, key)
 

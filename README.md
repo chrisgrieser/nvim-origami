@@ -13,8 +13,7 @@
 - Pause folds while searching, restore folds when done with searching.
   (Normally, folds are opened when you search for some text inside a fold, and
   *stay* open afterward.)
-- Remember folds across sessions. (Note that this uses `mkview` and thus also
-  saves the current directory and the cursor position.)
+- Remember folds across sessions (and as a side effect, also the cursor position).
 
 ## Installation
 
