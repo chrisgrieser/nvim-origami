@@ -62,7 +62,7 @@ require("origami").l()
 ```
 
 ## Limitations
-[Many formatting plugins will open all your
+[Many formatting plugins open all your
 folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/)
 and unfortunately, there is nothing this plugin can do about it. The only two
 tools that are able to preserve folds are the
