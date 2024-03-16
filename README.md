@@ -15,6 +15,11 @@
   *stay* open afterward.)
 - Remember folds across sessions (and as a side effect, also the cursor position).
 
+> [NOTE!]
+> This plugin only opens and closes folds. It does not provide a `foldmethod`. 
+> You need to define a `foldmethod` either yourself or through a folding 
+> provider like `nvim-ufo` for this plugin to work. 
+
 ## Installation
 
 ```lua
