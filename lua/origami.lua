@@ -105,9 +105,9 @@ local function pauseFoldOnSearch()
 		local pauseFold = (searchConfirmed or searchStarted or searchMovement) and not foldsArePaused
 		local unpauseFold = foldsArePaused and (searchCancelled or not searchMovement)
 		if pauseFold then
-			vim.opt.foldenable = false
+			vim.opt_local.foldenable = false
 		elseif unpauseFold then
-			vim.opt.foldenable = true
+			vim.opt_local.foldenable = true
 			normal("zv") -- after closing folds, keep the *current* fold open
 		end
 	end, vim.api.nvim_create_namespace("auto_pause_folds"))
