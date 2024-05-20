@@ -16,7 +16,7 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 function M.h()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
-		local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1 ---@diagnostic disable-line: param-type-mismatch
+		local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1
 		if onIndentOrFirstNonBlank then
 			local wasFolded = pcall(normal, "zc")
 			if not wasFolded then normal("h") end
@@ -31,7 +31,7 @@ end
 function M.l()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
-		local isOnFold = fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
+		local isOnFold = fn.foldclosed(".") > -1
 		if isOnFold then
 			pcall(normal, "zo")
 		else
@@ -44,8 +44,17 @@ end
 
 -- REMEMBER FOLDS (AND CURSOR LOCATION)
 local function remember(mode)
-	-- stylua: ignore
-	local ignoredFts = { "TelescopePrompt", "DressingSelect", "DressingInput", "toggleterm", "gitcommit", "replacer", "harpoon", "help", "qf" }
+	local ignoredFts = {
+		"TelescopePrompt",
+		"DressingSelect",
+		"DressingInput",
+		"toggleterm",
+		"gitcommit",
+		"replacer",
+		"harpoon",
+		"help",
+		"qf",
+	}
 	if vim.tbl_contains(ignoredFts, bo.filetype) or bo.buftype ~= "" or not bo.modifiable then
 		return
 	end
@@ -130,5 +139,4 @@ function M.setup(userConfig)
 end
 
 --------------------------------------------------------------------------------
-
 return M
