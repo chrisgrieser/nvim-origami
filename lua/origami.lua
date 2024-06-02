@@ -31,7 +31,7 @@ end
 function M.l()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
-		local isOnFold = fn.foldclosed(".") > -1
+		local isOnFold = fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
 		if isOnFold then
 			pcall(normal, "zo")
 		else
