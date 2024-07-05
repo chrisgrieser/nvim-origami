@@ -1,5 +1,5 @@
 <!-- LTeX: enabled=false -->
-# nvim-origami
+# nvim-origami 🐦
 <!-- LTeX: enabled=true -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
@@ -16,9 +16,9 @@
 - Remember folds across sessions (and as a side effect, also the cursor position).
 
 > [!NOTE]
-> This plugin only opens and closes folds. It does not provide a `foldmethod`. 
-> You need to define a `foldmethod` either yourself or through a folding 
-> provider like `nvim-ufo` for this plugin to work. 
+> This plugin only opens and closes folds. It does **not** provide a `foldmethod`.
+> You need to define a `foldmethod` either yourself or through a folding
+> provider like `nvim-ufo` for this plugin to work.
 
 ## Installation
 
@@ -27,7 +27,7 @@
 {
 	"chrisgrieser/nvim-origami",
 	event = "BufReadPost", -- later or on keypress would prevent saving folds
-	opts = true, -- needed even when using default config
+	opts = {}, -- needed even when using default config
 },
 
 -- packer
@@ -40,12 +40,12 @@ use {
 ```
 
 The `.setup()` call or `lazy`'s `opts` is required. Otherwise, the plugin works
-out of the box without any necessary further configuration.
+out of the box without any need for further configuration.
 
 ## Configuration
 
 ```lua
--- default values
+-- default settings
 require("origami").setup {
 	keepFoldsAcrossSessions = true,
 	pauseFoldsOnSearch = true,
@@ -53,13 +53,14 @@ require("origami").setup {
 }
 ```
 
-*Recommendation:* By setting
-['startofline'](https://neovim.io/doc/user/options.html#'startofline') to
-`true`, bigger movements move you to the start of the line, which works well
-with this plugin's `h` key.
+> [!TIP]
+> By setting
+> ['startofline'](https://neovim.io/doc/user/options.html#'startofline') to
+> `true`, bigger movements move you to the start of the line, which works well
+> with this plugin's `h` key.
 
 If you use other keys than `h` and `l` for vertical movement, set
-`setupFoldKeymaps` to false and map the keys yourself:
+`setupFoldKeymaps = false` and map the keys yourself:
 
 ```lua
 vim.keymap.set("n", "<Left>", function require("origami").h() end)
@@ -74,7 +75,7 @@ tools that are able to preserve folds are the
 [efm-language-server](https://github.com/mattn/efm-langserver) and
 [conform.nvim](https://github.com/stevearc/conform.nvim).
 
-## Other Folding Plugins
+## Other useful folding plugins
 - [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
 - [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
 
