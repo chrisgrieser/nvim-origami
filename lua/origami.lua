@@ -1,10 +1,4 @@
 local M = {}
-
-local fn = vim.fn
-local cmd = vim.cmd
-local bo = vim.bo
-local autocmd = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
 local config
 
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
@@ -17,8 +11,11 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 function M.h()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
-		local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1 and not config.hOnlyOpensOnFirstColumn
-		local firstChar = fn.col(".") == 1 and config.hOnlyOpensOnFirstColumn
+		local col = vim.api.nvim_win_get_cursor(0)[2]
+		local textBeforeCursor = vim.api.nvim_get_current_line():sub(1, col)
+		local onIndentOrFirstNonBlank = textBeforeCursor:match("^%s*$")
+			and not config.hOnlyOpensOnFirstColumn
+		local firstChar = col == 0 and config.hOnlyOpensOnFirstColumn
 		if onIndentOrFirstNonBlank or firstChar then
 			local wasFolded = pcall(normal, "zc")
 			if not wasFolded then normal("h") end
@@ -33,12 +30,8 @@ end
 function M.l()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
-		local isOnFold = fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
-		if isOnFold then
-			pcall(normal, "zo")
-		else
-			normal("l")
-		end
+		local isOnFold = vim.fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
+		pcall(normal, isOnFold and "zo" or "l")
 	end
 end
 
@@ -46,40 +39,32 @@ end
 
 -- REMEMBER FOLDS (AND CURSOR LOCATION)
 local function remember(mode)
-	local ignoredFts = {
-		"TelescopePrompt",
-		"DressingSelect",
-		"DressingInput",
-		"toggleterm",
-		"gitcommit",
-		"replacer",
-		"harpoon",
-		"help",
-		"qf",
-	}
-	if vim.tbl_contains(ignoredFts, bo.filetype) or bo.buftype ~= "" or not bo.modifiable then
+	-- stylua: ignore
+	local ignoredFts = { "TelescopePrompt", "DressingSelect", "DressingInput", "toggleterm", "gitcommit", "replacer", "harpoon", "help", "qf" }
+	if vim.tbl_contains(ignoredFts, vim.bo.ft) or vim.bo.buftype ~= "" or not vim.bo.modifiable then
 		return
 	end
+
 	if mode == "save" then
 		-- only save folds and cursor, do not save options or the cwd, as that
 		-- leads to unpredictable behavior
 		local viewOptsBefore = vim.opt.viewoptions:get()
 		vim.opt.viewoptions = { "cursor", "folds" }
-		cmd.mkview(1)
+		vim.cmd.mkview(1)
 		vim.opt.viewoptions = viewOptsBefore
 	else
-		pcall(function() cmd.loadview(1) end) -- pcall, since new files have no view yet
+		pcall(function() vim.cmd.loadview(1) end) -- pcall, since new files have no view yet
 	end
 end
 
 local function keepFoldsAcrossSessions()
-	augroup("origami-keep-folds", {})
-	autocmd("BufWinLeave", {
+	vim.api.nvim_create_augroup("origami-keep-folds", {})
+	vim.api.nvim_create_autocmd("BufWinLeave", {
 		pattern = "?*",
 		callback = function() remember("save") end,
 		group = "origami-keep-folds",
 	})
-	autocmd("BufWinEnter", {
+	vim.api.nvim_create_autocmd("BufWinEnter", {
 		pattern = "?*",
 		callback = function() remember("load") end,
 		group = "origami-keep-folds",
@@ -100,18 +85,17 @@ local function pauseFoldOnSearch()
 
 	vim.on_key(function(char)
 		if vim.g.scrollview_refreshing then return end -- FIX https://github.com/dstein64/nvim-scrollview/issues/88#issuecomment-1570400161
-		local key = fn.keytrans(char)
-		local isCmdlineSearch = fn.getcmdtype():find("[/?]") ~= nil
-		local searchMvKeys = { "n", "N", "*", "#" } -- works for RHS, therefore no need to consider remaps
+		local key = vim.fn.keytrans(char)
+		local isCmdlineSearch = vim.fn.getcmdtype():find("[/?]") ~= nil
+		local isNormalMode = vim.api.nvim_get_mode().mode == "n"
 
-		local searchStarted = (key == "/" or key == "?") and fn.mode() == "n"
+		local searchStarted = (key == "/" or key == "?") and isNormalMode
 		local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
 		local searchCancelled = (key == "<Esc>" and isCmdlineSearch)
-		if not (searchStarted or searchConfirmed or searchCancelled or fn.mode() == "n") then
-			return
-		end
+		if not (searchStarted or searchConfirmed or searchCancelled or isNormalMode) then return end
 		local foldsArePaused = not (vim.opt.foldenable:get())
-		local searchMovement = vim.tbl_contains(searchMvKeys, key)
+		-- works for RHS, therefore no need to consider remaps
+		local searchMovement = vim.tbl_contains({ "n", "N", "*", "#" }, key)
 
 		local pauseFold = (searchConfirmed or searchStarted or searchMovement) and not foldsArePaused
 		local unpauseFold = foldsArePaused and (searchCancelled or not searchMovement)
@@ -119,7 +103,7 @@ local function pauseFoldOnSearch()
 			vim.opt_local.foldenable = false
 		elseif unpauseFold then
 			vim.opt_local.foldenable = true
-			normal("zv") -- after closing folds, keep the *current* fold open
+			vim.cmd.foldopen { bang = true } -- after closing folds, keep the *current* fold open
 		end
 	end, vim.api.nvim_create_namespace("auto_pause_folds"))
 end
