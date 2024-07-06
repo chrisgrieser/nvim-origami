@@ -103,7 +103,7 @@ local function pauseFoldOnSearch()
 			vim.opt_local.foldenable = false
 		elseif unpauseFold then
 			vim.opt_local.foldenable = true
-			vim.cmd.foldopen { bang = true } -- after closing folds, keep the *current* fold open
+			pcall(vim.cmd.foldopen, { bang = true }) -- after closing folds, keep the *current* fold open
 		end
 	end, vim.api.nvim_create_namespace("auto_pause_folds"))
 end
