@@ -65,6 +65,7 @@ CONFIGURATION                            *origami-nvim-origami--configuration*
         keepFoldsAcrossSessions = true,
         pauseFoldsOnSearch = true,
         setupFoldKeymaps = true,
+        hOnlyOpensOnFirstColumn = false,
     }
 <
 
