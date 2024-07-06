@@ -5,6 +5,7 @@ local cmd = vim.cmd
 local bo = vim.bo
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
+local config
 
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
@@ -16,8 +17,9 @@ local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 function M.h()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
-		local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1
-		if onIndentOrFirstNonBlank then
+		local onIndentOrFirstNonBlank = fn.virtcol(".") <= fn.indent(".") + 1 and not config.hOnlyOpensOnFirstColumn
+		local firstChar = fn.col(".") == 1 and config.hOnlyOpensOnFirstColumn
+		if onIndentOrFirstNonBlank or firstChar then
 			local wasFolded = pcall(normal, "zc")
 			if not wasFolded then normal("h") end
 		else
@@ -122,13 +124,18 @@ local function pauseFoldOnSearch()
 	end, vim.api.nvim_create_namespace("auto_pause_folds"))
 end
 
+--------------------------------------------------------------------------------
+
+local defaultConfig = {
+	keepFoldsAcrossSessions = true,
+	pauseFoldsOnSearch = true,
+	setupFoldKeymaps = true,
+	hOnlyOpensOnFirstColumn = false,
+}
+config = defaultConfig
+
 function M.setup(userConfig)
-	local defaultConfig = {
-		keepFoldsAcrossSessions = true,
-		pauseFoldsOnSearch = true,
-		setupFoldKeymaps = true,
-	}
-	local config = vim.tbl_deep_extend("keep", userConfig, defaultConfig)
+	config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
 	if config.pauseFoldsOnSearch then pauseFoldOnSearch() end
 	if config.keepFoldsAcrossSessions then keepFoldsAcrossSessions() end
