@@ -1,10 +1,10 @@
 local M = {}
 local config
 
-local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
-
 --------------------------------------------------------------------------------
 -- KEYMAPS
+
+local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
 -- `h` closes folds when at the beginning of a line (similar to how `l` opens
 -- with `vim.opt.foldopen="hor"`). Works well with `vim.opt.startofline = true`
@@ -31,16 +31,31 @@ function M.l()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
 		local isOnFold = vim.fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
-		pcall(normal, isOnFold and "zo" or "l")
+		local action = isOnFold and "zo" or "l"
+		pcall(normal, action)
 	end
 end
 
 --------------------------------------------------------------------------------
-
 -- REMEMBER FOLDS (AND CURSOR LOCATION)
+
+local ignoredFts = {
+	"TelescopePrompt",
+	"DressingSelect",
+	"DressingInput",
+	"toggleterm",
+	"gitcommit",
+	"gitrebase",
+	"replacer",
+	"rip-substitute",
+	"harpoon",
+	"help",
+	"checkhealth",
+	"qf",
+}
+local viewSlot = 1
+
 local function remember(mode)
-	-- stylua: ignore
-	local ignoredFts = { "TelescopePrompt", "DressingSelect", "DressingInput", "toggleterm", "gitcommit", "replacer", "harpoon", "help", "qf" }
 	if vim.tbl_contains(ignoredFts, vim.bo.ft) or vim.bo.buftype ~= "" or not vim.bo.modifiable then
 		return
 	end
@@ -50,24 +65,24 @@ local function remember(mode)
 		-- leads to unpredictable behavior
 		local viewOptsBefore = vim.opt.viewoptions:get()
 		vim.opt.viewoptions = { "cursor", "folds" }
-		vim.cmd.mkview(1)
+		vim.cmd.mkview(viewSlot)
 		vim.opt.viewoptions = viewOptsBefore
 	else
-		pcall(function() vim.cmd.loadview(1) end) -- pcall, since new files have no view yet
+		pcall(vim.cmd.loadview, viewSlot) -- pcall, since new files have no viewfile
 	end
 end
 
 local function keepFoldsAcrossSessions()
-	vim.api.nvim_create_augroup("origami-keep-folds", {})
+	local group = vim.api.nvim_create_augroup("origami-keep-folds", {})
 	vim.api.nvim_create_autocmd("BufWinLeave", {
 		pattern = "?*",
 		callback = function() remember("save") end,
-		group = "origami-keep-folds",
+		group = group,
 	})
 	vim.api.nvim_create_autocmd("BufWinEnter", {
 		pattern = "?*",
 		callback = function() remember("load") end,
-		group = "origami-keep-folds",
+		group = group,
 	})
 end
 
