@@ -33,7 +33,7 @@ end
 
 --------------------------------------------------------------------------------
 
-return function ()
+return function()
 	local group = vim.api.nvim_create_augroup("origami-keep-folds", {})
 
 	vim.api.nvim_create_autocmd("BufWinLeave", {
@@ -49,4 +49,3 @@ return function ()
 	})
 	remember("load") -- initialize in current buffer in case of lazy loading
 end
-
