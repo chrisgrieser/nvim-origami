@@ -31,8 +31,9 @@ FEATURES                                      *origami-nvim-origami--features*
 
 
   [!NOTE] This plugin only opens and closes folds. It does **not** provide a
-  `foldmethod`. You need to define a `foldmethod` either yourself or through a
-  folding provider like `nvim-ufo` for this plugin to work.
+  `foldmethod`. For this plugin to work, you either need to set a `foldmethod` on
+  your own, or use plugin providing folding information, such as nvim-ufo
+  <http://github.com/kevinhwang91/nvim-ufo>.
 
 INSTALLATION                              *origami-nvim-origami--installation*
 
@@ -40,20 +41,18 @@ INSTALLATION                              *origami-nvim-origami--installation*
     -- lazy.nvim
     {
         "chrisgrieser/nvim-origami",
-        event = "BufReadPost", -- later or on keypress would prevent saving folds
+        event = "VeryLazy",
         opts = {}, -- needed even when using default config
     },
     
     -- packer
     use {
         "chrisgrieser/nvim-origami",
-        config = function () 
-            require("origami").setup ({}) -- setup call needed
-        end,
+        config = function() require("origami").setup({}) end, -- setup call needed
     }
 <
 
-The `.setup()` call or `lazy`’s `opts` is required. Otherwise, the plugin
+The `.setup()` call (or `lazy`’s `opts`) is required. Otherwise, the plugin
 works out of the box without any need for further configuration.
 
 
@@ -65,13 +64,15 @@ CONFIGURATION                            *origami-nvim-origami--configuration*
         keepFoldsAcrossSessions = true,
         pauseFoldsOnSearch = true,
         setupFoldKeymaps = true,
+    
+        -- `h` key opens on first column, not at first non-blank character or before
         hOnlyOpensOnFirstColumn = false,
     }
 <
 
 
-  [!TIP] By setting |'startofline'| to `true`, bigger movements move you to the
-  start of the line, which works well with this plugin’s `h` key.
+  [!TIP] By setting |vim.opt.startofline| to `true`, bigger movements move you to
+  the start of the line, which works well with this plugin’s `h` key.
 If you use other keys than `h` and `l` for vertical movement, set
 `setupFoldKeymaps = false` and map the keys yourself:
 
