@@ -84,6 +84,7 @@ local function keepFoldsAcrossSessions()
 		callback = function() remember("load") end,
 		group = group,
 	})
+	remember("load") -- initialize in current buffer in case of lazy loading
 end
 
 --------------------------------------------------------------------------------

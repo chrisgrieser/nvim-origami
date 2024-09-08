@@ -26,7 +26,7 @@
 -- lazy.nvim
 {
 	"chrisgrieser/nvim-origami",
-	event = "BufReadPost", -- later or on keypress would prevent saving folds
+	event = "VeryLazy",
 	opts = {}, -- needed even when using default config
 },
 
@@ -39,8 +39,8 @@ use {
 }
 ```
 
-The `.setup()` call or `lazy`'s `opts` is required. Otherwise, the plugin works
-out of the box without any need for further configuration.
+The `.setup()` call (or `lazy`'s `opts`) is required. Otherwise, the plugin
+works out of the box without any need for further configuration.
 
 ## Configuration
 
