@@ -16,9 +16,10 @@
 - Remember folds across sessions (and as a side effect, also the cursor position).
 
 > [!NOTE]
-> This plugin only opens and closes folds. It does **not** provide a `foldmethod`.
-> You need to define a `foldmethod` either yourself or through a folding
-> provider like `nvim-ufo` for this plugin to work.
+> This plugin only opens and closes folds. It does **not** provide a
+> `foldmethod`. For this plugin to work, you either need to set a `foldmethod`
+> on your own, or use plugin providing folding information, such as
+> [nvim-ufo](http://github.com/kevinhwang91/nvim-ufo).
 
 ## Installation
 
@@ -33,9 +34,7 @@
 -- packer
 use {
 	"chrisgrieser/nvim-origami",
-	config = function () 
-		require("origami").setup ({}) -- setup call needed
-	end,
+	config = function() require("origami").setup({}) end, -- setup call needed
 }
 ```
 
@@ -50,15 +49,17 @@ require("origami").setup {
 	keepFoldsAcrossSessions = true,
 	pauseFoldsOnSearch = true,
 	setupFoldKeymaps = true,
+
+	-- `h` key opens on first column, not at first non-blank character or before
 	hOnlyOpensOnFirstColumn = false,
 }
 ```
 
 > [!TIP]
 > By setting
-> ['startofline'](https://neovim.io/doc/user/options.html#'startofline') to
-> `true`, bigger movements move you to the start of the line, which works well
-> with this plugin's `h` key.
+> [vim.opt.startofline](https://neovim.io/doc/user/options.html#'startofline')
+> to `true`, bigger movements move you to the start of the line, which works
+> well with this plugin's `h` key.
 
 If you use other keys than `h` and `l` for vertical movement, set
 `setupFoldKeymaps = false` and map the keys yourself:
@@ -99,6 +100,6 @@ style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
 border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 [^1]: Technically, unfolding with `l` is already a built-in vim feature when
-	`foldopen` includes `hor`. However, this plugin still sets up a `l` key
-	replicating that behavior, since the built-in version still moves you to one
-	character to the side, which can be considered a bit counterintuitive.
+	`vim.opt.foldopen` includes `hor`. However, this plugin still sets up a `l`
+	key replicating that behavior, since the built-in version still moves you to
+	one character to the side, which can be considered a bit counterintuitive.
