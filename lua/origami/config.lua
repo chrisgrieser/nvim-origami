@@ -14,8 +14,8 @@ M.config = defaultConfig
 function M.setup(userConfig)
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
-	if M.config.pauseFoldsOnSearch then require("origami.pause-folds-on-search")() end
-	if M.config.keepFoldsAcrossSessions then require("origami.keep-folds-across-sessions")() end
+	if M.config.pauseFoldsOnSearch then require("origami.pause-folds-on-search") end
+	if M.config.keepFoldsAcrossSessions then require("origami.keep-folds-across-sessions") end
 
 	if M.config.setupFoldKeymaps then
 		vim.keymap.set(

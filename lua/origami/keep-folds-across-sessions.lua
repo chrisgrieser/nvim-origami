@@ -33,19 +33,17 @@ end
 
 --------------------------------------------------------------------------------
 
-return function()
-	local group = vim.api.nvim_create_augroup("origami-keep-folds", {})
+local group = vim.api.nvim_create_augroup("origami-keep-folds", { clear = true })
 
-	vim.api.nvim_create_autocmd("BufWinLeave", {
-		pattern = "?*",
-		callback = function() remember("save") end,
-		group = group,
-	})
+vim.api.nvim_create_autocmd("BufWinLeave", {
+	pattern = "?*",
+	callback = function() remember("save") end,
+	group = group,
+})
 
-	vim.api.nvim_create_autocmd("BufWinEnter", {
-		pattern = "?*",
-		callback = function() remember("load") end,
-		group = group,
-	})
-	remember("load") -- initialize in current buffer in case of lazy loading
-end
+vim.api.nvim_create_autocmd("BufWinEnter", {
+	pattern = "?*",
+	callback = function() remember("load") end,
+	group = group,
+})
+remember("load") -- initialize in current buffer in case of lazy loading
