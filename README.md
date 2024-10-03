@@ -65,8 +65,8 @@ If you use other keys than `h` and `l` for vertical movement, set
 `setupFoldKeymaps = false` and map the keys yourself:
 
 ```lua
-vim.keymap.set("n", "<Left>", function require("origami").h() end)
-vim.keymap.set("n", "<Right>", function require("origami").l() end)
+vim.keymap.set("n", "<Left>", function() require("origami").h() end)
+vim.keymap.set("n", "<Right>", function() require("origami").l() end)
 ```
 
 ## Limitations
