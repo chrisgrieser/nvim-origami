@@ -24,7 +24,7 @@ local function remember(mode)
 		-- leads to unpredictable behavior
 		local viewOptsBefore = vim.opt.viewoptions:get()
 		vim.opt.viewoptions = { "cursor", "folds" }
-		vim.cmd.mkview(viewSlot)
+		pcall(vim.cmd.mkview, viewSlot) -- pcall for edge cases like #11
 		vim.opt.viewoptions = viewOptsBefore
 	else
 		pcall(vim.cmd.loadview, viewSlot) -- pcall, since new files have no viewfile
