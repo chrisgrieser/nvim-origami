@@ -1,6 +1,17 @@
 *nvim-origami.txt*           For Neovim          Last change: 2024 November 26
 
 ==============================================================================
+Table of Contents                             *nvim-origami-table-of-contents*
+
+1. nvim-origami                                   |nvim-origami-nvim-origami-|
+  - Features                             |nvim-origami-nvim-origami--features|
+  - Installation                     |nvim-origami-nvim-origami--installation|
+  - Configuration                   |nvim-origami-nvim-origami--configuration|
+  - Limitations                       |nvim-origami-nvim-origami--limitations|
+  - Other useful folding plugins|nvim-origami-nvim-origami--other-useful-folding-plugins|
+  - About the developer       |nvim-origami-nvim-origami--about-the-developer|
+
+==============================================================================
 1. nvim-origami                                   *nvim-origami-nvim-origami-*
 
 
