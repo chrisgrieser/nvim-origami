@@ -1,0 +1,27 @@
+name: Stale bot
+on:
+  schedule:
+    - cron: "18 04 * * 3" 
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close stale issues
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # DOCS https://github.com/actions/stale#all-options
+          days-before-stale: 180
+          days-before-close: 7
+          stale-issue-label: "Stale"
+          stale-issue-message: |
+            This issue has been automatically marked as stale.
+            **If this issue is still affecting you, please leave any comment**, for example "bump", and it will be kept open.
+          close-issue-message: |
+            This issue has been closed due to inactivity, and will not be monitored.
