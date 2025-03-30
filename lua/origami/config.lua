@@ -18,6 +18,12 @@ local defaultConfig = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,
 	},
+
+	-- incompatible with `nvim-ufo`
+	autoFold = {
+		enabled = false,
+		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+	},
 }
 M.config = defaultConfig
 
@@ -30,6 +36,7 @@ function M.setup(userConfig)
 	if M.config.keepFoldsAcrossSessions then require("origami.keepFoldsAcrossSessions") end
 	if M.config.pauseFoldsOnSearch then require("origami.pause-folds-on-search") end
 	if M.config.foldtextWithLineCount.enabled then require("origami.foldtext-with-linecount") end
+	if M.config.autoFold.enabled then require("origami.autofold-comments-imports") end
 
 	-- DEPRECATION (2025-03-30)
 	---@diagnostic disable: undefined-field

@@ -24,6 +24,8 @@ A collection of Quality-of-life features related to folding.
    `zc`, `zo`, and `za`: you can just use `h` and `l` to work with folds. (`h`
    still moves left if not at the beginning of a line, and `l` still moves right
    when on an unfolded line—this plugin basically "overloads" those keys.)
+5. Automatically fold comments and/or imports. Requires `vim.lsp.foldexpr` from
+   nvim 0.11. Not compatible with `nvim-ufo`.
 
 > [!NOTE]
 > This plugin does **not** provide a `foldmethod`. For this plugin to work, you
@@ -68,6 +70,12 @@ require("origami").setup {
 	foldKeymaps = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,
+	},
+
+	-- incompatible with `nvim-ufo`
+	autoFold = {
+		enabled = false,
+		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
 }
 ```
