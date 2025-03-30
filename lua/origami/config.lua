@@ -5,17 +5,22 @@ local M = {}
 local defaultConfig = {
 	keepFoldsAcrossSessions = true,
 	pauseFoldsOnSearch = true,
-	setupFoldKeymaps = true,
-
-	-- `h` key opens on first column, not at first non-blank character or before
-	hOnlyOpensOnFirstColumn = false,
-
+	foldKeymaps = {
+		setup = true, -- modifies `h` and `l`
+		hOnlyOpensOnFirstColumn = false,
+	},
 	foldtextWithLineCount = {
 		enabled = false,
 		template = "   %s lines", -- `%s` gets the number of folded lines
 	},
 }
 M.config = defaultConfig
+
+local function warn(msg)
+	vim.notify(msg, vim.log.levels.WARN, { title = "nvim-origami", ft = "markdown" })
+end
+
+--------------------------------------------------------------------------------
 
 ---@param userConfig? Origami.config
 function M.setup(userConfig)
@@ -25,7 +30,21 @@ function M.setup(userConfig)
 	if M.config.keepFoldsAcrossSessions then require("origami.keep-folds-across-sessions") end
 	if M.config.foldtextWithLineCount.enabled then require("origami.foldtext-with-linecount") end
 
+	-- DEPRECATION (2025-03-30)
+	---@diagnostic disable: undefined-field
 	if M.config.setupFoldKeymaps then
+		warn("nvim-origami config `setupFoldKeymaps` was moved to `foldKeymaps.setup`.")
+		M.config.foldKeymaps.setup = M.config.setupFoldKeymaps
+	end
+	if M.config.hOnlyOpensOnFirstColumn then
+		warn(
+			"nvim-origami config `hOnlyOpensOnFirstColumn` was moved to `foldKeymaps.hOnlyOpensOnFirstColumn`."
+		)
+		M.config.foldKeymaps.hOnlyOpensOnFirstColumn = M.config.hOnlyOpensOnFirstColumn
+	end
+	---@diagnostic enable: undefined-field
+
+	if M.config.foldKeymaps.setup then
 		vim.keymap.set(
 			"n",
 			"h",

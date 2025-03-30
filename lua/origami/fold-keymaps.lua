@@ -11,8 +11,8 @@ function M.h()
 		local col = vim.api.nvim_win_get_cursor(0)[2]
 		local textBeforeCursor = vim.api.nvim_get_current_line():sub(1, col)
 		local onIndentOrFirstNonBlank = textBeforeCursor:match("^%s*$")
-			and not config.hOnlyOpensOnFirstColumn
-		local firstChar = col == 0 and config.hOnlyOpensOnFirstColumn
+			and not config.foldKeymaps.hOnlyOpensOnFirstColumn
+		local firstChar = col == 0 and config.foldKeymaps.hOnlyOpensOnFirstColumn
 		if onIndentOrFirstNonBlank or firstChar then
 			local wasFolded = pcall(normal, "zc")
 			if not wasFolded then normal("h") end
