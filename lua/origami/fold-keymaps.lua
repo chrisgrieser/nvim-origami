@@ -3,11 +3,10 @@ local M = {}
 
 local function normal(cmdStr) vim.cmd.normal { cmdStr, bang = true } end
 
--- `h` closes folds when at the beginning of a line (similar to how `l` opens
--- with `vim.opt.foldopen="hor"`). Works well with `vim.opt.startofline = true`
+-- `h` closes folds when at the beginning of a line.
 function M.h()
 	local config = require("origami.config").config
-	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
+	local count = vim.v.count1 -- saved as `normal` affects it
 	for _ = 1, count, 1 do
 		local col = vim.api.nvim_win_get_cursor(0)[2]
 		local textBeforeCursor = vim.api.nvim_get_current_line():sub(1, col)
@@ -23,8 +22,7 @@ function M.h()
 	end
 end
 
--- ensure that `l` does not move to the right when opening a fold, otherwise
--- this is the same behavior as with foldopen="hor" already
+-- `l` on a folded line opens the fold.
 function M.l()
 	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
 	for _ = 1, count, 1 do
