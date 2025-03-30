@@ -10,26 +10,37 @@ A collection of Quality-of-life features related to folding.
 
 <img alt="Showcase" width=60% src="https://github.com/user-attachments/assets/bb13ee0f-7485-4e3f-b303-880b9d4d656e">
 
+## Table of Content
+
+<!-- toc -->
+
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Limitations](#limitations)
+- [Other useful folding plugins](#other-useful-folding-plugins)
+- [About the developer](#about-the-developer)
+
+<!-- tocstop -->
+
 ## Features
-1. Remember folds across sessions (and as a side effect, also the cursor
-   position). Requires `nvim-ufo`.
+1. Remember folds across sessions. `requires nvim-ufo`
 2. Pause folds while searching, restore folds when done with searching.
-   (Normally, folds are opened when you search for some text inside a fold, and
-   *stay* open afterward.)
-3. Add line count to the `foldtext`, while preserving the syntax highlighting of
-   the line (requires Treesitter parser for the language). Not compatible with
-   `nvim-ufo`.
-4. Use `h` at the first non-blank character of a line (or before) to fold. Use
-   `l` anywhere on a folded line to unfold it.[^1] This allows you to ditch
-   `zc`, `zo`, and `za`: you can just use `h` and `l` to work with folds. (`h`
-   still moves left if not at the beginning of a line, and `l` still moves right
-   when on an unfolded line—this plugin basically "overloads" those keys.)
+   (Normally, folds are opened when you search for text inside them, and *stay*
+   open afterward.)
+3. Add line count to the `foldtext`, preserving the syntax highlighting of the
+   line (requires Treesitter parser for the language). `incompatible with
+   nvim-ufo`
+4. Overload the `h` key which will fold a line when used one the first non-blank
+   character of (or before). And overload the `l` key, which will unfold a line
+   when used on a folded line.[^1] This allows you to ditch `zc`, `zo`, and
+   `za`, `h` and `l` are all you need.
 5. Automatically fold comments and/or imports. Requires `vim.lsp.foldexpr` from
-   nvim 0.11. Not compatible with `nvim-ufo`.
+   nvim 0.11. `incompatible with nvim-ufo`
 
 > [!NOTE]
 > This plugin does **not** provide a `foldmethod`. For this plugin to work, you
-> either need [to set one of on your
+> either have to [set one of on your
 > own](https://www.reddit.com/r/neovim/comments/1jmqd7t/sorry_ufo_these_7_lines_replaced_you/),
 > or use plugin providing folding information, such as
 > [nvim-ufo](http://github.com/kevinhwang91/nvim-ufo).
@@ -56,7 +67,7 @@ use {
 ```lua
 -- default settings
 require("origami").setup {
-	-- requires with `nvim-ufo`
+	-- requires `nvim-ufo`
 	keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
 
 	pauseFoldsOnSearch = true,
@@ -80,12 +91,6 @@ require("origami").setup {
 }
 ```
 
-> [!TIP]
-> By setting
-> [vim.opt.startofline](https://neovim.io/doc/user/options.html#'startofline')
-> to `true`, bigger movements move you to the start of the line, which works
-> well with this plugin's `h` key.
-
 If you use other keys than `h` and `l` for vertical movement, set
 `setupFoldKeymaps = false` and map the keys yourself:
 
@@ -98,7 +103,7 @@ vim.keymap.set("n", "<Right>", function() require("origami").l() end)
 [Many formatting plugins open all your
 folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/)
 and unfortunately, there is nothing this plugin can do about it. The only two
-tools that are able to preserve folds are the
+tools I am aware of that are able to preserve folds are the
 [efm-language-server](https://github.com/mattn/efm-langserver) and
 [conform.nvim](https://github.com/stevearc/conform.nvim).
 
