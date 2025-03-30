@@ -14,6 +14,8 @@
   (Normally, folds are opened when you search for some text inside a fold, and
   *stay* open afterward.)
 - Remember folds across sessions (and as a side effect, also the cursor position).
+- Add line count to the `foldtext`, while preserving the highlighting of the
+  line (requires Treesitter parser for the language).
 
 > [!NOTE]
 > This plugin only opens and closes folds. It does **not** provide a
@@ -38,9 +40,6 @@ use {
 }
 ```
 
-The `.setup()` call (or `lazy`'s `opts`) is required. Otherwise, the plugin
-works out of the box without any need for further configuration.
-
 ## Configuration
 
 ```lua
@@ -52,6 +51,11 @@ require("origami").setup {
 
 	-- `h` key opens on first column, not at first non-blank character or before
 	hOnlyOpensOnFirstColumn = false,
+	
+	foldtextWithLineCount = {
+		enabled = false,
+		template = "   %s lines", -- `%s` gets the number of folded lines
+	},
 }
 ```
 
@@ -81,7 +85,6 @@ tools that are able to preserve folds are the
 - [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
 - [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
 
-<!-- vale Google.FirstPerson = NO -->
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
 digital economy. For my PhD project, I investigate the governance of the app

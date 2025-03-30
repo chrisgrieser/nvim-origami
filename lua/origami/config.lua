@@ -9,6 +9,11 @@ local defaultConfig = {
 
 	-- `h` key opens on first column, not at first non-blank character or before
 	hOnlyOpensOnFirstColumn = false,
+
+	foldtextWithLineCount = {
+		enabled = false,
+		template = "   %s lines", -- `%s` gets the number of folded lines
+	},
 }
 M.config = defaultConfig
 
@@ -18,6 +23,7 @@ function M.setup(userConfig)
 
 	if M.config.pauseFoldsOnSearch then require("origami.pause-folds-on-search") end
 	if M.config.keepFoldsAcrossSessions then require("origami.keep-folds-across-sessions") end
+	if M.config.foldtextWithLineCount.enabled then require("origami.foldtext-with-linecount") end
 
 	if M.config.setupFoldKeymaps then
 		vim.keymap.set(
