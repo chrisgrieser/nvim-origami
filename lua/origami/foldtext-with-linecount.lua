@@ -1,3 +1,11 @@
+if package.loaded["ufo"] then
+	require("origami.utils").warn(
+		"nvim-origami's `foldtextWithLineCount` is not cannot be used at the same time as `nvim-ufo`."
+	)
+	return
+end
+--------------------------------------------------------------------------------
+
 -- based on https://www.reddit.com/r/neovim/comments/1fzn1zt/custom_fold_text_function_with_treesitter_syntax/
 function _G.Origami__FoldtextWithLineCount()
 	local start, end_ = vim.v.foldstart, vim.v.foldend

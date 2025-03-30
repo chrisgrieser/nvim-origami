@@ -54,12 +54,17 @@ use {
 ```lua
 -- default settings
 require("origami").setup {
-	keepFoldsAcrossSessions = true,
+	-- requires with `nvim-ufo`
+	keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
+
 	pauseFoldsOnSearch = true,
+
+	-- incompatible with `nvim-ufo`
 	foldtextWithLineCount = {
-		enabled = false,
+		enabled = package.loaded["ufo"] == nil,
 		template = "   %s lines", -- `%s` gets the number of folded lines
 	},
+
 	foldKeymaps = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,
