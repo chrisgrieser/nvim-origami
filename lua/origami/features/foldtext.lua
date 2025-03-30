@@ -10,8 +10,9 @@ end
 function _G.Origami__FoldtextWithLineCount()
 	local start, end_ = vim.v.foldstart, vim.v.foldend
 	local foldLine = vim.api.nvim_buf_get_lines(0, start - 1, start, false)[1]
-
 	local result = {}
+
+	-- foldline with syntax highlighting
 	local text, hl = "", nil
 	for i = 1, #foldLine do
 		local char = foldLine:sub(i, i)
@@ -29,6 +30,7 @@ function _G.Origami__FoldtextWithLineCount()
 	end
 	table.insert(result, { text, hl })
 
+	-- fold count
 	local template = require("origami.config").config.foldtextWithLineCount.template
 	local lineCountStr = template:format(end_ - start)
 	table.insert(result, { lineCountStr, "Comment" })
@@ -37,3 +39,4 @@ end
 
 --------------------------------------------------------------------------------
 vim.opt.foldtext = "v:lua.Origami__FoldtextWithLineCount()"
+vim.opt.fillchars:append { fold = " " } -- text after end of foldtext
