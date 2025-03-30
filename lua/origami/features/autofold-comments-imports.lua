@@ -1,6 +1,6 @@
 if package.loaded["ufo"] then
 	require("origami.utils").warn(
-		"nvim-origami's `foldtextWithLineCount` is not cannot be used at the same time as `nvim-ufo`."
+		"nvim-origami's `foldtextWithLineCount` cannot be used at the same time as `nvim-ufo`."
 	)
 	return
 end

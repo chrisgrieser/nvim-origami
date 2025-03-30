@@ -1,7 +1,6 @@
--- INFO This is just kept for reference, in case this is used for something in
--- the future
---------------------------------------------------------------------------------
+## How to get fold info from an LSP
 
+```lua
 local bufnr = 0
 
 local foldingLsp = vim.lsp.get_clients({ buffer = bufnr, method = "textDocument/foldingRange" })[1]
@@ -16,3 +15,4 @@ foldingLsp:request("textDocument/foldingRange", params, function(err, result, _)
 	end
 	vim.notify(vim.inspect(result))
 end)
+```

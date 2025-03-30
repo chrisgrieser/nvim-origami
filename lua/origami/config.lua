@@ -33,10 +33,10 @@ M.config = defaultConfig
 function M.setup(userConfig)
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
-	if M.config.keepFoldsAcrossSessions then require("origami.keepFoldsAcrossSessions") end
-	if M.config.pauseFoldsOnSearch then require("origami.pause-folds-on-search") end
-	if M.config.foldtextWithLineCount.enabled then require("origami.foldtext-with-linecount") end
-	if M.config.autoFold.enabled then require("origami.autofold-comments-imports") end
+	if M.config.keepFoldsAcrossSessions then require("origami.features.remember-folds") end
+	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
+	if M.config.foldtextWithLineCount.enabled then require("origami.features.foldtext") end
+	if M.config.autoFold.enabled then require("origami.features.autofold-comments-imports") end
 
 	-- DEPRECATION (2025-03-30)
 	---@diagnostic disable: undefined-field
@@ -57,13 +57,13 @@ function M.setup(userConfig)
 		vim.keymap.set(
 			"n",
 			"h",
-			function() require("origami.fold-keymaps").h() end,
+			function() require("origami.features.fold-keymaps").h() end,
 			{ desc = "Origami h" }
 		)
 		vim.keymap.set(
 			"n",
 			"l",
-			function() require("origami.fold-keymaps").l() end,
+			function() require("origami.features.fold-keymaps").l() end,
 			{ desc = "Origami l" }
 		)
 	end
