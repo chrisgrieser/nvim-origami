@@ -5,13 +5,13 @@ local M = {}
 local defaultConfig = {
 	keepFoldsAcrossSessions = true,
 	pauseFoldsOnSearch = true,
-	foldKeymaps = {
-		setup = true, -- modifies `h` and `l`
-		hOnlyOpensOnFirstColumn = false,
-	},
 	foldtextWithLineCount = {
 		enabled = false,
 		template = "   %s lines", -- `%s` gets the number of folded lines
+	},
+	foldKeymaps = {
+		setup = true, -- modifies `h` and `l`
+		hOnlyOpensOnFirstColumn = false,
 	},
 }
 M.config = defaultConfig

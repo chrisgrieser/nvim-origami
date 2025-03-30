@@ -1,26 +1,34 @@
 <!-- LTeX: enabled=false -->
-# nvim-origami 🐦
+# nvim-origami 🐦📄
 <!-- LTeX: enabled=true -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
+*Fold with relentless elegance.*
+
+A collection of Quality-of-life features related to folding.
+
+<img alt="Showcase" width=60% src="https://github.com/user-attachments/assets/bb13ee0f-7485-4e3f-b303-880b9d4d656e">
+
 ## Features
-- Use `h` at the first non-blank character of a line (or before) to fold. Use
-  `l` anywhere on a folded line to unfold it.[^1] This allows you to ditch `zc`,
-  `zo`, and `za` – you can just use `h` and `l` to work with folds. (`h` still
-  moves left if not at the beginning of a line, and `l` still moves right when
-  on an unfolded line – this plugin basically "overloads" those keys.)
-- Pause folds while searching, restore folds when done with searching.
-  (Normally, folds are opened when you search for some text inside a fold, and
-  *stay* open afterward.)
-- Remember folds across sessions (and as a side effect, also the cursor position).
-- Add line count to the `foldtext`, while preserving the highlighting of the
-  line (requires Treesitter parser for the language).
+1. Remember folds across sessions (and as a side effect, also the cursor
+   position).
+2. Pause folds while searching, restore folds when done with searching.
+   (Normally, folds are opened when you search for some text inside a fold, and
+   *stay* open afterward.)
+3. Add line count to the `foldtext`, while preserving the syntax highlighting of
+   the line (requires Treesitter parser for the language).
+4. Use `h` at the first non-blank character of a line (or before) to fold. Use
+   `l` anywhere on a folded line to unfold it.[^1] This allows you to ditch
+   `zc`, `zo`, and `za`: you can just use `h` and `l` to work with folds. (`h`
+   still moves left if not at the beginning of a line, and `l` still moves right
+   when on an unfolded line—this plugin basically "overloads" those keys.)
 
 > [!NOTE]
-> This plugin only opens and closes folds. It does **not** provide a
-> `foldmethod`. For this plugin to work, you either need to set a `foldmethod`
-> on your own, or use plugin providing folding information, such as
+> This plugin does **not** provide a `foldmethod`. For this plugin to work, you
+> either need [to set one of on your
+> own](https://www.reddit.com/r/neovim/comments/1jmqd7t/sorry_ufo_these_7_lines_replaced_you/),
+> or use plugin providing folding information, such as
 > [nvim-ufo](http://github.com/kevinhwang91/nvim-ufo).
 
 ## Installation
@@ -47,14 +55,13 @@ use {
 require("origami").setup {
 	keepFoldsAcrossSessions = true,
 	pauseFoldsOnSearch = true,
-	foldKeymaps = {
-		setup = true, -- modifies `h` and `l`
-		hOnlyOpensOnFirstColumn = false,
-	},
-	
 	foldtextWithLineCount = {
 		enabled = false,
 		template = "   %s lines", -- `%s` gets the number of folded lines
+	},
+	foldKeymaps = {
+		setup = true, -- modifies `h` and `l`
+		hOnlyOpensOnFirstColumn = false,
 	},
 }
 ```
