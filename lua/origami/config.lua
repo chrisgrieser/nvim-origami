@@ -26,9 +26,23 @@ end
 function M.setup(userConfig)
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
+	if M.config.keepFoldsAcrossSessions then
+		if not package.loaded["ufo"] then
+			warn("nvim-origami's `keepFoldsAcrossSessions` requires `nvim-ufo`.")
+			return
+		end
+		require("origami.keepFoldsAcrossSessions")
+	end
 	if M.config.pauseFoldsOnSearch then require("origami.pause-folds-on-search") end
-	if M.config.keepFoldsAcrossSessions then require("origami.keep-folds-across-sessions") end
-	if M.config.foldtextWithLineCount.enabled then require("origami.foldtext-with-linecount") end
+	if M.config.foldtextWithLineCount.enabled then
+		if package.loaded["ufo"] then
+			warn(
+				"nvim-origami's `foldtextWithLineCount` is not cannot be used at the same time as `nvim-ufo`."
+			)
+			return
+		end
+		require("origami.foldtext-with-linecount")
+	end
 
 	-- DEPRECATION (2025-03-30)
 	---@diagnostic disable: undefined-field

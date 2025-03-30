@@ -12,12 +12,13 @@ A collection of Quality-of-life features related to folding.
 
 ## Features
 1. Remember folds across sessions (and as a side effect, also the cursor
-   position).
+   position). Requires `nvim-ufo`.
 2. Pause folds while searching, restore folds when done with searching.
    (Normally, folds are opened when you search for some text inside a fold, and
    *stay* open afterward.)
 3. Add line count to the `foldtext`, while preserving the syntax highlighting of
-   the line (requires Treesitter parser for the language).
+   the line (requires Treesitter parser for the language). Not compatible with
+   `nvim-ufo`.
 4. Use `h` at the first non-blank character of a line (or before) to fold. Use
    `l` anywhere on a folded line to unfold it.[^1] This allows you to ditch
    `zc`, `zo`, and `za`: you can just use `h` and `l` to work with folds. (`h`
