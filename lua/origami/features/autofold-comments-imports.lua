@@ -19,6 +19,7 @@ vim.api.nvim_create_autocmd("LspNotify", {
 			for _, kind in ipairs(kinds) do
 				vim.lsp.foldclose(kind, vim.fn.bufwinid(ctx.buf))
 			end
+			vim.cmd.normal { "zv", bang = true } -- unfold under cursor
 		end, 1)
 	end,
 })
