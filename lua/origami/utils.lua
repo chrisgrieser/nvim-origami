@@ -2,7 +2,7 @@ local M = {}
 --------------------------------------------------------------------------------
 
 ---@param msg string
-local function warn(msg)
+function M.warn(msg)
 	vim.notify(msg, vim.log.levels.WARN, { title = "nvim-origami", ft = "markdown" })
 end
 
