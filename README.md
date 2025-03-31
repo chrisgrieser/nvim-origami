@@ -19,6 +19,7 @@ A collection of Quality-of-life features related to folding.
 - [Configuration](#configuration)
 - [Limitations](#limitations)
 - [Other useful folding plugins](#other-useful-folding-plugins)
+- [Credits](#credits)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
@@ -110,6 +111,10 @@ tools I am aware of that are able to preserve folds are the
 ## Other useful folding plugins
 - [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
 - [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
+
+## Credits
+- [@magnusriga](https://github.com/neovim/neovim/pull/27217#issuecomment-2631614344)
+  for a more performant implementation of fold text with highlighting.
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
