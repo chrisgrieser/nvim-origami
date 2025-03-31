@@ -12,6 +12,7 @@ local defaultConfig = {
 	foldtextWithLineCount = {
 		enabled = package.loaded["ufo"] == nil,
 		template = "   %s lines", -- `%s` gets the number of folded lines
+		hlgroupForCount = "Comment",
 	},
 
 	foldKeymaps = {
@@ -19,7 +20,7 @@ local defaultConfig = {
 		hOnlyOpensOnFirstColumn = false,
 	},
 
-	-- incompatible with `nvim-ufo`
+	-- redundant with `nvim-ufo`
 	autoFold = {
 		enabled = false,
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]

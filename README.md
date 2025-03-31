@@ -68,7 +68,7 @@ use {
 ```lua
 -- default settings
 require("origami").setup {
-	-- requires `nvim-ufo`
+	-- requires with `nvim-ufo`
 	keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
 
 	pauseFoldsOnSearch = true,
@@ -77,6 +77,7 @@ require("origami").setup {
 	foldtextWithLineCount = {
 		enabled = package.loaded["ufo"] == nil,
 		template = "   %s lines", -- `%s` gets the number of folded lines
+		hlgroupForCount = "Comment",
 	},
 
 	foldKeymaps = {
@@ -84,7 +85,7 @@ require("origami").setup {
 		hOnlyOpensOnFirstColumn = false,
 	},
 
-	-- incompatible with `nvim-ufo`
+	-- redundant with `nvim-ufo`
 	autoFold = {
 		enabled = false,
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]

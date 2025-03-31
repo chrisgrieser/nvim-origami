@@ -83,7 +83,7 @@ function _G.Origami__FoldtextWithLineCount()
 	local config = require("origami.config").config.foldtextWithLineCount
 	local lineCountText = config.template:format(vim.v.foldend - vim.v.foldstart)
 
-	table.insert(foldtextChunks, { lineCountText, "Comment" })
+	table.insert(foldtextChunks, { lineCountText, config.hlgroupForCount })
 	return foldtextChunks
 end
 
