@@ -2,6 +2,18 @@ if not package.loaded["ufo"] then
 	require("origami.utils").warn("nvim-origami's `keepFoldsAcrossSessions` requires `nvim-ufo`.")
 	return
 end
+--[[ INFO
+`nvim-ufo` uses some hack to save the fold information in form of manual folds,
+thus storing fold information in viewfiles saves by `mkview`. Using the LSP
+foldexpression without ufo results in those information not being stored, so
+that folds are only available after the LSP has finished attaching to the
+buffer, which is too late for `loadview`. (`loadview` would only work 2s after
+opening a file, resulting in too glitchy behavior.) 
+
+Attempts to manually insert fold information retrieved from an LSP into the
+viewfile proved not to work reliably. Thus, this implementation of fold-saving
+pretty much only works with `nvim-ufo`.
+--]]
 --------------------------------------------------------------------------------
 
 local VIEW_SLOT = 1

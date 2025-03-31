@@ -6,11 +6,14 @@ if package.loaded["ufo"] then
 end
 --------------------------------------------------------------------------------
 
--- Credits for this function go to @magnusriga ([1]). There is also the approach
--- using `vim.treesitter.get_captures_at_pos`[2], but it becomes slow with only
--- a few folds already.
+-- Credits for this function go to @magnusriga ([1], similar: [3]). As opposed
+-- to other implementations that iterate every character of a folded line(e.g.,
+-- [2]), this approach only iterates captures, making it more performant. (The
+-- performance difference is already noticeable as soon as there are many closed
+-- folds in a file.)
 -- [1]: https://github.com/neovim/neovim/pull/27217#issuecomment-2631614344
 -- [2]: https://www.reddit.com/r/neovim/comments/1fzn1zt/custom_fold_text_function_with_treesitter_syntax/
+-- [3]: https://github.com/Wansmer/nvim-config/blob/6967fe34695972441d63173d5458a4be74a4ba42/lua/modules/foldtext.lua
 ---@return { text: string, hlgroup: string }[]|string
 local function foldtextWithTreesitterHighlights()
 	local foldStart = vim.v.foldstart
