@@ -3,7 +3,7 @@
 ```lua
 local bufnr = 0
 
-local foldingLsp = vim.lsp.get_clients({ buffer = bufnr, method = "textDocument/foldingRange" })[1]
+local foldingLsp = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/foldingRange" })[1]
 if not foldingLsp then return end
 
 local params = { textDocument = { uri = vim.uri_from_bufnr(bufnr) } }
