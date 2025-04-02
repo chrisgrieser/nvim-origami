@@ -20,8 +20,8 @@ local function foldtextWithTreesitterHighlights()
 	local foldLine = vim.api.nvim_buf_get_lines(0, foldStart - 1, foldStart, false)[1]
 
 	local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
-	local parser = vim.treesitter.get_parser(0, lang)
-	if not parser then return vim.fn.foldtext() end -- fallback
+	local ok, parser = pcall(vim.treesitter.get_parser, 0, lang)
+	if not ok or not parser then return vim.fn.foldtext() end -- fallback
 
 	-- Get `highlights` query for current buffer parser, as table from file,
 	-- which gives information on highlights of tree nodes produced by parser.
