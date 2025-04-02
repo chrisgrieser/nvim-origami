@@ -17,8 +17,9 @@ A collection of Quality-of-life features related to folding.
 - [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Limitations](#limitations)
-- [Other useful folding plugins](#other-useful-folding-plugins)
+- [FAQ](#faq)
+	* [Folds are still opened](#folds-are-still-opened)
+	* [Debug folding issues](#debug-folding-issues)
 - [Credits](#credits)
 - [About the developer](#about-the-developer)
 
@@ -101,7 +102,9 @@ vim.keymap.set("n", "<Left>", function() require("origami").h() end)
 vim.keymap.set("n", "<Right>", function() require("origami").l() end)
 ```
 
-## Limitations
+## FAQ
+
+### Folds are still opened
 [Many formatting plugins open all your
 folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/)
 and unfortunately, there is nothing this plugin can do about it. The only two
@@ -109,9 +112,13 @@ tools I am aware of that are able to preserve folds are the
 [efm-language-server](https://github.com/mattn/efm-langserver) and
 [conform.nvim](https://github.com/stevearc/conform.nvim).
 
-## Other useful folding plugins
-- [fold-cycle.nvim](https://github.com/jghauser/fold-cycle.nvim)
-- [nvim-ufo](https://github.com/kevinhwang91/nvim-ufo)
+### Debug folding issues
+
+```lua
+-- Folds provided by the LSP
+require("origami").inspectLspFolds("special") -- comment & import only
+require("origami").inspectLspFolds("all")
+```
 
 ## Credits
 - [@magnusriga](https://github.com/neovim/neovim/pull/27217#issuecomment-2631614344)
