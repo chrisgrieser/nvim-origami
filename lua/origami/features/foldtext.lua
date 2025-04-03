@@ -17,7 +17,7 @@ local M = {}
 -- [3]: https://github.com/Wansmer/nvim-config/blob/6967fe34695972441d63173d5458a4be74a4ba42/lua/modules/foldtext.lua
 ---@param foldStart number
 ---@return { text: string, hlgroup: string }[]|string
-function M.foldtextWithTreesitterHighlights(foldStart)
+function M.foldtextWithTSHighlights(foldStart)
 	local foldLine = vim.api.nvim_buf_get_lines(0, foldStart - 1, foldStart, false)[1]
 
 	local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
@@ -44,6 +44,7 @@ function M.foldtextWithTreesitterHighlights(foldStart)
 	for id, node, _ in query:iter_captures(tree:root(), 0, foldStart - 1, foldStart) do
 		local captureName = query.captures[id]
 		local text = vim.treesitter.get_node_text(node, 0)
+		text = text:gsub("[\n\r].*", "") -- account for multiline captures
 		local _, startCol, _, endCol = node:range()
 
 		-- include whitespace (part between captured TSNodes) with arbitrary hlgroup
@@ -80,7 +81,7 @@ function M.foldtextWithTreesitterHighlights(foldStart)
 end
 
 function _G.Origami__FoldtextWithLineCount()
-	local foldtextChunks = M.foldtextWithTreesitterHighlights(vim.v.foldstart)
+	local foldtextChunks = M.foldtextWithTSHighlights(vim.v.foldstart)
 	-- GUARD `vim.fn.foldtext()` fallback already has count
 	if type(foldtextChunks) == "string" then return foldtextChunks end
 
