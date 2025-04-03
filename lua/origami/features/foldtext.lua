@@ -5,6 +5,7 @@ if package.loaded["ufo"] then
 	return
 end
 --------------------------------------------------------------------------------
+local M = {}
 
 -- Credits for this function go to @magnusriga ([1], similar: [3]). As opposed
 -- to other implementations that iterate every character of a folded line(e.g.,
@@ -14,9 +15,9 @@ end
 -- [1]: https://github.com/neovim/neovim/pull/27217#issuecomment-2631614344
 -- [2]: https://www.reddit.com/r/neovim/comments/1fzn1zt/custom_fold_text_function_with_treesitter_syntax/
 -- [3]: https://github.com/Wansmer/nvim-config/blob/6967fe34695972441d63173d5458a4be74a4ba42/lua/modules/foldtext.lua
+---@param foldStart number
 ---@return { text: string, hlgroup: string }[]|string
-local function foldtextWithTreesitterHighlights()
-	local foldStart = vim.v.foldstart
+function M.foldtextWithTreesitterHighlights(foldStart)
 	local foldLine = vim.api.nvim_buf_get_lines(0, foldStart - 1, foldStart, false)[1]
 
 	local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
@@ -79,7 +80,7 @@ local function foldtextWithTreesitterHighlights()
 end
 
 function _G.Origami__FoldtextWithLineCount()
-	local foldtextChunks = foldtextWithTreesitterHighlights()
+	local foldtextChunks = M.foldtextWithTreesitterHighlights(vim.v.foldstart)
 	-- GUARD `vim.fn.foldtext()` fallback already has count
 	if type(foldtextChunks) == "string" then return foldtextChunks end
 
@@ -93,3 +94,6 @@ end
 --------------------------------------------------------------------------------
 vim.opt.foldtext = "v:lua.Origami__FoldtextWithLineCount()"
 vim.opt.fillchars:append { fold = " " } -- text after end of foldtext
+
+--------------------------------------------------------------------------------
+return M
