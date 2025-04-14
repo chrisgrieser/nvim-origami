@@ -12,7 +12,10 @@ vim.api.nvim_create_autocmd("LspNotify", {
 	group = vim.api.nvim_create_augroup("origami-autofolds", { clear = true }),
 	callback = function(ctx)
 		if ctx.data.method ~= "textDocument/didOpen" then return end
-		local client = assert(vim.lsp.get_client_by_id(ctx.data.client_id))
+		-- not using `lsp.get_clients_by_id` to additionally check for the correct
+		-- buffer (can change in quick events)
+		local client = vim.lsp.get_clients({ bufnr = ctx.buf, id = ctx.data.client_id })[1]
+		if not client then return end
 		if not client:supports_method("textDocument/foldingRange") then return end
 
 		local kinds = require("origami.config").config.autoFold.kinds
