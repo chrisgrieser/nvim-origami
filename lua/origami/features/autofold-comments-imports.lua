@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd("LspNotify", {
 
 		local kinds = require("origami.config").config.autoFold.kinds
 		local winid = vim.fn.bufwinid(ctx.buf)
-		if not winid or vim.api.nvim_win_is_valid(winid) then return end
+		if not winid or not vim.api.nvim_win_is_valid(winid) then return end
 		for _, kind in ipairs(kinds) do
 			pcall(vim.lsp.foldclose, kind, winid)
 		end
