@@ -3,28 +3,27 @@ local M = {}
 
 ---@class Origami.config
 local defaultConfig = {
-	-- requires with `nvim-ufo`
-	keepFoldsAcrossSessions = package.loaded["ufo"] ~= nil,
-
-	pauseFoldsOnSearch = true,
-
-	-- incompatible with `nvim-ufo`
+	-- features incompatible with `nvim-ufo`
+	useLspFoldsWithTreesitterFallback = not package.loaded["ufo"],
+	autoFold = {
+		enabled = false,
+		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+	},
 	foldtextWithLineCount = {
-		enabled = package.loaded["ufo"] == nil,
+		enabled = not package.loaded["ufo"],
 		template = "   %s lines", -- `%s` gets the number of folded lines
 		hlgroupForCount = "Comment",
 	},
 
+	-- can be used with or without `nvim-ufo`
+	pauseFoldsOnSearch = true,
 	foldKeymaps = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,
 	},
 
-	-- redundant with `nvim-ufo`
-	autoFold = {
-		enabled = false,
-		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
-	},
+	-- features requiring `nvim-ufo`
+	keepFoldsAcrossSessions = package.loaded["ufo"],
 }
 M.config = defaultConfig
 
@@ -38,6 +37,9 @@ function M.setup(userConfig)
 	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
 	if M.config.foldtextWithLineCount.enabled then require("origami.features.foldtext") end
 	if M.config.autoFold.enabled then require("origami.features.autofold-comments-imports") end
+	if M.config.useLspFoldsWithTreesitterFallback then
+		require("origami.features.lsp-and-treesitter-foldexpr")
+	end
 
 	-- DEPRECATION (2025-03-30)
 	---@diagnostic disable: undefined-field
