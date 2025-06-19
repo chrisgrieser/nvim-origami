@@ -52,12 +52,12 @@ local function renderFoldedSegments(win, buf, foldstart)
 	local foldend = vim.fn.foldclosedend(foldstart)
 
 	local lineCountText = config.foldtext.lineCount.template:format(foldend - foldstart)
-	local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
 	local virtText = {
 		{ lineCountText, { config.foldtext.lineCount.hlgroup } },
 		{ " " },
-		diagnostics and unpack(diagnostics) or nil,
 	}
+	local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
+	if diagnostics then vim.list_extend(virtText, diagnostics) end
 
 	local line = vim.api.nvim_buf_get_lines(buf, foldstart - 1, foldstart, false)[1]
 	local wininfo = vim.fn.getwininfo(win)[1]
