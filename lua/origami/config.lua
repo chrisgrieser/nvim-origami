@@ -1,4 +1,5 @@
 local M = {}
+local warn = require("origami.utils").warn
 --------------------------------------------------------------------------------
 
 ---@class Origami.config
@@ -31,8 +32,6 @@ M.config = defaultConfig
 
 ---@param userConfig? Origami.config
 function M.setup(userConfig)
-	local warn = require("origami.utils")
-
 	-- GUARD
 	if M.setupWasAlreadyCalled then
 		-- note all modules of nvim-origami support changing the config at runtime
@@ -43,13 +42,7 @@ function M.setup(userConfig)
 
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
-	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
-	if M.config.foldtext.enabled then require("origami.features.foldtext") end
-	if M.config.autoFold.enabled then require("origami.features.autofold-comments-imports") end
-	if M.config.useLspFoldsWithTreesitterFallback then
-		require("origami.features.lsp-and-treesitter-foldexpr")
-	end
-
+	-----------------------------------------------------------------------------
 	---@diagnostic disable: undefined-field
 	-- DEPRECATION (2025-03-30)
 	if M.config.setupFoldKeymaps then
@@ -75,20 +68,19 @@ function M.setup(userConfig)
 		)
 	end
 	---@diagnostic enable: undefined-field
+	-----------------------------------------------------------------------------
 
+	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
+	if M.config.foldtext.enabled then require("origami.features.foldtext") end
+	if M.config.autoFold.enabled then require("origami.features.autofold-comments-imports") end
+	if M.config.useLspFoldsWithTreesitterFallback then
+		require("origami.features.lsp-and-treesitter-foldexpr")
+	end
 	if M.config.foldKeymaps.setup then
-		vim.keymap.set(
-			"n",
-			"h",
-			function() require("origami.features.fold-keymaps").h() end,
-			{ desc = "Origami h" }
-		)
-		vim.keymap.set(
-			"n",
-			"l",
-			function() require("origami.features.fold-keymaps").l() end,
-			{ desc = "Origami l" }
-		)
+		-- stylua: ignore
+		vim.keymap.set("n", "h", function() require("origami.features.fold-keymaps").h() end, { desc = "Origami h" })
+		-- stylua: ignore
+		vim.keymap.set("n", "l", function() require("origami.features.fold-keymaps").l() end, { desc = "Origami l" })
 	end
 end
 
