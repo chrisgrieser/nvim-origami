@@ -9,10 +9,16 @@ local defaultConfig = {
 		enabled = false,
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
-	foldtextWithLineCount = {
+	foldtext = {
 		enabled = not package.loaded["ufo"],
-		template = "   %s lines", -- `%s` gets the number of folded lines
-		hlgroupForCount = "Comment",
+		lineCount = {
+			template = "   %d lines", -- `%d` gets the number of folded lines
+			hlgroup = "Comment",
+		},
+		diagnostics = {
+			enabled = true,
+			-- uses hlgroups and icons from `vim.diagnostic.config().signs`
+		},
 	},
 
 	-- can be used with or without `nvim-ufo`
@@ -22,7 +28,7 @@ local defaultConfig = {
 		hOnlyOpensOnFirstColumn = false,
 	},
 
-	-- features requiring `nvim-ufo`
+	-- feature requiring `nvim-ufo`
 	keepFoldsAcrossSessions = package.loaded["ufo"],
 }
 M.config = defaultConfig
@@ -35,14 +41,14 @@ function M.setup(userConfig)
 
 	if M.config.keepFoldsAcrossSessions then require("origami.features.remember-folds") end
 	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
-	if M.config.foldtextWithLineCount.enabled then require("origami.features.foldtext") end
+	if M.config.foldtext.enabled then require("origami.features.foldtext") end
 	if M.config.autoFold.enabled then require("origami.features.autofold-comments-imports") end
 	if M.config.useLspFoldsWithTreesitterFallback then
 		require("origami.features.lsp-and-treesitter-foldexpr")
 	end
 
-	-- DEPRECATION (2025-03-30)
 	---@diagnostic disable: undefined-field
+	-- DEPRECATION (2025-03-30)
 	local u = require("origami.utils")
 	if M.config.setupFoldKeymaps then
 		u.warn("nvim-origami config `setupFoldKeymaps` was moved to `foldKeymaps.setup`.")
@@ -54,6 +60,14 @@ function M.setup(userConfig)
 		)
 		M.config.foldKeymaps.hOnlyOpensOnFirstColumn = M.config.hOnlyOpensOnFirstColumn
 	end
+
+	-- DEPRECATION (2025-06-19)
+	if M.config.foldtextWithLineCount then
+		u.warn(
+			"nvim-origami config `foldtextWithLineCount` is outdated. Use `foldtext`, but and note its changes in the README."
+		)
+	end
+
 	---@diagnostic enable: undefined-field
 
 	if M.config.foldKeymaps.setup then

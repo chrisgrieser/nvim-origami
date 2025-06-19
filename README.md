@@ -29,22 +29,23 @@ related to folding.
 
 | opts                                 | description                                                                                                                                                                                                                                                             | requirements                                                                                                              |
 | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `.useLspFoldsWithTreesitterFallback` | Use the LSP to provide folds, with Treesitter as fallback if the LSP does not provide folding info.                                                                                                                                                                     | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)<br>2. Nvim 0.11                                          |
+| `.useLspFoldsWithTreesitterFallback` | Use the LSP to provide folds, with Treesitter as fallback if the LSP does not provide folding info.                                                                                                                                                                     | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)<br>2. nvim 0.11                                          |
 | `.foldKeymaps`                       | Overload the `h` key which will fold a line when used one the first non-blank character of (or before). And overload the `l` key, which will unfold a line when used on a folded line.[^1] This allows you to ditch `zc`, `zo`, and `za`, `h` and `l` are all you need. | —                                                                                                                         |
 | `.autoFold`                          | Automatically fold comments and/or imports when opening a file.                                                                                                                                                                                                         | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)<br>2. nvim 0.11<br>3. LSP that provides fold information |
-| `.foldtextWithLineCount`             | Add line count to the `foldtext`, preserving the syntax highlighting of the line.                                                                                                                                                                                       | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)<br>2. Treesitter parser for the language.                |
+| `.foldtext`                          | Add line count and diagnostics to the `foldtext`, preserving the syntax highlighting of the line.                                                                                                                                                                       | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)                                                          |
 | `.pauseFoldsOnSearch`                | Pause folds while searching, restore folds when done with searching. (Normally, folds are opened when you search for text inside them, and *stay* open afterward.)                                                                                                      | —                                                                                                                         |
 | `.keepFoldsAcrossSessions`           | Remember folds across sessions.                                                                                                                                                                                                                                         | `nvim-ufo`                                                                                                                |
 
 <!-- LTeX: enabled=true -->
 
-The requirements may look detailed, but the plugin works mostly out-of-the-box.
-If you are on nvim 0.11+ and do not have `nvim-ufo` installed, all features
-except `autoFold` and `keepFoldsAcrossSessions` are enabled by default and work
-without any need for additional configuration.
+The requirements may look detailed, but **the plugin works mostly
+out-of-the-box**. If you are on nvim 0.11+ and do not have `nvim-ufo` installed,
+all features except `autoFold` and `keepFoldsAcrossSessions` are enabled by
+default and work without any need for additional configuration.
 
-With nvim 0.11+, `nvim-origami` is able to replace most of `nvim-ufo`'s feature
-set in a much more lightweight way.
+With nvim 0.11+, `nvim-origami` is able to replace most of the `nvim-ufo` feature
+set in a much more lightweight way, and even adds some features that `nvim-ufo`
+does not possess.
 
 ## Installation
 
@@ -74,10 +75,16 @@ require("origami").setup {
 		enabled = false,
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
-	foldtextWithLineCount = {
+	foldtext = {
 		enabled = not package.loaded["ufo"],
-		template = "   %s lines", -- `%s` gets the number of folded lines
-		hlgroupForCount = "Comment",
+		lineCount = {
+			template = "   %d lines", -- `%d` gets the number of folded lines
+			hlgroup = "Comment",
+		},
+		diagnostics = {
+			enabled = true,
+			-- uses hlgroups and icons from `vim.diagnostic.config().signs`
+		},
 	},
 
 	-- can be used with or without `nvim-ufo`
@@ -87,7 +94,7 @@ require("origami").setup {
 		hOnlyOpensOnFirstColumn = false,
 	},
 
-	-- features requiring `nvim-ufo`
+	-- feature requiring `nvim-ufo`
 	keepFoldsAcrossSessions = package.loaded["ufo"],
 }
 ```
@@ -119,8 +126,8 @@ require("origami").inspectLspFolds("all")
 ```
 
 ## Credits
-- [@magnusriga](https://github.com/neovim/neovim/pull/27217#issuecomment-2631614344)
-  for the more performant implementation of fold text with highlighting.
+- [u/marjrohn](https://www.reddit.com/r/neovim/comments/1le6l6x/add_decoration_to_the_folded_lines/)
+  for a better approach for styling foldtext.
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
