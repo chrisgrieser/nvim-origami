@@ -1,12 +1,3 @@
-if package.loaded["ufo"] then
-	require("origami.utils").warn(
-		"nvim-origami's `useLspFoldsWithTreesitterFallback` cannot be used at the same time as `nvim-ufo`."
-	)
-	return
-end
-if not vim.lsp.foldexpr then return end -- only added in nvim 0.11
---------------------------------------------------------------------------------
-
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- fallback
 

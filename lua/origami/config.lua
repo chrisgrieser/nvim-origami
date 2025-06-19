@@ -3,14 +3,13 @@ local M = {}
 
 ---@class Origami.config
 local defaultConfig = {
-	-- features incompatible with `nvim-ufo`
-	useLspFoldsWithTreesitterFallback = not package.loaded["ufo"],
+	useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
 	autoFold = {
 		enabled = false,
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
 	foldtext = {
-		enabled = not package.loaded["ufo"],
+		enabled = true,
 		lineCount = {
 			template = "   %d lines", -- `%d` gets the number of folded lines
 			hlgroup = "Comment",
@@ -20,16 +19,11 @@ local defaultConfig = {
 			-- uses hlgroups and icons from `vim.diagnostic.config().signs`
 		},
 	},
-
-	-- can be used with or without `nvim-ufo`
 	pauseFoldsOnSearch = true,
 	foldKeymaps = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,
 	},
-
-	-- feature requiring `nvim-ufo`
-	keepFoldsAcrossSessions = package.loaded["ufo"],
 }
 M.config = defaultConfig
 
@@ -39,7 +33,6 @@ M.config = defaultConfig
 function M.setup(userConfig)
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
-	if M.config.keepFoldsAcrossSessions then require("origami.features.remember-folds") end
 	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
 	if M.config.foldtext.enabled then require("origami.features.foldtext") end
 	if M.config.autoFold.enabled then require("origami.features.autofold-comments-imports") end
@@ -49,13 +42,13 @@ function M.setup(userConfig)
 
 	---@diagnostic disable: undefined-field
 	-- DEPRECATION (2025-03-30)
-	local u = require("origami.utils")
+	local warn = require("origami.utils")
 	if M.config.setupFoldKeymaps then
-		u.warn("nvim-origami config `setupFoldKeymaps` was moved to `foldKeymaps.setup`.")
+		warn("nvim-origami config `setupFoldKeymaps` was moved to `foldKeymaps.setup`.")
 		M.config.foldKeymaps.setup = M.config.setupFoldKeymaps
 	end
 	if M.config.hOnlyOpensOnFirstColumn then
-		u.warn(
+		warn(
 			"nvim-origami config `hOnlyOpensOnFirstColumn` was moved to `foldKeymaps.hOnlyOpensOnFirstColumn`."
 		)
 		M.config.foldKeymaps.hOnlyOpensOnFirstColumn = M.config.hOnlyOpensOnFirstColumn
@@ -63,8 +56,13 @@ function M.setup(userConfig)
 
 	-- DEPRECATION (2025-06-19)
 	if M.config.foldtextWithLineCount then
-		u.warn(
+		warn(
 			"nvim-origami config `foldtextWithLineCount` is outdated. Use `foldtext`, but and note its changes in the README."
+		)
+	end
+	if M.config.keepFoldsAcrossSessions then
+		warn(
+			"nvim-origami config `keepFoldsAcrossSessions` is deprecated. Pin tag `v1.9` if you want to keep on using it."
 		)
 	end
 

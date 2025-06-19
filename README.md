@@ -13,41 +13,50 @@ related to folding.
 
 <!-- toc -->
 
+- [Breaking changes in v2.0](#breaking-changes-in-v20)
 - [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [FAQ](#faq)
-	* [Folds are still opened](#folds-are-still-opened)
+	* [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
 	* [Debug folding issues](#debug-folding-issues)
 - [Credits](#credits)
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
 
+## Breaking changes in v2.0
+- nvim 0.11 is now required.
+- `nvim-ufo` is now incompatible with this plugin (most of its features are now
+offered by `nvim-origami` in a more lightweight way).
+- Saving folds across sessions is no longer supported by this plugin.
+- If you do not like the changes from v2.0, you can pin `nvim-origami` to `tag =
+v1.9`.
+
 ## Features
-<!-- LTeX: enabled=false -->
+- Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
+not provide folding info.
+- **Overload `h` and `l` as fold keymaps**: Overloads the `h` key which will
+fold a line when used on the first non-blank character of (or before). And
+overloads the `l` key, which will unfold a line when used on a folded line. This
+allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
+- **Auto-fold**: Automatically fold comments and/or imports when opening a file
+(when using an LSP as folding provider).
+- **Fold-text decorations**: Add line count and diagnostics to the `foldtext`,
+preserving the syntax highlighting of the line.
+- **Pause folds while searching**, restore folds when done with searching.
+(Normally, folds are opened when you search for text inside them, and stay open
+afterward.)
 
-| opts                                 | description                                                                                                                                                                                                                                                             | requirements                                                                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `.useLspFoldsWithTreesitterFallback` | Use the LSP to provide folds, with Treesitter as fallback if the LSP does not provide folding info.                                                                                                                                                                     | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)<br>2. nvim 0.11                                          |
-| `.foldKeymaps`                       | Overload the `h` key which will fold a line when used one the first non-blank character of (or before). And overload the `l` key, which will unfold a line when used on a folded line.[^1] This allows you to ditch `zc`, `zo`, and `za`, `h` and `l` are all you need. | —                                                                                                                         |
-| `.autoFold`                          | Automatically fold comments and/or imports when opening a file.                                                                                                                                                                                                         | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)<br>2. nvim 0.11<br>3. LSP that provides fold information |
-| `.foldtext`                          | Add line count and diagnostics to the `foldtext`, preserving the syntax highlighting of the line.                                                                                                                                                                       | 1. *not* using `nvim-ufo` (feature is redundant with `nvim-ufo`)                                                          |
-| `.pauseFoldsOnSearch`                | Pause folds while searching, restore folds when done with searching. (Normally, folds are opened when you search for text inside them, and *stay* open afterward.)                                                                                                      | —                                                                                                                         |
-| `.keepFoldsAcrossSessions`           | Remember folds across sessions.                                                                                                                                                                                                                                         | `nvim-ufo`                                                                                                                |
+Every feature is independent, so you can choose to only use some of them.
 
-<!-- LTeX: enabled=true -->
-
-The requirements may look detailed, but **the plugin works mostly
-out-of-the-box**. If you are on nvim 0.11+ and do not have `nvim-ufo` installed,
-all features except `autoFold` and `keepFoldsAcrossSessions` are enabled by
-default and work without any need for additional configuration.
-
-With nvim 0.11+, `nvim-origami` is able to replace most of the `nvim-ufo` feature
-set in a much more lightweight way, and even adds some features that `nvim-ufo`
-does not possess.
+`nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
+and adds some features that `nvim-ufo` does not possess.
 
 ## Installation
+**Requirements**
+- nvim 0.11+
+- **not** using `nvim-ufo`
 
 ```lua
 -- lazy.nvim
@@ -69,14 +78,13 @@ does not possess.
 ```lua
 -- default settings
 require("origami").setup {
-	-- features incompatible with `nvim-ufo`
-	useLspFoldsWithTreesitterFallback = not package.loaded["ufo"],
+	useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
 	autoFold = {
 		enabled = false,
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
 	foldtext = {
-		enabled = not package.loaded["ufo"],
+		enabled = true,
 		lineCount = {
 			template = "   %d lines", -- `%d` gets the number of folded lines
 			hlgroup = "Comment",
@@ -86,16 +94,11 @@ require("origami").setup {
 			-- uses hlgroups and icons from `vim.diagnostic.config().signs`
 		},
 	},
-
-	-- can be used with or without `nvim-ufo`
 	pauseFoldsOnSearch = true,
 	foldKeymaps = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,
 	},
-
-	-- feature requiring `nvim-ufo`
-	keepFoldsAcrossSessions = package.loaded["ufo"],
 }
 ```
 
@@ -109,7 +112,10 @@ vim.keymap.set("n", "<Right>", function() require("origami").l() end)
 
 ## FAQ
 
-### Folds are still opened
+### Folds are opened after running a formatter
+This is a known issue of many formatting plugins and unrelated to
+`nvim-origami`.
+
 [Many formatting plugins open all your
 folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/)
 and unfortunately, there is nothing this plugin can do about it. The only two
@@ -127,7 +133,7 @@ require("origami").inspectLspFolds("all")
 
 ## Credits
 - [u/marjrohn](https://www.reddit.com/r/neovim/comments/1le6l6x/add_decoration_to_the_folded_lines/)
-  for a better approach for styling foldtext.
+  for the decorator approach to styling foldtext.
 
 ## About the developer
 In my day job, I am a sociologist studying the social mechanisms underlying the
@@ -143,8 +149,3 @@ compatibility. If you are interested in this subject, feel free to get in touch.
 <a href='https://ko-fi.com/Y8Y86SQ91' target='_blank'><img height='36'
 style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=3'
 border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-
-[^1]: Technically, unfolding with `l` is already a built-in vim feature when
-	`vim.opt.foldopen` includes `hor`. However, this plugin still sets up a `l`
-	key replicating that behavior, since the built-in version still moves you to
-	one character to the side, which can be considered a bit counterintuitive.

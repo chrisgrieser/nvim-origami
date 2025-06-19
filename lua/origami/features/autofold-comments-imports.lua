@@ -1,12 +1,3 @@
-if package.loaded["ufo"] then
-	require("origami.utils").warn(
-		"nvim-origami's `foldtextWithLineCount` cannot be used at the same time as `nvim-ufo`."
-	)
-	return
-end
-if not vim.lsp.foldclose then return end -- only added in nvim 0.11
---------------------------------------------------------------------------------
-
 vim.api.nvim_create_autocmd("LspNotify", {
 	desc = "Origami: Close imports and comments on load",
 	group = vim.api.nvim_create_augroup("origami-autofolds", { clear = true }),

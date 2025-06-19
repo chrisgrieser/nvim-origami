@@ -1,11 +1,3 @@
-if package.loaded["ufo"] then
-	require("origami.utils").warn(
-		"nvim-origami's `foldtextWithLineCount` cannot be used at the same time as `nvim-ufo`."
-	)
-	return
-end
---------------------------------------------------------------------------------
-
 vim.opt.foldtext = "" -- keep syntax highlighting
 vim.opt.fillchars:append { fold = " " } -- text after end of foldtext
 
