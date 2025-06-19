@@ -31,6 +31,16 @@ M.config = defaultConfig
 
 ---@param userConfig? Origami.config
 function M.setup(userConfig)
+	local warn = require("origami.utils")
+
+	-- GUARD
+	if M.setupWasAlreadyCalled then
+		-- note all modules of nvim-origami support changing the config at runtime
+		warn("`.setup()` was already called, `nvim-origami` does not support multiple calls.")
+		return
+	end
+	M.setupWasAlreadyCalled = true
+
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
 	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
@@ -42,7 +52,6 @@ function M.setup(userConfig)
 
 	---@diagnostic disable: undefined-field
 	-- DEPRECATION (2025-03-30)
-	local warn = require("origami.utils")
 	if M.config.setupFoldKeymaps then
 		warn("nvim-origami config `setupFoldKeymaps` was moved to `foldKeymaps.setup`.")
 		M.config.foldKeymaps.setup = M.config.setupFoldKeymaps
@@ -65,7 +74,6 @@ function M.setup(userConfig)
 			"nvim-origami config `keepFoldsAcrossSessions` is deprecated. Pin tag `v1.9` if you want to keep on using it."
 		)
 	end
-
 	---@diagnostic enable: undefined-field
 
 	if M.config.foldKeymaps.setup then
