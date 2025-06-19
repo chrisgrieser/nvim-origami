@@ -18,8 +18,9 @@ Table of Contents                             *nvim-origami-table-of-contents*
 
 
 
-_Foldwith relentless elegance._ A collection of Quality-of-life features
-related to folding.
+_Foldwith relentless elegance._
+
+A collection of Quality-of-life features related to folding.
 
 
 
@@ -43,7 +44,8 @@ BREAKING CHANGES IN V2.0 *nvim-origami-nvim-origami--breaking-changes-in-v2.0*
 - `nvim-ufo` is now incompatible with this plugin (most of its features are now
     offered by `nvim-origami` in a more lightweight way).
 - Saving folds across sessions is no longer supported by this plugin.
-- If you do not like the changes from v2.0, you can pin `nvim-origami` to `tag = v1.9`.
+- If you do not like the changes from v2.0, you can pin `nvim-origami` to the
+    tag `v1.9`.
 
 
 FEATURES                                 *nvim-origami-nvim-origami--features*
@@ -70,7 +72,8 @@ and adds some features that `nvim-ufo` does not possess.
 
 INSTALLATION                         *nvim-origami-nvim-origami--installation*
 
-**Requirements** - nvim 0.11+ - **not** using `nvim-ufo`
+**Requirements** - nvim 0.11+ - **not** using `nvim-ufo`, since `nvim-origami`
+is incompatible with it
 
 >lua
     -- lazy.nvim
@@ -101,7 +104,7 @@ CONFIGURATION                       *nvim-origami-nvim-origami--configuration*
         foldtext = {
             enabled = true,
             lineCount = {
-                template = "   %d lines", -- `%d` is repalced with the number of folded lines
+                template = "   %d lines", -- `%d` is replaced with the number of folded lines
                 hlgroup = "Comment",
             },
             diagnostics = {
@@ -131,14 +134,12 @@ FAQ                                           *nvim-origami-nvim-origami--faq*
 
 FOLDS ARE OPENED AFTER RUNNING A FORMATTER ~
 
-This is a known issue of many formatting plugins and unrelated to
-`nvim-origami`.
-
-Many formatting plugins open all your folds
+This is a known issue of many formatting plugins
 <https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/>
-and unfortunately, there is nothing this plugin can do about it. The only two
-tools I am aware of that are able to preserve folds are the efm-language-server
-<https://github.com/mattn/efm-langserver> and conform.nvim
+and actually not related to `nvim-origami`.
+
+The only two tools I am aware of that are able to preserve folds are the
+efm-language-server <https://github.com/mattn/efm-langserver> and conform.nvim
 <https://github.com/stevearc/conform.nvim>.
 
 
