@@ -4,8 +4,9 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
-*Fold with relentless elegance.* A collection of Quality-of-life features
-related to folding.
+*Fold with relentless elegance.*
+
+A collection of Quality-of-life features related to folding.
 
 <img alt="Showcase" width=75% src="https://github.com/user-attachments/assets/bb13ee0f-7485-4e3f-b303-880b9d4d656e">
 
@@ -30,8 +31,8 @@ related to folding.
 - `nvim-ufo` is now incompatible with this plugin (most of its features are now
 offered by `nvim-origami` in a more lightweight way).
 - Saving folds across sessions is no longer supported by this plugin.
-- If you do not like the changes from v2.0, you can pin `nvim-origami` to `tag =
-v1.9`.
+- If you do not like the changes from v2.0, you can pin `nvim-origami` to the
+tag `v1.9`.
 
 ## Features
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
@@ -56,7 +57,7 @@ and adds some features that `nvim-ufo` does not possess.
 ## Installation
 **Requirements**
 - nvim 0.11+
-- **not** using `nvim-ufo`
+- **not** using `nvim-ufo`, since `nvim-origami` is incompatible with it
 
 ```lua
 -- lazy.nvim
@@ -86,7 +87,7 @@ require("origami").setup {
 	foldtext = {
 		enabled = true,
 		lineCount = {
-			template = "   %d lines", -- `%d` is repalced with the number of folded lines
+			template = "   %d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",
 		},
 		diagnostics = {
@@ -113,13 +114,11 @@ vim.keymap.set("n", "<Right>", function() require("origami").l() end)
 ## FAQ
 
 ### Folds are opened after running a formatter
-This is a known issue of many formatting plugins and unrelated to
-`nvim-origami`.
+[This is a known issue of many formatting
+plugins](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/)
+and actually not related to `nvim-origami`.
 
-[Many formatting plugins open all your
-folds](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/)
-and unfortunately, there is nothing this plugin can do about it. The only two
-tools I am aware of that are able to preserve folds are the
+The only two tools I am aware of that are able to preserve folds are the
 [efm-language-server](https://github.com/mattn/efm-langserver) and
 [conform.nvim](https://github.com/stevearc/conform.nvim).
 

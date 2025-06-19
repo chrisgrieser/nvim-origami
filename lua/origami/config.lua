@@ -12,7 +12,7 @@ local defaultConfig = {
 	foldtext = {
 		enabled = true,
 		lineCount = {
-			template = "   %d lines", -- `%d` is repalced with the number of folded lines
+			template = "   %d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",
 		},
 		diagnostics = {
