@@ -1,4 +1,4 @@
-*nvim-origami.txt*             For Neovim            Last change: 2025 June 16
+*nvim-origami.txt*             For Neovim            Last change: 2025 June 19
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -11,7 +11,6 @@ Table of Contents                             *nvim-origami-table-of-contents*
   - FAQ                                       |nvim-origami-nvim-origami--faq|
   - Credits                               |nvim-origami-nvim-origami--credits|
   - About the developer       |nvim-origami-nvim-origami--about-the-developer|
-2. Links                                                  |nvim-origami-links|
 
 ==============================================================================
 1. nvim-origami                                   *nvim-origami-nvim-origami-*
@@ -44,7 +43,7 @@ FEATURES                                 *nvim-origami-nvim-origami--features*
   .useLspFoldsWithTreesitterFallback   Use the LSP to provide folds, with           1. not using
                                        Treesitter as fallback if the LSP does not   nvim-ufo (feature is
                                        provide folding info.                        redundant with
-                                                                                    nvim-ufo)2. Nvim
+                                                                                    nvim-ufo)2. nvim
                                                                                     0.11
 
   .foldKeymaps                         Overload the h key which will fold a line    —
@@ -62,12 +61,10 @@ FEATURES                                 *nvim-origami-nvim-origami--features*
                                                                                     provides fold
                                                                                     information
 
-  .foldtextWithLineCount               Add line count to the foldtext, preserving   1. not using
-                                       the syntax highlighting of the line.         nvim-ufo (feature is
-                                                                                    redundant with
-                                                                                    nvim-ufo)2.
-                                                                                    Treesitter parser
-                                                                                    for the language.
+  .foldtext                            Add line count and diagnostics to the        1. not using
+                                       foldtext, preserving the syntax highlighting nvim-ufo (feature is
+                                       of the line.                                 redundant with
+                                                                                    nvim-ufo)
 
   .pauseFoldsOnSearch                  Pause folds while searching, restore folds   —
                                        when done with searching. (Normally, folds   
@@ -82,13 +79,14 @@ vim.opt.foldopen includes hor. However, this plugin still sets up a l
 key replicating that behavior, since the built-in version still moves
 you to one character to the side, which can be considered a bit
 counterintuitive.
-The requirements may look detailed, but the plugin works mostly out-of-the-box.
-If you are on nvim 0.11+ and do not have `nvim-ufo` installed, all features
-except `autoFold` and `keepFoldsAcrossSessions` are enabled by default and work
-without any need for additional configuration.
+The requirements may look detailed, but **the plugin works mostly
+out-of-the-box**. If you are on nvim 0.11+ and do not have `nvim-ufo`
+installed, all features except `autoFold` and `keepFoldsAcrossSessions` are
+enabled by default and work without any need for additional configuration.
 
-With nvim 0.11+, `nvim-origami` is able to replace most of `nvim-ufo`’s
-feature set in a much more lightweight way.
+With nvim 0.11+, `nvim-origami` is able to replace most of the `nvim-ufo`
+feature set in a much more lightweight way, and even adds some features that
+`nvim-ufo` does not possess.
 
 
 INSTALLATION                         *nvim-origami-nvim-origami--installation*
@@ -120,10 +118,16 @@ CONFIGURATION                       *nvim-origami-nvim-origami--configuration*
             enabled = false,
             kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
         },
-        foldtextWithLineCount = {
+        foldtext = {
             enabled = not package.loaded["ufo"],
-            template = "   %s lines", -- `%s` gets the number of folded lines
-            hlgroupForCount = "Comment",
+            lineCount = {
+                template = "   %d lines", -- `%d` gets the number of folded lines
+                hlgroup = "Comment",
+            },
+            diagnostics = {
+                enabled = true,
+                -- uses hlgroups and icons from `vim.diagnostic.config().signs`
+            },
         },
     
         -- can be used with or without `nvim-ufo`
@@ -133,7 +137,7 @@ CONFIGURATION                       *nvim-origami-nvim-origami--configuration*
             hOnlyOpensOnFirstColumn = false,
         },
     
-        -- features requiring `nvim-ufo`
+        -- feature requiring `nvim-ufo`
         keepFoldsAcrossSessions = package.loaded["ufo"],
     }
 <
@@ -171,8 +175,8 @@ DEBUG FOLDING ISSUES ~
 
 CREDITS                                   *nvim-origami-nvim-origami--credits*
 
-- @magnusriga <https://github.com/neovim/neovim/pull/27217#issuecomment-2631614344>
-    for the more performant implementation of fold text with highlighting.
+- u/marjrohn <https://www.reddit.com/r/neovim/comments/1le6l6x/add_decoration_to_the_folded_lines/>
+    for a better approach for styling foldtext.
 
 
 ABOUT THE DEVELOPER           *nvim-origami-nvim-origami--about-the-developer*
@@ -189,11 +193,6 @@ touch.
 - LinkedIn <https://www.linkedin.com/in/christopher-grieser-ba693b17a/>
 
 
-
-==============================================================================
-2. Links                                                  *nvim-origami-links*
-
-1. *@magnusriga*: 
 
 Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
 
