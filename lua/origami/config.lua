@@ -6,13 +6,13 @@ local warn = require("origami.utils").warn
 local defaultConfig = {
 	useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
 	autoFold = {
-		enabled = false,
+		enabled = true,
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
 	foldtext = {
 		enabled = true,
 		lineCount = {
-			template = "   %d lines", -- `%d` gets the number of folded lines
+			template = "   %d lines", -- `%d` is repalced with the number of folded lines
 			hlgroup = "Comment",
 		},
 		diagnostics = {
