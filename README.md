@@ -80,10 +80,7 @@ and adds some features that `nvim-ufo` does not possess.
 -- default settings
 require("origami").setup {
 	useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
-	autoFold = {
-		enabled = true,
-		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
-	},
+	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,
 		padding = 3,
@@ -91,12 +88,12 @@ require("origami").setup {
 			template = "%d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",
 		},
-		diagnostics = {
-			enabled = true,
-			-- uses hlgroups and icons from `vim.diagnostic.config().signs`
-		},
+		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
 	},
-	pauseFoldsOnSearch = true,
+	autoFold = {
+		enabled = true,
+		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+	},
 	foldKeymaps = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,

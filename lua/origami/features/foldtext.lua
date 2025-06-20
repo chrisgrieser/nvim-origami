@@ -1,65 +1,77 @@
 vim.opt.foldtext = "" -- keep syntax highlighting
 vim.opt.fillchars:append { fold = " " } -- text after end of foldtext
 
--- decoration approach using solution from https://www.reddit.com/r/neovim/comments/1le6l6x/add_decoration_to_the_folded_lines/
-local ns = vim.api.nvim_create_namespace("origami.foldTextNs")
+local ns = vim.api.nvim_create_namespace("origami.foldText")
 
-local config = require("origami.config").config
+---@alias Origami.VirtTextChunk {[1]: string, [2]?: string[]}
 
--- get diagnostic config from user
-local signConfig = vim.diagnostic.config().signs
-local diagIcons = { "E", "W", "I", "H" }
-local diagHls = { "DiagnosticError", "DiagnosticWarn", "DiagnosticInfo", "DiagnosticHint" }
-if type(signConfig) == "table" then
-	diagIcons = vim.diagnostic.config().signs.text or diagIcons
-	diagHls = vim.diagnostic.config().signs.linehl or diagHls
-end
+---@alias Origami.FoldtextComponentProvider fun(buf: number, foldstart: number, foldend: number): Origami.VirtTextChunk[]
 
 --------------------------------------------------------------------------------
 
----@param buf number
----@param foldstart number
----@param foldend number
----@return table? chunks
+---@type Origami.FoldtextComponentProvider
 local function getDiagnosticsInFold(buf, foldstart, foldend)
-	if not config.foldtext.diagnostics.enabled then return end
+	-- get config from `vim.diagnostic.config`
+	local signConfig = vim.diagnostic.config().signs
+	local diagIcons = { "E", "W", "I", "H" }
+	local diagHls = { "DiagnosticError", "DiagnosticWarn", "DiagnosticInfo", "DiagnosticHint" }
+	if type(signConfig) == "table" then
+		diagIcons = vim.diagnostic.config().signs.text or diagIcons
+		diagHls = vim.diagnostic.config().signs.linehl or diagHls
+	end
 
-	local diagCounts = {}
+	-- get count by severity in the folded lines
+	local diagCountsInFold = {
+		[vim.diagnostic.severity.ERROR] = 0,
+		[vim.diagnostic.severity.WARN] = 0,
+		[vim.diagnostic.severity.INFO] = 0,
+		[vim.diagnostic.severity.HINT] = 0,
+	}
 	for lnum = foldstart - 1, foldend - 1 do
-		for severity, value in pairs(vim.diagnostic.count(buf, { lnum = lnum })) do
-			diagCounts[severity] = value + (diagCounts[severity] or 0)
+		local diagCountInLine = vim.diagnostic.count(buf, { lnum = lnum })
+		for severity, count in pairs(diagCountInLine) do
+			diagCountsInFold[severity] = diagCountsInFold[severity] + count
 		end
 	end
 
-	local chunks = {}
+	-- convert count info into virtual text table for `set_extmark`
+	local chunks = {} ---@type Origami.VirtTextChunk[]
 	for severity = vim.diagnostic.severity.ERROR, vim.diagnostic.severity.HINT do
-		if diagCounts[severity] then
-			table.insert(chunks, {
-				("%s %d "):format(diagIcons[severity], diagCounts[severity]),
-				{ diagHls[severity] },
-			})
+		if diagCountsInFold[severity] > 0 then
+			local text = ("%s %d "):format(diagIcons[severity], diagCountsInFold[severity])
+			table.insert(chunks, { text, { diagHls[severity] } })
+		end
+	end
+	return chunks
+end
 		end
 	end
 
 	return chunks
 end
 
+--------------------------------------------------------------------------------
+
 ---@param win number
 ---@param buf number
 ---@param foldstart number
----@return integer
+---@return number foldend
 local function renderFoldedSegments(win, buf, foldstart)
+	local config = require("origami.config").config
 	local foldend = vim.fn.foldclosedend(foldstart)
 
+	-- get virtual text components
 	local lineCountText = config.foldtext.lineCount.template:format(foldend - foldstart)
-	local virtText = {
-		{ (" "):rep(config.foldtext.padding) },
+	local virtText = { ---@type Origami.VirtTextChunk[]
 		{ lineCountText, { config.foldtext.lineCount.hlgroup } },
 		{ " " },
 	}
-	local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
-	if diagnostics then vim.list_extend(virtText, diagnostics) end
+	if config.foldtext.diagnosticsCount then
+		local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
+		vim.list_extend(virtText, diagnostics)
+	end
 
+	-- add text as extmark
 	local line = vim.api.nvim_buf_get_lines(buf, foldstart - 1, foldstart, false)[1]
 	local wininfo = vim.fn.getwininfo(win)[1]
 	local leftcol = wininfo and wininfo.leftcol or 0 ---@diagnostic disable-line: undefined-field
@@ -67,7 +79,7 @@ local function renderFoldedSegments(win, buf, foldstart)
 
 	vim.api.nvim_buf_set_extmark(buf, ns, foldstart - 1, 0, {
 		virt_text = virtText,
-		virt_text_win_col = wincol,
+		virt_text_win_col = wincol + config.foldtext.padding,
 		hl_mode = "combine",
 		ephemeral = true, -- only for decorators in a redraw cycle
 	})

@@ -5,10 +5,7 @@ local warn = require("origami.utils").warn
 ---@class Origami.config
 local defaultConfig = {
 	useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
-	autoFold = {
-		enabled = true,
-		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
-	},
+	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,
 		padding = 3,
@@ -16,12 +13,12 @@ local defaultConfig = {
 			template = "%d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",
 		},
-		diagnostics = {
-			enabled = true,
-			-- uses hlgroups and icons from `vim.diagnostic.config().signs`
-		},
+		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
 	},
-	pauseFoldsOnSearch = true,
+	autoFold = {
+		enabled = true,
+		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+	},
 	foldKeymaps = {
 		setup = true, -- modifies `h` and `l`
 		hOnlyOpensOnFirstColumn = false,
