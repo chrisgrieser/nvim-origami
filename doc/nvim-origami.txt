@@ -1,12 +1,12 @@
-*nvim-origami.txt*             For Neovim            Last change: 2025 June 19
+*nvim-origami.txt*             For Neovim            Last change: 2025 June 20
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
 
 1. nvim-origami                                   |nvim-origami-nvim-origami-|
+  - Features                             |nvim-origami-nvim-origami--features|
   - Table of Content             |nvim-origami-nvim-origami--table-of-content|
   - Breaking changes in v2.0|nvim-origami-nvim-origami--breaking-changes-in-v2.0|
-  - Features                             |nvim-origami-nvim-origami--features|
   - Installation                     |nvim-origami-nvim-origami--installation|
   - Configuration                   |nvim-origami-nvim-origami--configuration|
   - FAQ                                       |nvim-origami-nvim-origami--faq|
@@ -18,17 +18,38 @@ Table of Contents                             *nvim-origami-table-of-contents*
 
 
 
-_Foldwith relentless elegance._
-
-A collection of Quality-of-life features related to folding.
+Acollection of Quality-of-life features related to folding.
 
 
+FEATURES                                 *nvim-origami-nvim-origami--features*
+
+
+
+- Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
+    not provide folding info.
+- **Fold-text decorations**Displays the number of lines, diagnostics, and
+    changes in the fold, while preserving the syntax highlighting of the line
+    (displaying git changes requires
+    gitsigns.nvim <http://github.com/lewis6991/gitsigns.nvim>).
+- **Overload h and l as fold keymaps**Overloads the `h` key which will
+    fold a line when used on the first non-blank character of (or before). And
+    overloads the `l` key, which will unfold a line when used on a folded line. This
+    allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
+- **Auto-fold**Automatically fold comments and/or imports when opening a file
+    (requires an LSP that provides that information).
+- **Pause folds while searching**, restore folds when done with searching.
+    (Normally, folds are opened when you search for text inside them, and stay open
+    afterward.)
+
+Every feature is independent, so you can choose to only enabled some of them.
+
+`nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
+manner and adds some features that `nvim-ufo` does not possess.
 
 
 TABLE OF CONTENT                 *nvim-origami-nvim-origami--table-of-content*
 
 - |nvim-origami-breaking-changes-in-v2.0|
-- |nvim-origami-features|
 - |nvim-origami-installation|
 - |nvim-origami-configuration|
 - |nvim-origami-faq|
@@ -41,33 +62,10 @@ TABLE OF CONTENT                 *nvim-origami-nvim-origami--table-of-content*
 BREAKING CHANGES IN V2.0 *nvim-origami-nvim-origami--breaking-changes-in-v2.0*
 
 - nvim 0.11 is now required.
-- `nvim-ufo` is now incompatible with this plugin (most of its features are now
-    offered by `nvim-origami` in a more lightweight way).
+- `nvim-ufo` is no longer compatible with this plugin (most of its
+    features are now offered by `nvim-origami` in a more lightweight way).
 - Saving folds across sessions is no longer supported by this plugin.
-- If you do not like the changes from v2.0, you can pin `nvim-origami` to the
-    tag `v1.9`.
-
-
-FEATURES                                 *nvim-origami-nvim-origami--features*
-
-- Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
-    not provide folding info.
-- **Overload h and l as fold keymaps**Overloads the `h` key which will
-    fold a line when used on the first non-blank character of (or before). And
-    overloads the `l` key, which will unfold a line when used on a folded line. This
-    allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
-- **Auto-fold**Automatically fold comments and/or imports when opening a file
-    (when using an LSP as folding provider).
-- **Fold-text decorations**Add line count and diagnostics to the `foldtext`,
-    preserving the syntax highlighting of the line.
-- **Pause folds while searching**, restore folds when done with searching.
-    (Normally, folds are opened when you search for text inside them, and stay open
-    afterward.)
-
-Every feature is independent, so you can choose to only use some of them.
-
-`nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
-and adds some features that `nvim-ufo` does not possess.
+- If you do not like the changes, you can pin `nvim-origami` to the tag `v1.9`.
 
 
 INSTALLATION                         *nvim-origami-nvim-origami--installation*
@@ -97,22 +95,21 @@ CONFIGURATION                       *nvim-origami-nvim-origami--configuration*
     -- default settings
     require("origami").setup {
         useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
+        pauseFoldsOnSearch = true,
+        foldtext = {
+            enabled = true,
+            padding = 3,
+            lineCount = {
+                template = "%d lines", -- `%d` is replaced with the number of folded lines
+                hlgroup = "Comment",
+            },
+            diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
+            gitsignsCount = true, -- requires `gitsigns.nvim`
+        },
         autoFold = {
             enabled = true,
             kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
         },
-        foldtext = {
-            enabled = true,
-            lineCount = {
-                template = "   %d lines", -- `%d` is replaced with the number of folded lines
-                hlgroup = "Comment",
-            },
-            diagnostics = {
-                enabled = true,
-                -- uses hlgroups and icons from `vim.diagnostic.config().signs`
-            },
-        },
-        pauseFoldsOnSearch = true,
         foldKeymaps = {
             setup = true, -- modifies `h` and `l`
             hOnlyOpensOnFirstColumn = false,
