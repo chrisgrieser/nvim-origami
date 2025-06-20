@@ -10,7 +10,7 @@ local config = require("origami.config").config
 local signConfig = vim.diagnostic.config().signs
 local diagIcons = { "E", "W", "I", "H" }
 local diagHls = { "DiagnosticError", "DiagnosticWarn", "DiagnosticInfo", "DiagnosticHint" }
-if signConfig then
+if type(signConfig) == "table" then
 	diagIcons = vim.diagnostic.config().signs.text or diagIcons
 	diagHls = vim.diagnostic.config().signs.linehl or diagHls
 end
