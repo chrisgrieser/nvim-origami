@@ -28,8 +28,8 @@ A collection of Quality-of-life features related to folding.
 
 ## Breaking changes in v2.0
 - nvim 0.11 is now required.
-- `nvim-ufo` is now incompatible with this plugin (most of its features are now
-offered by `nvim-origami` in a more lightweight way).
+- `nvim-ufo` is ****no longer compatible**** with this plugin (most of its
+features are now offered by `nvim-origami` in a more lightweight way).
 - Saving folds across sessions is no longer supported by this plugin.
 - If you do not like the changes from v2.0, you can pin `nvim-origami` to the
 tag `v1.9`.
@@ -37,14 +37,14 @@ tag `v1.9`.
 ## Features
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
 not provide folding info.
+- **Fold-text decorations**: Add line count and diagnostics to the `foldtext`,
+while preserving the syntax highlighting of the line.
 - **Overload `h` and `l` as fold keymaps**: Overloads the `h` key which will
 fold a line when used on the first non-blank character of (or before). And
 overloads the `l` key, which will unfold a line when used on a folded line. This
 allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
 - **Auto-fold**: Automatically fold comments and/or imports when opening a file
-(when using an LSP as folding provider).
-- **Fold-text decorations**: Add line count and diagnostics to the `foldtext`,
-preserving the syntax highlighting of the line.
+(requires an LSP that provides that information).
 - **Pause folds while searching**, restore folds when done with searching.
 (Normally, folds are opened when you search for text inside them, and stay open
 afterward.)
