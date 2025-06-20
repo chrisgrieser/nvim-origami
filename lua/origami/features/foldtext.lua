@@ -53,6 +53,7 @@ local function renderFoldedSegments(win, buf, foldstart)
 
 	local lineCountText = config.foldtext.lineCount.template:format(foldend - foldstart)
 	local virtText = {
+		{ (" "):rep(config.foldtext.padding) },
 		{ lineCountText, { config.foldtext.lineCount.hlgroup } },
 		{ " " },
 	}

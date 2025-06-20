@@ -86,8 +86,9 @@ require("origami").setup {
 	},
 	foldtext = {
 		enabled = true,
+		padding = 3,
 		lineCount = {
-			template = "   %d lines", -- `%d` is replaced with the number of folded lines
+			template = "%d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",
 		},
 		diagnostics = {
