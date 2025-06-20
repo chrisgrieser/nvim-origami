@@ -14,6 +14,7 @@ local defaultConfig = {
 			hlgroup = "Comment",
 		},
 		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
+		gitsignsCount = true, -- requires `gitsigns.nvim`
 	},
 	autoFold = {
 		enabled = true,

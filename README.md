@@ -4,18 +4,37 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
-*Fold with relentless elegance.*
-
 A collection of Quality-of-life features related to folding.
 
-<img alt="Showcase" width=75% src="https://github.com/user-attachments/assets/bb13ee0f-7485-4e3f-b303-880b9d4d656e">
+## Features
+<img alt="Showcase" width=75% src="https://github.com/user-attachments/assets/64da0d38-c220-44e3-ac50-20f9df835c8a">
+
+- Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
+not provide folding info.
+- **Fold-text decorations**: Displays the number of lines, diagnostics, and
+changes in the fold, while preserving the syntax highlighting of the line
+(displaying git changes requires
+[gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)).
+- **Overload `h` and `l` as fold keymaps**: Overloads the `h` key which will
+fold a line when used on the first non-blank character of (or before). And
+overloads the `l` key, which will unfold a line when used on a folded line. This
+allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
+- **Auto-fold**: Automatically fold comments and/or imports when opening a file
+(requires an LSP that provides that information).
+- **Pause folds while searching**, restore folds when done with searching.
+(Normally, folds are opened when you search for text inside them, and stay open
+afterward.)
+
+Every feature is independent, so you can choose to only enabled some of them.
+
+`nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
+manner and adds some features that `nvim-ufo` does not possess.
 
 ## Table of Content
 
 <!-- toc -->
 
 - [Breaking changes in v2.0](#breaking-changes-in-v20)
-- [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [FAQ](#faq)
@@ -31,28 +50,7 @@ A collection of Quality-of-life features related to folding.
 - `nvim-ufo` is ****no longer compatible**** with this plugin (most of its
 features are now offered by `nvim-origami` in a more lightweight way).
 - Saving folds across sessions is no longer supported by this plugin.
-- If you do not like the changes from v2.0, you can pin `nvim-origami` to the
-tag `v1.9`.
-
-## Features
-- Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
-not provide folding info.
-- **Fold-text decorations**: Add line count and diagnostics to the `foldtext`,
-while preserving the syntax highlighting of the line.
-- **Overload `h` and `l` as fold keymaps**: Overloads the `h` key which will
-fold a line when used on the first non-blank character of (or before). And
-overloads the `l` key, which will unfold a line when used on a folded line. This
-allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
-- **Auto-fold**: Automatically fold comments and/or imports when opening a file
-(requires an LSP that provides that information).
-- **Pause folds while searching**, restore folds when done with searching.
-(Normally, folds are opened when you search for text inside them, and stay open
-afterward.)
-
-Every feature is independent, so you can choose to only use some of them.
-
-`nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
-and adds some features that `nvim-ufo` does not possess.
+- If you do not like the changes, you can pin `nvim-origami` to the tag `v1.9`.
 
 ## Installation
 **Requirements**
@@ -89,6 +87,7 @@ require("origami").setup {
 			hlgroup = "Comment",
 		},
 		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
+		gitsignsCount = true, -- requires `gitsigns.nvim`
 	},
 	autoFold = {
 		enabled = true,

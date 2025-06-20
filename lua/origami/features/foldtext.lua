@@ -44,6 +44,33 @@ local function getDiagnosticsInFold(buf, foldstart, foldend)
 	end
 	return chunks
 end
+
+---@type Origami.FoldtextComponentProvider
+local function getGitHunksInFold(buf, foldstart, foldend)
+	local gitsignsInstalled, gitsigns = pcall(require, "gitsigns")
+	if not gitsignsInstalled then return {} end
+
+	local typeIcons = { change = "~", delete = "-", add = "+" }
+	local typeHls = { change = "GitSignsChange", delete = "GitSignsDelete", add = "GitSignsAdd" }
+
+	-- get count by type in the folded lines
+	local hunksInFold = { change = 0, delete = 0, add = 0 }
+	for _, h in pairs(gitsigns.get_hunks(buf) or {}) do
+		local hunkStart = h.added.start -- SIC even for deletions, the correctly shifted line number is in `.added`
+		local hunkEnd = hunkStart - 1 + (h.type == "delete" and h.removed.count or h.added.count)
+
+		local overlapStart = math.max(foldstart + 1, hunkStart) -- +1 since first line of fold still visible
+		local overlapEnd = math.min(foldend, hunkEnd)
+		local overlapCount = overlapEnd - overlapStart + 1
+		if overlapCount > 0 then hunksInFold[h.type] = hunksInFold[h.type] + overlapCount end
+	end
+
+	-- convert count info into virtual text table for `set_extmark`
+	local chunks = {} ---@type Origami.VirtTextChunk[]
+	for _, type in pairs { "add", "change", "delete" } do
+		if hunksInFold[type] > 0 then
+			local text = ("%s%d "):format(typeIcons[type], hunksInFold[type])
+			table.insert(chunks, { text, { typeHls[type] } })
 		end
 	end
 
@@ -69,6 +96,10 @@ local function renderFoldedSegments(win, buf, foldstart)
 	if config.foldtext.diagnosticsCount then
 		local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
 		vim.list_extend(virtText, diagnostics)
+	end
+	if config.foldtext.gitsignsCount then
+		local hunks = getGitHunksInFold(buf, foldstart, foldend)
+		vim.list_extend(virtText, hunks)
 	end
 
 	-- add text as extmark
