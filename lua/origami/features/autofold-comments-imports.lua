@@ -1,6 +1,6 @@
 vim.api.nvim_create_autocmd("LspNotify", {
 	desc = "Origami: Close imports and comments on load",
-	group = vim.api.nvim_create_augroup("origami-autofolds", { clear = true }),
+	group = vim.api.nvim_create_augroup("origami.autofolds", { clear = true }),
 	callback = function(ctx)
 		if ctx.data.method ~= "textDocument/didOpen" then return end
 		if vim.bo[ctx.buf].buftype ~= "" or not vim.api.nvim_buf_is_valid(ctx.buf) then return end

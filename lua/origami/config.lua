@@ -30,14 +30,6 @@ M.config = defaultConfig
 
 ---@param userConfig? Origami.config
 function M.setup(userConfig)
-	-- GUARD
-	if M.setupWasAlreadyCalled then
-		-- note all modules of nvim-origami support changing the config at runtime
-		warn("`.setup()` was already called, `nvim-origami` does not support multiple calls.")
-		return
-	end
-	M.setupWasAlreadyCalled = true
-
 	M.config = vim.tbl_deep_extend("force", defaultConfig, userConfig or {})
 
 	-----------------------------------------------------------------------------
