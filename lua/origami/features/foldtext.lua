@@ -38,7 +38,8 @@ local function getDiagnosticsInFold(buf, foldstart, foldend)
 	local chunks = {} ---@type Origami.VirtTextChunk[]
 	for severity = vim.diagnostic.severity.ERROR, vim.diagnostic.severity.HINT do
 		if diagCountsInFold[severity] > 0 then
-			local text = ("%s %d "):format(diagIcons[severity], diagCountsInFold[severity])
+			table.insert(chunks, { " " }) -- separate, so the padding does not get hlgroup
+			local text = diagIcons[severity] .. diagCountsInFold[severity]
 			table.insert(chunks, { text, { diagHls[severity] } })
 		end
 	end
@@ -69,7 +70,8 @@ local function getGitHunksInFold(buf, foldstart, foldend)
 	local chunks = {} ---@type Origami.VirtTextChunk[]
 	for _, type in pairs { "add", "change", "delete" } do
 		if hunksInFold[type] > 0 then
-			local text = ("%s%d "):format(typeIcons[type], hunksInFold[type])
+			table.insert(chunks, { " " }) -- separate, so the padding does not get hlgroup
+			local text = typeIcons[type] .. hunksInFold[type]
 			table.insert(chunks, { text, { typeHls[type] } })
 		end
 	end
@@ -90,15 +92,17 @@ local function renderFoldedSegments(win, buf, foldstart)
 	-- get virtual text components
 	local lineCountText = config.foldtext.lineCount.template:format(foldend - foldstart)
 	local virtText = { ---@type Origami.VirtTextChunk[]
+		{ (" "):rep(config.foldtext.padding) },
 		{ lineCountText, { config.foldtext.lineCount.hlgroup } },
-		{ " " },
 	}
 	if config.foldtext.diagnosticsCount then
 		local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
+		if #diagnostics > 0 then table.insert(virtText, { " " }) end
 		vim.list_extend(virtText, diagnostics)
 	end
 	if config.foldtext.gitsignsCount then
 		local hunks = getGitHunksInFold(buf, foldstart, foldend)
+		if #hunks > 0 then table.insert(virtText, { " " }) end
 		vim.list_extend(virtText, hunks)
 	end
 
@@ -110,7 +114,7 @@ local function renderFoldedSegments(win, buf, foldstart)
 
 	vim.api.nvim_buf_set_extmark(buf, ns, foldstart - 1, 0, {
 		virt_text = virtText,
-		virt_text_win_col = wincol + config.foldtext.padding,
+		virt_text_win_col = wincol,
 		hl_mode = "combine",
 		ephemeral = true, -- only for decorators in a redraw cycle
 	})
