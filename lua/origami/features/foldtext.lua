@@ -27,8 +27,8 @@ local function getDiagnosticsInFold(buf, foldstart, foldend)
 		[vim.diagnostic.severity.INFO] = 0,
 		[vim.diagnostic.severity.HINT] = 0,
 	}
-	for lnum = foldstart - 1, foldend - 1 do
-		local diagCountInLine = vim.diagnostic.count(buf, { lnum = lnum })
+	for lnum = foldstart + 1, foldend do -- + 1 since first line of fold still visible
+		local diagCountInLine = vim.diagnostic.count(buf, { lnum = lnum + 1 })
 		for severity, count in pairs(diagCountInLine) do
 			diagCountsInFold[severity] = diagCountsInFold[severity] + count
 		end
@@ -60,7 +60,7 @@ local function getGitHunksInFold(buf, foldstart, foldend)
 		local hunkStart = h.added.start -- SIC even for deletions, the correctly shifted line number is in `.added`
 		local hunkEnd = hunkStart - 1 + (h.type == "delete" and h.removed.count or h.added.count)
 
-		local overlapStart = math.max(foldstart + 1, hunkStart) -- +1 since first line of fold still visible
+		local overlapStart = math.max(foldstart + 1, hunkStart) -- + 1 since first line of fold still visible
 		local overlapEnd = math.min(foldend, hunkEnd)
 		local overlapCount = overlapEnd - overlapStart + 1
 		if overlapCount > 0 then hunksInFold[h.type] = hunksInFold[h.type] + overlapCount end
