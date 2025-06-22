@@ -1,4 +1,4 @@
-*nvim-origami.txt*             For Neovim            Last change: 2025 June 20
+*nvim-origami.txt*             For Neovim            Last change: 2025 June 22
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -10,6 +10,7 @@ Table of Contents                             *nvim-origami-table-of-contents*
   - Installation                     |nvim-origami-nvim-origami--installation|
   - Configuration                   |nvim-origami-nvim-origami--configuration|
   - FAQ                                       |nvim-origami-nvim-origami--faq|
+  - Error when opening or reloading a file|nvim-origami-nvim-origami--error-when-opening-or-reloading-a-file|
   - Credits                               |nvim-origami-nvim-origami--credits|
   - About the developer       |nvim-origami-nvim-origami--about-the-developer|
 
@@ -53,6 +54,7 @@ TABLE OF CONTENT                 *nvim-origami-nvim-origami--table-of-content*
 - |nvim-origami-installation|
 - |nvim-origami-configuration|
 - |nvim-origami-faq|
+- |nvim-origami-error-when-opening-or-reloading-a-file|
     - |nvim-origami-folds-are-opened-after-running-a-formatter|
     - |nvim-origami-debug-folding-issues|
 - |nvim-origami-credits|
@@ -127,6 +129,18 @@ If you use other keys than `h` and `l` for vertical movement, set
 
 
 FAQ                                           *nvim-origami-nvim-origami--faq*
+
+
+ERROR WHEN OPENING OR RELOADING A FILE*nvim-origami-nvim-origami--error-when-opening-or-reloading-a-file*
+
+That error occasionally occurs with `autoFold` enabled. It is, however, not
+caused by this plugin but by a bug with `vim.lsp.foldclose()` in nvim core.
+Unfortunately, there is little `origami` can do about it. A future update
+version of nvim core should fix it.
+
+>lang
+    Error executing vim.schedule lua callback: ...0.11.2/share/nvim/runtime/lua/vim/lsp/_folding_range.lua:311: attempt to index a nil value
+<
 
 
 FOLDS ARE OPENED AFTER RUNNING A FORMATTER ~
