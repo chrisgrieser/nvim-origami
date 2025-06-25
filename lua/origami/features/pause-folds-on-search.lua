@@ -18,14 +18,14 @@ vim.on_key(function(char)
 
 	local searchStarted = (key == "/" or key == "?") and isNormalMode
 	local searchConfirmed = (key == "<CR>" and isCmdlineSearch)
-	local searchCancelled = (key == "<Esc>" and isCmdlineSearch)
-	if not (searchStarted or searchConfirmed or searchCancelled or isNormalMode) then return end
+	if not (searchStarted or searchConfirmed or isNormalMode) then return end
 	local foldsArePaused = not (vim.opt.foldenable:get())
 	-- works for RHS, therefore no need to consider remaps
 	local searchMovement = vim.tbl_contains({ "n", "N", "*", "#" }, key)
+	local searchActivity = searchMovement or searchConfirmed or searchStarted
 
-	local pauseFold = (searchConfirmed or searchStarted or searchMovement) and not foldsArePaused
-	local unpauseFold = foldsArePaused and (searchCancelled or not searchMovement)
+	local pauseFold = searchActivity and not foldsArePaused
+	local unpauseFold = foldsArePaused and not searchActivity
 	if pauseFold then
 		vim.opt_local.foldenable = false
 	elseif unpauseFold then
