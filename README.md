@@ -21,11 +21,11 @@ overloads the `l` key, which will unfold a line when used on a folded line. This
 allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
 - **Auto-fold**: Automatically fold comments and/or imports when opening a file
 (requires an LSP that provides that information).
-- **Pause folds while searching**, restore folds when done with searching.
-(Normally, folds are opened when you search for text inside them, and stay open
+- **Pause folds while searching**, and restore folds when done with searching.
+(Normally, folds are opened when you search for text inside them and stay open
 afterward.)
 
-Every feature is independent, so you can choose to only enabled some of them.
+Every feature is independent, so you can choose to only enable some of them.
 
 `nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
 manner and adds some features that `nvim-ufo` does not possess.
@@ -38,7 +38,7 @@ manner and adds some features that `nvim-ufo` does not possess.
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [FAQ](#faq)
-- [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
+	* [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
 	* [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
 	* [Debug folding issues](#debug-folding-issues)
 - [Credits](#credits)
@@ -111,15 +111,16 @@ vim.keymap.set("n", "<Right>", function() require("origami").l() end)
 
 ## FAQ
 
-## Error when opening or reloading a file
-That error occasionally occurs with `autoFold` enabled. It is, however, not
+### Error when opening or reloading a file
+
+```txt
+Error executing vim.schedule lua callback: ...0.11.2/share/nvim/runtime/lua/vim/lsp/_folding_range.lua:311: attempt to index a nil value
+```
+
+This error occasionally occurs with `autoFold` enabled. It is, however, not
 caused by this plugin but by a bug with `vim.lsp.foldclose()` in nvim core.
 Unfortunately, there is little `origami` can do about it. A future update
 version of nvim core should fix it.
-
-```lang
-Error executing vim.schedule lua callback: ...0.11.2/share/nvim/runtime/lua/vim/lsp/_folding_range.lua:311: attempt to index a nil value
-```
 
 ### Folds are opened after running a formatter
 [This is a known issue of many formatting
