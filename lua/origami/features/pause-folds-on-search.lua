@@ -12,6 +12,7 @@ local ns = vim.api.nvim_create_namespace("origami.autoPauseFolds")
 
 vim.on_key(function(char)
 	if vim.g.scrollview_refreshing then return end -- FIX https://github.com/dstein64/nvim-scrollview/issues/88#issuecomment-1570400161
+
 	local key = vim.fn.keytrans(char)
 	local isCmdlineSearch = vim.fn.getcmdtype():find("[/?]") ~= nil
 	local isNormalMode = vim.api.nvim_get_mode().mode == "n"
@@ -24,11 +25,9 @@ vim.on_key(function(char)
 	local searchMovement = vim.tbl_contains({ "n", "N", "*", "#" }, key)
 	local searchActivity = searchMovement or searchConfirmed or searchStarted
 
-	local pauseFold = searchActivity and not foldsArePaused
-	local unpauseFold = foldsArePaused and not searchActivity
-	if pauseFold then
+	if searchActivity and not foldsArePaused then
 		vim.opt_local.foldenable = false
-	elseif unpauseFold then
+	elseif foldsArePaused and not searchActivity then
 		vim.opt_local.foldenable = true
 		pcall(vim.cmd.foldopen, { bang = true }) -- after closing folds, keep the *current* fold open
 	end
