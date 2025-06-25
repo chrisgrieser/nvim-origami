@@ -27,7 +27,9 @@ vim.on_key(function(char)
 	local pauseFold = (searchConfirmed or searchStarted or searchMovement) and not foldsArePaused
 	local unpauseFold = foldsArePaused and (searchCancelled or not searchMovement)
 	if pauseFold then
+		local topline = vim.api.nvim_win_get_cursor(0)[1] - vim.fn.winline() + 1
 		vim.opt_local.foldenable = false
+		vim.fn.winrestview({ topline = topline }) -- Restore "scroll"
 	elseif unpauseFold then
 		vim.opt_local.foldenable = true
 		pcall(vim.cmd.foldopen, { bang = true }) -- after closing folds, keep the *current* fold open
