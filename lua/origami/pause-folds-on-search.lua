@@ -23,9 +23,11 @@ vim.on_key(function(char)
 	local foldsArePaused = not (vim.opt.foldenable:get())
 	-- works for RHS, therefore no need to consider remaps
 	local searchMovement = vim.tbl_contains({ "n", "N", "*", "#" }, key)
+	-- searchConfirmed should not cause unpauseFold:
+	local notSearchMovement = not searchMovement and not searchConfirmed
 
 	local pauseFold = (searchConfirmed or searchStarted or searchMovement) and not foldsArePaused
-	local unpauseFold = foldsArePaused and (searchCancelled or not searchMovement)
+	local unpauseFold = foldsArePaused and (searchCancelled or notSearchMovement)
 	if pauseFold then
 		vim.opt_local.foldenable = false
 	elseif unpauseFold then
