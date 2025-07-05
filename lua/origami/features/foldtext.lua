@@ -54,16 +54,22 @@ local function getGitHunksInFold(buf, foldstart, foldend)
 	local typeIcons = { change = "~", delete = "-", add = "+" }
 	local typeHls = { change = "GitSignsChange", delete = "GitSignsDelete", add = "GitSignsAdd" }
 
-	-- get count by type in the folded lines
+	-- get count by type in the folded lines: for deletions check if deletion is
+	-- in the fold, for additions/changes, calculate the overlap of hunk and fold
 	local hunksInFold = { change = 0, delete = 0, add = 0 }
 	for _, h in pairs(gitsigns.get_hunks(buf) or {}) do
-		local hunkStart = h.added.start -- SIC even for deletions, the correctly shifted line number is in `.added`
-		local hunkEnd = hunkStart - 1 + (h.type == "delete" and h.removed.count or h.added.count)
-
-		local overlapStart = math.max(foldstart + 1, hunkStart) -- + 1 since 1st folded line still visible
-		local overlapEnd = math.min(foldend, hunkEnd)
-		local overlapCount = overlapEnd - overlapStart + 1
-		if overlapCount > 0 then hunksInFold[h.type] = hunksInFold[h.type] + overlapCount end
+		if h.type == "delete" then
+			local deletionLine = h.added.start -- SIC even for deletions, correctly shifted line is in `.added`
+			local isInFold = deletionLine >= foldstart and deletionLine <= foldend
+			if isInFold then hunksInFold["delete"] = hunksInFold["delete"] + h.removed.count end
+		else
+			local hunkStart = h.added.start
+			local hunkEnd = hunkStart - 1 + h.added.count
+			local overlapStart = math.max(foldstart + 1, hunkStart) -- + 1 since 1st folded line still visible
+			local overlapEnd = math.min(foldend, hunkEnd)
+			local overlap = overlapEnd - overlapStart + 1
+			if overlap > 0 then hunksInFold[h.type] = hunksInFold[h.type] + overlap end
+		end
 	end
 
 	-- convert count info into virtual text table for `set_extmark`
