@@ -119,13 +119,12 @@ Error executing vim.schedule lua callback: ...0.11.2/share/nvim/runtime/lua/vim/
 
 This error occasionally occurs with `autoFold` enabled. It is, however, not
 caused by this plugin but by a bug with `vim.lsp.foldclose()` in nvim core.
-Unfortunately, there is little `origami` can do about it. A future update
-version of nvim core should fix it.
+A future version of nvim will hopefully fix it.
 
 ### Folds are opened after running a formatter
 [This is a known issue of many formatting
 plugins](https://www.reddit.com/r/neovim/comments/164gg5v/preserve_folds_when_formatting/)
-and actually not related to `nvim-origami`.
+and not related to `nvim-origami`.
 
 The only two tools I am aware of that are able to preserve folds are the
 [efm-language-server](https://github.com/mattn/efm-langserver) and
