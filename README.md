@@ -10,14 +10,14 @@ A collection of Quality-of-life features related to folding.
 <img alt="Showcase" width=75% src="https://github.com/user-attachments/assets/64da0d38-c220-44e3-ac50-20f9df835c8a">
 
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
-not provide folding info.
+not provide folding information.
 - **Fold-text decorations**: Displays the number of lines, diagnostics, and
 changes in the fold, while preserving the syntax highlighting of the line
 (displaying git changes requires
 [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)).
-- **Overload `h` and `l` as fold keymaps**: Overloads the `h` key which will
-fold a line when used on the first non-blank character of (or before). And
-overloads the `l` key, which will unfold a line when used on a folded line. This
+- **Overload `h` and `l` as fold keymaps**: the `h` key will
+fold a line when used on the first non-blank character (or before). The `l` 
+key will unfold a line when used on a folded line. This
 allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
 - **Auto-fold**: Automatically fold comments and/or imports when opening a file
 (requires an LSP that provides that information).
@@ -25,10 +25,10 @@ allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
 (Normally, folds are opened when you search for text inside them and stay open
 afterward.)
 
-Every feature is independent, so you can choose to only enable some of them.
+All features are independent, so you can choose to only enable some of them.
 
 `nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
-manner and adds some features that `nvim-ufo` does not possess.
+manner and adds some features that `nvim-ufo` does not provide.
 
 ## Table of Content
 
