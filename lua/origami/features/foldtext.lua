@@ -13,11 +13,12 @@ local ns = vim.api.nvim_create_namespace("origami.foldText")
 local function getDiagnosticsInFold(buf, foldstart, foldend)
 	-- get config from `vim.diagnostic.config`
 	local signConfig = vim.diagnostic.config().signs
+	if type(signConfig) == "function" then signConfig = signConfig(_, buf) end -- see #24
 	local diagIcons = { "E", "W", "I", "H" }
 	local diagHls = { "DiagnosticError", "DiagnosticWarn", "DiagnosticInfo", "DiagnosticHint" }
 	if type(signConfig) == "table" then
-		diagIcons = vim.diagnostic.config().signs.text or diagIcons
-		diagHls = vim.diagnostic.config().signs.linehl or diagHls
+		diagIcons = signConfig.text or diagIcons
+		diagHls = signConfig.linehl or diagHls
 	end
 
 	-- get count by severity in the folded lines
