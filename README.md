@@ -13,18 +13,18 @@ A collection of Quality-of-life features related to folding.
   not provide folding information (and indent-based folding as fallback if
   neither is available).
 - **Fold-text decorations**: Displays the number of lines, diagnostics, and
-changes in the fold, while preserving the syntax highlighting of the line
-(displaying git changes requires
-[gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)).
-- **Overload `h` and `l` as fold keymaps**: the `h` key will
-fold a line when used on the first non-blank character (or before). The `l` 
-key will unfold a line when used on a folded line. This
-allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
+  changes in the fold, while preserving the syntax highlighting of the line
+  (displaying git changes requires
+  [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)).
+- **Overload `h` and `l` as fold keymaps**: the `h` key will fold a line when
+  used on the first non-blank character (or before). The `l` key will unfold a
+  line when used on a folded line. This allows you to ditch `zc`, `zo`, and
+  `za`; `h` and `l` are all you need.
 - **Auto-fold**: Automatically fold comments and/or imports when opening a file
-(requires an LSP that provides that information).
+  (requires an LSP that provides that information).
 - **Pause folds while searching**, and restore folds when done with searching.
-(Normally, folds are opened when you search for text inside them and stay open
-afterward.)
+  (Normally, folds are opened when you search for text inside them and stay open
+  afterward.)
 
 All features are independent, so you can choose to only enable some of them.
 
@@ -50,7 +50,7 @@ manner and adds some features that `nvim-ufo` does not provide.
 ## Breaking changes in v2.0
 - nvim 0.11 is now required.
 - `nvim-ufo` is ****no longer compatible**** with this plugin (most of its
-features are now offered by `nvim-origami` in a more lightweight way).
+  features are now offered by `nvim-origami` in a more lightweight way).
 - Saving folds across sessions is no longer supported by this plugin.
 - If you do not like the changes, you can pin `nvim-origami` to the tag `v1.9`.
 
