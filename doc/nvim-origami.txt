@@ -1,4 +1,4 @@
-*nvim-origami.txt*             For Neovim            Last change: 2025 July 07
+*nvim-origami.txt*             For Neovim            Last change: 2025 July 20
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -26,15 +26,16 @@ FEATURES                                 *nvim-origami-nvim-origami--features*
 
 
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
-    not provide folding information.
+    not provide folding information (and indent-based folding as fallback if
+    neither is available).
 - **Fold-text decorations**Displays the number of lines, diagnostics, and
     changes in the fold, while preserving the syntax highlighting of the line
     (displaying git changes requires
     gitsigns.nvim <http://github.com/lewis6991/gitsigns.nvim>).
-- **Overload h and l as fold keymaps**the `h` key will
-    fold a line when used on the first non-blank character (or before). The `l`
-    key will unfold a line when used on a folded line. This
-    allows you to ditch `zc`, `zo`, and `za`; `h` and `l` are all you need.
+- **Overload h and l as fold keymaps**the `h` key will fold a line when
+    used on the first non-blank character (or before). The `l` key will unfold a
+    line when used on a folded line. This allows you to ditch `zc`, `zo`, and
+    `za`; `h` and `l` are all you need.
 - **Auto-fold**Automatically fold comments and/or imports when opening a file
     (requires an LSP that provides that information).
 - **Pause folds while searching**, and restore folds when done with searching.
@@ -95,7 +96,7 @@ CONFIGURATION                       *nvim-origami-nvim-origami--configuration*
 >lua
     -- default settings
     require("origami").setup {
-        useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
+        useLspFoldsWithTreesitterFallback = true,
         pauseFoldsOnSearch = true,
         foldtext = {
             enabled = true,
