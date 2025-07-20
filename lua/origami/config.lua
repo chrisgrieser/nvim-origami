@@ -4,7 +4,7 @@ local warn = require("origami.utils").warn
 
 ---@class Origami.config
 local defaultConfig = {
-	useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
+	useLspFoldsWithTreesitterFallback = true,
 	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,

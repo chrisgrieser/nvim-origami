@@ -10,7 +10,8 @@ A collection of Quality-of-life features related to folding.
 <img alt="Showcase" width=75% src="https://github.com/user-attachments/assets/64da0d38-c220-44e3-ac50-20f9df835c8a">
 
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
-not provide folding information.
+  not provide folding information (and indent-based folding as fallback if
+  neither is available).
 - **Fold-text decorations**: Displays the number of lines, diagnostics, and
 changes in the fold, while preserving the syntax highlighting of the line
 (displaying git changes requires
@@ -78,7 +79,7 @@ features are now offered by `nvim-origami` in a more lightweight way).
 ```lua
 -- default settings
 require("origami").setup {
-	useLspFoldsWithTreesitterFallback = true, -- required for `autoFold`
+	useLspFoldsWithTreesitterFallback = true,
 	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,
