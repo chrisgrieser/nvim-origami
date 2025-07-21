@@ -42,6 +42,7 @@ manner and adds some features that `nvim-ufo` does not provide.
 	* [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
 	* [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
 	* [Debug folding issues](#debug-folding-issues)
+	* [Using functions to display virtual text components conditionally](#using-functions-to-display-virtual-text-components-conditionally)
 - [Credits](#credits)
 - [About the developer](#about-the-developer)
 
@@ -137,6 +138,20 @@ The only two tools I am aware of that are able to preserve folds are the
 -- Folds provided by the LSP
 require("origami").inspectLspFolds("special") -- comment & import only
 require("origami").inspectLspFolds("all")
+```
+
+### Using functions to display virtual text components conditionally
+
+```lua
+require("origami").setup {
+	foldtext = {
+		diagnosticsCount = function()
+			if vim.b.origami_enable_diagnostics_count then
+				return true
+			end
+		end,
+	},
+}
 ```
 
 ## Credits
