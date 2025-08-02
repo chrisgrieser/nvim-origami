@@ -23,11 +23,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		local win = vim.api.nvim_get_current_win()
 		local filetype = ctx.match
 
-		local hasParser = false
-		-- безопасно обернуть в pcall, чтобы избежать краша
-		local ok, _ = pcall(function()
-			hasParser = vim.treesitter.query.get(filetype, "folds") ~= nil
-		end)
+		local ok, hasParser = pcall(vim.treesitter.query.get, filetype, "folds")
 
 		if ok and hasParser then
 			vim.wo[win][0].foldmethod = "expr"
