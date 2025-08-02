@@ -2,6 +2,7 @@ vim.api.nvim_create_autocmd("LspNotify", {
 	desc = "Origami: Close imports and comments on load",
 	group = vim.api.nvim_create_augroup("origami.autofolds", { clear = true }),
 	callback = function(ctx)
+		if vim.b[ctx.buf].origami_has_autofolded then return end
 		if ctx.data.method ~= "textDocument/didOpen" then return end
 		if vim.bo[ctx.buf].buftype ~= "" or not vim.api.nvim_buf_is_valid(ctx.buf) then return end
 
@@ -15,7 +16,8 @@ vim.api.nvim_create_autocmd("LspNotify", {
 		local winid = vim.fn.bufwinid(ctx.buf)
 		if not winid or not vim.api.nvim_win_is_valid(winid) then return end
 		for _, kind in ipairs(kinds) do
-			pcall(vim.lsp.foldclose, kind, winid)
+			local success = pcall(vim.lsp.foldclose, kind, winid)
+			vim.b[ctx.buf].origami_has_autofolded = success
 		end
 
 		-- unfold under cursor
