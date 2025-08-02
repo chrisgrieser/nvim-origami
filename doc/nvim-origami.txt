@@ -1,4 +1,4 @@
-*nvim-origami.txt*             For Neovim            Last change: 2025 July 20
+*nvim-origami.txt*            For Neovim           Last change: 2025 August 02
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -18,12 +18,12 @@ Table of Contents                             *nvim-origami-table-of-contents*
 
 
 
-Acollection of Quality-of-life features related to folding.
+Acollection of quality-of-life features related to folding.
+
+
 
 
 FEATURES                                 *nvim-origami-nvim-origami--features*
-
-
 
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
     not provide folding information (and indent-based folding as fallback if
@@ -66,7 +66,7 @@ BREAKING CHANGES IN V2.0 *nvim-origami-nvim-origami--breaking-changes-in-v2.0*
 - nvim 0.11 is now required.
 - `nvim-ufo` is no longer compatible with this plugin (most of its
     features are now offered by `nvim-origami` in a more lightweight way).
-- Saving folds across sessions is no longer supported by this plugin.
+- Saving folds across sessions is no longer supported. <https://github.com/chrisgrieser/nvim-origami/issues/21>
 - If you do not like the changes, you can pin `nvim-origami` to the tag `v1.9`.
 
 
