@@ -4,11 +4,11 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
-A collection of Quality-of-life features related to folding.
+A collection of quality-of-life features related to folding.
 
-## Features
 <img alt="Showcase" width=75% src="https://github.com/user-attachments/assets/64da0d38-c220-44e3-ac50-20f9df835c8a">
 
+## Features
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
   not provide folding information (and indent-based folding as fallback if
   neither is available).
@@ -51,7 +51,7 @@ manner and adds some features that `nvim-ufo` does not provide.
 - nvim 0.11 is now required.
 - `nvim-ufo` is ****no longer compatible**** with this plugin (most of its
   features are now offered by `nvim-origami` in a more lightweight way).
-- Saving folds across sessions is no longer supported by this plugin.
+- [Saving folds across sessions is no longer supported.](https://github.com/chrisgrieser/nvim-origami/issues/21)
 - If you do not like the changes, you can pin `nvim-origami` to the tag `v1.9`.
 
 ## Installation
