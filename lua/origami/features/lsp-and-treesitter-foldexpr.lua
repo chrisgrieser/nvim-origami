@@ -1,5 +1,5 @@
---------------------------------------------------------------------------------
 local group = vim.api.nvim_create_augroup("origami.foldexpr", { clear = true })
+--------------------------------------------------------------------------------
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Origami: Use LSP as folding provider if client supports it",
@@ -15,24 +15,30 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+--------------------------------------------------------------------------------
+
+---@param filetype? string
+local function checkForTreesitter(filetype)
+	if not filetype then filetype = vim.bo.filetype end
+	if vim.b.origami_folding_provider == "lsp" then return end
+	local win = vim.api.nvim_get_current_win()
+
+	local ok, hasParser = pcall(vim.treesitter.query.get, filetype, "folds")
+
+	if ok and hasParser then
+		vim.wo[win][0].foldmethod = "expr"
+		vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+		vim.b.origami_folding_provider = "treesitter"
+	else
+		vim.wo[win][0].foldmethod = "indent"
+		vim.wo[win][0].foldexpr = ""
+		vim.b.origami_folding_provider = "indent"
+	end
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	desc = "Origami: Use Treesitter as folding provider if there is a parser for it",
 	group = group,
-	callback = function(ctx)
-		if vim.b.origami_folding_provider == "lsp" then return end
-		local win = vim.api.nvim_get_current_win()
-		local filetype = ctx.match
-
-		local ok, hasParser = pcall(vim.treesitter.query.get, filetype, "folds")
-
-		if ok and hasParser then
-			vim.wo[win][0].foldmethod = "expr"
-			vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-			vim.b.origami_folding_provider = "treesitter"
-		else
-			vim.wo[win][0].foldmethod = "indent"
-			vim.wo[win][0].foldexpr = ""
-			vim.b.origami_folding_provider = "indent"
-		end
-	end,
+	callback = function(ctx) checkForTreesitter(ctx.match) end,
 })
+checkForTreesitter() -- initialize in case of lazy-loading
