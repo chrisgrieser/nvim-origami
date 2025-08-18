@@ -5,6 +5,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Origami: Use LSP as folding provider if client supports it",
 	group = group,
 	callback = function(ctx)
+		if vim.o.diff then return end -- not in diff mode, see #30
+
 		local client = assert(vim.lsp.get_client_by_id(ctx.data.client_id))
 		if client:supports_method("textDocument/foldingRange") then
 			local win = vim.api.nvim_get_current_win()
@@ -19,8 +21,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 ---@param filetype? string
 local function checkForTreesitter(filetype)
-	if not filetype then filetype = vim.bo.filetype end
 	if vim.b.origami_folding_provider == "lsp" then return end
+	if vim.o.diff then return end -- not in diff mode, see #30
+
+	if not filetype then filetype = vim.bo.filetype end
 	local win = vim.api.nvim_get_current_win()
 
 	local ok, hasParser = pcall(vim.treesitter.query.get, filetype, "folds")
