@@ -1,6 +1,4 @@
-<!-- LTeX: enabled=false -->
 # nvim-origami 🐦📄
-<!-- LTeX: enabled=true -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
@@ -39,9 +37,9 @@ manner and adds some features that `nvim-ufo` does not provide.
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [FAQ](#faq)
-	* [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
-	* [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
-	* [Debug folding issues](#debug-folding-issues)
+	+ [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
+	+ [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
+	+ [Debug folding issues](#debug-folding-issues)
 - [Credits](#credits)
 - [About the developer](#about-the-developer)
 
@@ -119,8 +117,8 @@ Error executing vim.schedule lua callback: ...0.11.2/share/nvim/runtime/lua/vim/
 ```
 
 This error occasionally occurs with `autoFold` enabled. It is, however, not
-caused by this plugin but by a bug with `vim.lsp.foldclose()` in nvim core.
-A future version of nvim will hopefully fix it.
+caused by `nvim-origami` but by a bug with `vim.lsp.foldclose()` in nvim core.
+A future version of nvim will hopefully fix this.
 
 ### Folds are opened after running a formatter
 [This is a known issue of many formatting
@@ -132,9 +130,9 @@ The only two tools I am aware of that are able to preserve folds are the
 [conform.nvim](https://github.com/stevearc/conform.nvim).
 
 ### Debug folding issues
+Debug issues with folds provided by the LSP:
 
 ```lua
--- Folds provided by the LSP
 require("origami").inspectLspFolds("special") -- comment & import only
 require("origami").inspectLspFolds("all")
 ```

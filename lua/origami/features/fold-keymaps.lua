@@ -24,9 +24,9 @@ end
 
 -- `l` on a folded line opens the fold.
 function M.l()
-	local count = vim.v.count1 -- count needs to be saved due to `normal` affecting it
+	local count = vim.v.count1 -- saved as `normal` affects it
 	for _ = 1, count, 1 do
-		local isOnFold = vim.fn.foldclosed(".") > -1 ---@diagnostic disable-line: param-type-mismatch
+		local isOnFold = vim.fn.foldclosed(".") > -1
 		local action = isOnFold and "zo" or "l"
 		pcall(normal, action)
 	end
