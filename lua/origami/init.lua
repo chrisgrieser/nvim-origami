@@ -21,6 +21,8 @@ function M.setup(userConfig) require("origami.config").setup(userConfig) end
 -- make these functions accessible from `require("origami")` for easier remapping
 function M.h() require("origami.features.fold-keymaps").h() end
 function M.l() require("origami.features.fold-keymaps").l() end
+function M.dollar() require("origami.features.fold-keymaps").dollar() end
+
 function M.inspectLspFolds(type) ---@param type "special"|"all"?
 	require("origami.inspect-folds").inspectLspFolds(type)
 end

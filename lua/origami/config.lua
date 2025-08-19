@@ -67,12 +67,7 @@ function M.setup(userConfig)
 	if M.config.useLspFoldsWithTreesitterFallback then
 		require("origami.features.lsp-and-treesitter-foldexpr")
 	end
-	if M.config.foldKeymaps.setup then
-		-- stylua: ignore
-		vim.keymap.set("n", "h", function() require("origami.features.fold-keymaps").h() end, { desc = "Origami h" })
-		-- stylua: ignore
-		vim.keymap.set("n", "l", function() require("origami.features.fold-keymaps").l() end, { desc = "Origami l" })
-	end
+	if M.config.foldKeymaps.setup then require("origami.features.fold-keymaps").setupKeymaps() end
 end
 
 --------------------------------------------------------------------------------

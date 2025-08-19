@@ -32,5 +32,18 @@ function M.l()
 	end
 end
 
+-- `$` on a folded line opens the fold recursively.
+function M.dollar()
+	local isOnFold = vim.fn.foldclosed(".") > -1
+	local action = isOnFold and "zO" or "$"
+	pcall(normal, action)
+end
+
+function M.setupKeymaps()
+	vim.keymap.set("n", "h", function() M.h() end, { desc = "Origami h" })
+	vim.keymap.set("n", "l", function() M.l() end, { desc = "Origami l" })
+	vim.keymap.set("n", "$", function() M.dollar() end, { desc = "Origami $" })
+end
+
 --------------------------------------------------------------------------------
 return M
