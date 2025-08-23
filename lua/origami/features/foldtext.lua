@@ -1,11 +1,26 @@
-vim.opt.foldtext = "" -- keep syntax highlighting
-vim.opt.fillchars:append { fold = " " } -- text after end of foldtext
-
 local ns = vim.api.nvim_create_namespace("origami.foldText")
 
 ---@alias Origami.VirtTextChunk {[1]: string, [2]?: string[]}
 
 ---@alias Origami.FoldtextComponentProvider fun(buf: number, foldstart: number, foldend: number): Origami.VirtTextChunk[]
+
+--------------------------------------------------------------------------------
+
+vim.opt.fillchars:append { fold = " " }
+do
+	-- initialize in current window when lazy-loading `nvim-origami`
+	for _, winid in pairs(vim.api.nvim_list_wins()) do
+		vim.wo[winid].foldtext = "" -- keep syntax highlighting
+	end
+	-- override foldtext in new windows that set foldtext
+	vim.api.nvim_create_autocmd("WinNew", {
+		desc = "Origami: Set foldtext in all windows",
+		callback = function(ctx)
+			local winid = vim.fn.bufwinid(ctx.buf)
+			vim.wo[winid].foldtext = ""
+		end,
+	})
+end
 
 --------------------------------------------------------------------------------
 
