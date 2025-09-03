@@ -10,10 +10,13 @@ local defaultConfig = {
 		enabled = true,
 		padding = 3,
 		lineCount = {
+		   ---@type string | fun():string
 			template = "%d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",
 		},
+		---@type boolean | fun():boolean
 		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
+		---@type boolean | fun():boolean
 		gitsignsCount = true, -- requires `gitsigns.nvim`
 	},
 	autoFold = {

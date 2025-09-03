@@ -97,17 +97,33 @@ local function renderFoldedSegments(win, buf, foldstart)
 	local foldend = vim.fn.foldclosedend(foldstart)
 
 	-- get virtual text components
-	local lineCountText = config.foldtext.lineCount.template:format(foldend - foldstart)
+	local resolvedTemplate = config.foldtext.lineCount.template
+	if type(resolvedTemplate) == 'function' then
+		resolvedTemplate = resolvedTemplate(buf, foldstart, foldend)
+	end
+	local lineCountText = resolvedTemplate:format(foldend - foldstart)
 	local virtText = { ---@type Origami.VirtTextChunk[]
 		{ (" "):rep(config.foldtext.padding) },
 		{ lineCountText, { config.foldtext.lineCount.hlgroup } },
 	}
-	if config.foldtext.diagnosticsCount then
+	local show_diagnostics
+	if type(config.foldtext.diagnosticsCount) == "function" then
+		show_diagnostics = config.foldtext.diagnosticsCount()
+	else
+		show_diagnostics = config.foldtext.diagnosticsCount
+	end
+	if show_diagnostics then
 		local diagnostics = getDiagnosticsInFold(buf, foldstart, foldend)
 		if #diagnostics > 0 then table.insert(virtText, { " " }) end
 		vim.list_extend(virtText, diagnostics)
 	end
-	if config.foldtext.gitsignsCount then
+	local show_gitsigns
+	if type(config.foldtext.gitsignsCount) == "function" then
+		show_gitsigns = config.foldtext.gitsignsCount(buf, foldstart, foldend)
+	else
+		show_gitsigns = config.foldtext.gitsignsCount
+	end
+	if show_gitsigns then
 		local hunks = getGitHunksInFold(buf, foldstart, foldend)
 		if #hunks > 0 then table.insert(virtText, { " " }) end
 		vim.list_extend(virtText, hunks)
