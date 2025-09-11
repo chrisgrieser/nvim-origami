@@ -1,4 +1,4 @@
-*nvim-origami.txt*            For Neovim           Last change: 2025 August 19
+*nvim-origami.txt*          For Neovim          Last change: 2025 September 11
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -37,7 +37,7 @@ FEATURES                                 *nvim-origami-nvim-origami--features*
         before), and behaves as regular `h` otherwise.
     - `l` unfolds the cursorline when used on a folded line, and behaves as
         regular `l` otherwise.
-    - `$` unfolds the cursorline recursively when used on a folded line, and
+    - `$` unfolds the cursorline _recursively_ when used on a folded line, and
         behaves as regular `$` otherwise
     - This allows you to ditch `zc`, `zo`, `za` and `zO`, since you only need
         `h`, `l`, and `$`.
@@ -47,7 +47,8 @@ FEATURES                                 *nvim-origami-nvim-origami--features*
     (Normally, folds are opened when you search for text inside them and stay open
     afterward.)
 
-All features are independent, so you can choose to only enable some of them.
+All features are independent of each other, so you can choose to only enable
+some of them.
 
 `nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
 manner and adds some features that `nvim-ufo` does not provide.
@@ -124,7 +125,7 @@ CONFIGURATION                       *nvim-origami-nvim-origami--configuration*
     }
 <
 
-If you use other keys than `h`, `l`, and `$` for vertical movement, set
+If you use other keys than `h`, `l`, and `$` for horizontal movement, set
 `opts.foldKeymaps.setup = false` and map the keys yourself:
 
 >lua
