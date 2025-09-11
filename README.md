@@ -19,7 +19,7 @@ A collection of quality-of-life features related to folding.
 	  before), and behaves as regular `h` otherwise.
 	+ `l` unfolds the cursorline when used on a folded line, and behaves as
 	  regular `l` otherwise.
-	+ `$` unfolds the cursorline recursively when used on a folded line, and
+	+ `$` unfolds the cursorline *recursively* when used on a folded line, and
 	  behaves as regular `$` otherwise
 	+ This allows you to ditch `zc`, `zo`, `za` and `zO`, since you only need
 	  `h`, `l`, and `$`.
@@ -29,7 +29,8 @@ A collection of quality-of-life features related to folding.
   (Normally, folds are opened when you search for text inside them and stay open
   afterward.)
 
-All features are independent, so you can choose to only enable some of them.
+All features are independent of each other, so you can choose to only enable some 
+of them.
 
 `nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
 manner and adds some features that `nvim-ufo` does not provide.
@@ -105,7 +106,7 @@ require("origami").setup {
 }
 ```
 
-If you use other keys than `h`, `l`, and `$` for vertical movement, set
+If you use other keys than `h`, `l`, and `$` for horizontal movement, set
 `opts.foldKeymaps.setup = false` and map the keys yourself:
 
 ```lua
