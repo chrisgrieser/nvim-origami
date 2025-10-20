@@ -1,4 +1,4 @@
-*nvim-origami.txt*          For Neovim          Last change: 2025 September 11
+*nvim-origami.txt*           For Neovim           Last change: 2025 October 20
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -28,12 +28,12 @@ FEATURES                                 *nvim-origami-nvim-origami--features*
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
     not provide folding information (and indent-based folding as fallback if
     neither is available).
-- **Fold-text decorations**Displays the number of lines, diagnostics, and
+- **Fold-text decorations**: Displays the number of lines, diagnostics, and
     changes in the fold, while preserving the syntax highlighting of the line
     (displaying git changes requires
     gitsigns.nvim <http://github.com/lewis6991/gitsigns.nvim>).
-- **Overload h, l, and $ as fold keymaps**
-    - `h`will fold a line when used on the first non-blank character (or
+- **Overload h, l, and $ as fold keymaps**:
+    - `h` will fold a line when used on the first non-blank character (or
         before), and behaves as regular `h` otherwise.
     - `l` unfolds the cursorline when used on a folded line, and behaves as
         regular `l` otherwise.
@@ -41,7 +41,7 @@ FEATURES                                 *nvim-origami-nvim-origami--features*
         behaves as regular `$` otherwise
     - This allows you to ditch `zc`, `zo`, `za` and `zO`, since you only need
         `h`, `l`, and `$`.
-- **Auto-fold**Automatically fold comments and/or imports when opening a file
+- **Auto-fold**: Automatically fold comments and/or imports when opening a file
     (requires an LSP that provides that information).
 - **Pause folds while searching**, and restore folds when done with searching.
     (Normally, folds are opened when you search for text inside them and stay open
