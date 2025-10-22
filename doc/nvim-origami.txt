@@ -1,4 +1,4 @@
-*nvim-origami.txt*           For Neovim           Last change: 2025 October 20
+*nvim-origami.txt*           For Neovim           Last change: 2025 October 22
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -113,6 +113,7 @@ CONFIGURATION                       *nvim-origami-nvim-origami--configuration*
             },
             diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
             gitsignsCount = true, -- requires `gitsigns.nvim`
+            disableOnFt = { "snacks_picker_input" }, -- disable foldtext in these filetypes
         },
         autoFold = {
             enabled = true,
