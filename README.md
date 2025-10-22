@@ -29,8 +29,8 @@ A collection of quality-of-life features related to folding.
   (Normally, folds are opened when you search for text inside them and stay open
   afterward.)
 
-All features are independent of each other, so you can choose to only enable some 
-of them.
+All features are independent of each other, so you can choose to only enable
+some of them.
 
 `nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
 manner and adds some features that `nvim-ufo` does not provide.
@@ -94,7 +94,7 @@ require("origami").setup {
 		},
 		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
 		gitsignsCount = true, -- requires `gitsigns.nvim`
-		disableOnFt = { "snacks_picker_input" }, -- disable foldtext in these filetypes
+		disableOnFt = { "snacks_picker_input" }, ---@type string[]
 	},
 	autoFold = {
 		enabled = true,
