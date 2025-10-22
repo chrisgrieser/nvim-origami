@@ -146,6 +146,14 @@ end
 
 vim.api.nvim_set_decoration_provider(ns, {
 	on_win = function(_, win, buf, topline, botline)
+		if
+			vim.list_contains(
+				require("origami.config").config.foldtext.disableOnFt,
+				vim.bo[buf].filetype
+			)
+		then
+			return
+		end
 		vim.api.nvim_win_call(win, function()
 			local line = topline
 			while line <= botline do
