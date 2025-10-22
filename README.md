@@ -94,6 +94,7 @@ require("origami").setup {
 		},
 		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
 		gitsignsCount = true, -- requires `gitsigns.nvim`
+		disableOnFt = { "snacks_picker_input" }, -- disable foldtext in these filetypes
 	},
 	autoFold = {
 		enabled = true,
