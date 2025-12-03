@@ -26,6 +26,9 @@ end
 
 ---@type Origami.FoldtextComponentProvider
 local function getDiagnosticsInFold(buf, foldstart, foldend)
+	local diagnosticsDisabled = vim.diagnostic.is_enabled { bufnr = buf } == false
+	if diagnosticsDisabled then return {} end
+
 	-- get config from `vim.diagnostic.config`
 	local signConfig = vim.diagnostic.config().signs
 	if type(signConfig) == "function" then signConfig = signConfig(_, buf) end -- see #24
