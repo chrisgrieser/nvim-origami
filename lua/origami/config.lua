@@ -22,8 +22,8 @@ local defaultConfig = {
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
 	foldKeymaps = {
-		setup = true, -- modifies `h` and `l`
-		hOnlyOpensOnFirstColumn = false,
+		setup = true, -- modifies `h`, `l`, `^`, and `$`
+		closeOnlyOnFirstColumn = false, -- `h` and `^` only close in the 1st column
 	},
 }
 M.config = defaultConfig
@@ -41,12 +41,6 @@ function M.setup(userConfig)
 		warn("nvim-origami config `setupFoldKeymaps` was moved to `foldKeymaps.setup`.")
 		M.config.foldKeymaps.setup = M.config.setupFoldKeymaps
 	end
-	if M.config.hOnlyOpensOnFirstColumn then
-		warn(
-			"nvim-origami config `hOnlyOpensOnFirstColumn` was moved to `foldKeymaps.hOnlyOpensOnFirstColumn`."
-		)
-		M.config.foldKeymaps.hOnlyOpensOnFirstColumn = M.config.hOnlyOpensOnFirstColumn
-	end
 
 	-- DEPRECATION (2025-06-19)
 	if M.config.foldtextWithLineCount then
@@ -58,6 +52,20 @@ function M.setup(userConfig)
 		warn(
 			"nvim-origami config `keepFoldsAcrossSessions` is deprecated. Pin tag `v1.9` if you want to keep on using it."
 		)
+	end
+
+	-- DEPRECATION (2025-12-07)
+	if M.config.hOnlyOpensOnFirstColumn then
+		warn(
+			"nvim-origami config `hOnlyOpensOnFirstColumn` was renamend to `foldKeymaps.closeOnlyOnFirstColumn`."
+		)
+		M.config.foldKeymaps.closeOnlyOnFirstColumn = M.config.hOnlyOpensOnFirstColumn
+	end
+	if M.config.hOnlyOpensOnFirstColumn then
+		warn(
+			"nvim-origami config `foldKeymaps.hOnlyOpensOnFirstColumn` was renamed to `foldKeymaps.hOnlyOpensOnFirstColumn`."
+		)
+		M.config.foldKeymaps.closeOnlyOnFirstColumn = M.config.foldKeymaps.hOnlyOpensOnFirstColumn
 	end
 	---@diagnostic enable: undefined-field
 	-----------------------------------------------------------------------------

@@ -14,15 +14,15 @@ A collection of quality-of-life features related to folding.
   changes in the fold, while preserving the syntax highlighting of the line
   (displaying git changes requires
   [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)).
-- **Overload `h`, `l`, and `$` as fold keymaps**:
+- **Overload `h`, `l`, `^`, and `$` as fold keymaps**:
 	+ `h` will fold a line when used on the first non-blank character (or
 	  before), and behaves as regular `h` otherwise.
 	+ `l` unfolds the cursorline when used on a folded line, and behaves as
 	  regular `l` otherwise.
 	+ `$` unfolds the cursorline *recursively* when used on a folded line, and
 	  behaves as regular `$` otherwise
-	+ This allows you to ditch `zc`, `zo`, `za` and `zO`, since you only need
-	  `h`, `l`, and `$`.
+	+ This allows you to ditch `zc`, `zo`, `za`, `zC`, and `zO`, since you only
+	  need `h`, `l`, `^`, `$`.
 - **Auto-fold**: Automatically fold comments and/or imports when opening a file
   (requires an LSP that provides that information).
 - **Pause folds while searching**, and restore folds when done with searching.
@@ -101,8 +101,8 @@ require("origami").setup {
 		kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
 	},
 	foldKeymaps = {
-		setup = true, -- modifies `h`, `l`, and `$`
-		hOnlyOpensOnFirstColumn = false,
+		setup = true, -- modifies `h`, `l`, `^`, and `$`
+		closeOnlyOnFirstColumn = false, -- `h` and `^` only close in the 1st column
 	},
 }
 ```
@@ -114,6 +114,7 @@ If you use other keys than `h`, `l`, and `$` for horizontal movement, set
 vim.keymap.set("n", "<Left>", function() require("origami").h() end)
 vim.keymap.set("n", "<Right>", function() require("origami").l() end)
 vim.keymap.set("n", "<End>", function() require("origami").dollar() end)
+vim.keymap.set("n", "<Home>", function() require("origami").caret() end)
 ```
 
 ## FAQ
