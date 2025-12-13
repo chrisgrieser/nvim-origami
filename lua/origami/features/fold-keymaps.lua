@@ -28,11 +28,13 @@ end
 
 -- `^` closes folds recursively when at the beginning of a line.
 function M.caret()
+	local scrollLeftOnCaret = require("origami.config").config.foldKeymaps.scrollLeftOnCaret
+	local cmd = scrollLeftOnCaret and "0^" or "^"
 	if shouldCloseFold() then
 		local wasFolded = pcall(normal, "zC")
-		if not wasFolded then normal("^") end
+		if not wasFolded then normal(cmd) end
 	else
-		normal("^")
+		normal(cmd)
 	end
 end
 

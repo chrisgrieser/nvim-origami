@@ -103,6 +103,7 @@ require("origami").setup {
 	foldKeymaps = {
 		setup = true, -- modifies `h`, `l`, `^`, and `$`
 		closeOnlyOnFirstColumn = false, -- `h` and `^` only close in the 1st column
+		scrollLeftOnCaret = false, -- `^` should scroll left (basically mapped to `0^`)
 	},
 }
 ```
