@@ -1,4 +1,4 @@
-*nvim-origami.txt*           For Neovim          Last change: 2025 December 07
+*nvim-origami.txt*           For Neovim          Last change: 2025 December 13
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
@@ -143,7 +143,8 @@ FAQ                                           *nvim-origami-nvim-origami--faq*
 ERROR WHEN OPENING OR RELOADING A FILE ~
 
 >txt
-    Error executing vim.schedule lua callback: ...0.11.2/share/nvim/runtime/lua/vim/lsp/_folding_range.lua:311: attempt to index a nil value
+    Error executing vim.schedule lua callback: 
+    ...0.11.2/share/nvim/runtime/lua/vim/lsp/_folding_range.lua:311: attempt to index a nil value
 <
 
 This error occasionally occurs with `autoFold` enabled. It is, however, not
