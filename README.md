@@ -122,7 +122,8 @@ vim.keymap.set("n", "<Home>", function() require("origami").caret() end)
 ### Error when opening or reloading a file
 
 ```txt
-Error executing vim.schedule lua callback: ...0.11.2/share/nvim/runtime/lua/vim/lsp/_folding_range.lua:311: attempt to index a nil value
+Error executing vim.schedule lua callback: 
+...0.11.2/share/nvim/runtime/lua/vim/lsp/_folding_range.lua:311: attempt to index a nil value
 ```
 
 This error occasionally occurs with `autoFold` enabled. It is, however, not
