@@ -5,44 +5,45 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Origami: Use LSP as folding provider if client supports it",
 	group = group,
 	callback = function(ctx)
-		if vim.o.diff then return end -- not in diff mode, see #30
+		local win = vim.api.nvim_get_current_win()
+		if vim.wo[win].diff then return end -- not in diff mode, see #30
 
-		local client = assert(vim.lsp.get_client_by_id(ctx.data.client_id))
-		if client:supports_method("textDocument/foldingRange") then
-			local win = vim.api.nvim_get_current_win()
-			vim.wo[win][0].foldmethod = "expr"
-			vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-			vim.b.origami_folding_provider = "lsp"
-		end
+		local client = vim.lsp.get_clients({ bufnr = ctx.buf, id = ctx.data.client_id })[1]
+		if not (client and client:supports_method("textDocument/foldingRange")) then return end
+		vim.wo[win][0].foldmethod = "expr"
+		vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+		vim.b[ctx.buf].origami_folding_provider = "lsp"
 	end,
 })
 
 --------------------------------------------------------------------------------
 
 ---@param filetype? string
-local function checkForTreesitter(filetype)
-	if vim.b.origami_folding_provider == "lsp" then return end
-	if vim.o.diff then return end -- not in diff mode, see #30
+---@param bufnr? number
+local function checkForTreesitter(filetype, bufnr)
+	if not bufnr then bufnr = 0 end
+	if not filetype then filetype = vim.bo[bufnr].filetype end
 
-	if not filetype then filetype = vim.bo.filetype end
+	if vim.b[bufnr].origami_folding_provider == "lsp" then return end
+
 	local win = vim.api.nvim_get_current_win()
+	if vim.wo[win].diff then return end -- not in diff mode, see #30
 
 	local ok, hasParser = pcall(vim.treesitter.query.get, filetype, "folds")
-
 	if ok and hasParser then
 		vim.wo[win][0].foldmethod = "expr"
 		vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-		vim.b.origami_folding_provider = "treesitter"
+		vim.b[bufnr].origami_folding_provider = "treesitter"
 	else
 		vim.wo[win][0].foldmethod = "indent"
 		vim.wo[win][0].foldexpr = ""
-		vim.b.origami_folding_provider = "indent"
+		vim.b[bufnr].origami_folding_provider = "indent"
 	end
 end
 
 vim.api.nvim_create_autocmd("FileType", {
 	desc = "Origami: Use Treesitter as folding provider if there is a parser for it",
 	group = group,
-	callback = function(ctx) checkForTreesitter(ctx.match) end,
+	callback = function(ctx) checkForTreesitter(ctx.match, ctx.buf) end,
 })
 checkForTreesitter() -- initialize in case of lazy-loading
