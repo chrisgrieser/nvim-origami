@@ -8,30 +8,35 @@ local function checkForLsp(bufnr, clientId)
 	local foldingClients =
 		vim.lsp.get_clients { bufnr = bufnr, id = clientId, method = "textDocument/foldingRange" }
 	if #foldingClients == 0 then return end
-	vim.wo[win][0].foldmethod = "expr"
-	vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-	vim.b[bufnr].origami_folding_provider = "lsp"
+	vim.api.nvim_buf_call(bufnr, function()
+		vim.wo[win][0].foldmethod = "expr"
+		vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+		vim.b[bufnr].origami_folding_provider = "lsp"
+	end)
 end
 
 ---@param bufnr? number defaults to 0 for the current buffer
 ---@param filetype? string
 local function checkForTreesitter(bufnr, filetype)
 	if not bufnr then bufnr = 0 end
+	-- always prioritize treesitter parser over LSP for folding
 	if vim.b[bufnr].origami_folding_provider == "lsp" then return end
 	local win = vim.api.nvim_get_current_win()
 	if vim.wo[win].diff then return end -- not in diff mode, see #30
 
 	if not filetype then filetype = vim.bo[bufnr].filetype end
 	local ok, hasParser = pcall(vim.treesitter.query.get, filetype, "folds")
-	if ok and hasParser then
-		vim.wo[win][0].foldmethod = "expr"
-		vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-		vim.b[bufnr].origami_folding_provider = "treesitter"
-	else
-		vim.wo[win][0].foldmethod = "indent"
-		vim.wo[win][0].foldexpr = ""
-		vim.b[bufnr].origami_folding_provider = "indent"
-	end
+	vim.api.nvim_buf_call(bufnr, function()
+		if ok and hasParser then
+			vim.wo[win][0].foldmethod = "expr"
+			vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+			vim.b[bufnr].origami_folding_provider = "treesitter"
+		else
+			vim.wo[win][0].foldmethod = "indent"
+			vim.wo[win][0].foldexpr = ""
+			vim.b[bufnr].origami_folding_provider = "indent"
+		end
+	end)
 end
 
 --------------------------------------------------------------------------------
@@ -50,6 +55,9 @@ vim.api.nvim_create_autocmd("FileType", {
 	callback = function(ctx) checkForTreesitter(ctx.buf, ctx.match) end,
 })
 
--- initialize in case of lazy-loading
-checkForLsp()
-checkForTreesitter()
+-- initialize on the existing buffer in case of lazy-loading
+local listedBufs = vim.fn.getbufinfo { buflisted = 1 }
+for _, buf in ipairs(listedBufs) do
+	checkForLsp(buf.bufnr)
+	checkForTreesitter(buf.bufnr)
+end
