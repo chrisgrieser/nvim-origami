@@ -1,4 +1,4 @@
-# nvim-origami 🐦📄
+# nvim-origami 🐦📄 <!-- rumdl-disable-line MD063 `nvim` lowercased -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
@@ -35,7 +35,7 @@ some of them.
 `nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
 manner and adds some features that `nvim-ufo` does not provide.
 
-## Table of Content
+## Table of content
 
 <!-- toc -->
 
