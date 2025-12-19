@@ -59,7 +59,7 @@ manner and adds some features that `nvim-ufo` does not provide.
 - If you do not like the changes, you can pin `nvim-origami` to the tag `v1.9`.
 
 ## Installation
-**Requirements**
+**Requirements** <!-- rumdl-disable MD033 -->
 - nvim 0.11+
 - **not** using `nvim-ufo`, since `nvim-origami` is incompatible with it
 
