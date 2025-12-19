@@ -15,14 +15,14 @@ A collection of quality-of-life features related to folding.
   (displaying git changes requires
   [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)).
 - **Overload `h`, `l`, `^`, and `$` as fold keymaps**:
-	+ `h` will fold a line when used on the first non-blank character (or
-	  before), and behaves as regular `h` otherwise.
-	+ `l` unfolds the cursorline when used on a folded line, and behaves as
-	  regular `l` otherwise.
-	+ `$` unfolds the cursorline *recursively* when used on a folded line, and
-	  behaves as regular `$` otherwise
-	+ This allows you to ditch `zc`, `zo`, `za`, `zC`, and `zO`, since you only
-	  need `h`, `l`, `^`, `$`.
+    - `h` will fold a line when used on the first non-blank character (or
+      before), and behaves as regular `h` otherwise.
+    - `l` unfolds the cursorline when used on a folded line, and behaves as
+      regular `l` otherwise.
+    - `$` unfolds the cursorline *recursively* when used on a folded line, and
+      behaves as regular `$` otherwise
+    - This allows you to ditch `zc`, `zo`, `za`, `zC`, and `zO`, since you only
+      need `h`, `l`, `^`, `$`.
 - **Auto-fold**: Automatically fold comments and/or imports when opening a file
   (requires an LSP that provides that information).
 - **Pause folds while searching**, and restore folds when done with searching.
@@ -43,9 +43,9 @@ manner and adds some features that `nvim-ufo` does not provide.
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [FAQ](#faq)
-	+ [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
-	+ [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
-	+ [Debug folding issues](#debug-folding-issues)
+    - [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
+    - [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
+    - [Debug folding issues](#debug-folding-issues)
 - [Credits](#credits)
 - [About the developer](#about-the-developer)
 
