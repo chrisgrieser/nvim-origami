@@ -37,34 +37,28 @@ function M.setup(userConfig)
 
 	-----------------------------------------------------------------------------
 	---@diagnostic disable: undefined-field
-	-- DEPRECATION (2025-03-30)
-	if M.config.setupFoldKeymaps then
-		warn("nvim-origami config `setupFoldKeymaps` was moved to `foldKeymaps.setup`.")
-		M.config.foldKeymaps.setup = M.config.setupFoldKeymaps
-	end
-
 	-- DEPRECATION (2025-06-19)
-	if M.config.foldtextWithLineCount then
+	if M.config.foldtextWithLineCount ~= nil then
 		warn(
-			"nvim-origami config `foldtextWithLineCount` is outdated. Use `foldtext`, but and note its changes in the README."
+			"nvim-origami config `foldtextWithLineCount` is outdated. Use `foldtext`, but note its changes in the README."
 		)
 	end
-	if M.config.keepFoldsAcrossSessions then
+	if M.config.keepFoldsAcrossSessions ~= nil then
 		warn(
 			"nvim-origami config `keepFoldsAcrossSessions` is deprecated. Pin tag `v1.9` if you want to keep on using it."
 		)
 	end
 
 	-- DEPRECATION (2025-12-07)
-	if M.config.hOnlyOpensOnFirstColumn then
+	if M.config.hOnlyOpensOnFirstColumn ~= nil then
 		warn(
-			"nvim-origami config `hOnlyOpensOnFirstColumn` was renamend to `foldKeymaps.closeOnlyOnFirstColumn`."
+			"nvim-origami config `hOnlyOpensOnFirstColumn` was renamed to `foldKeymaps.closeOnlyOnFirstColumn`."
 		)
 		M.config.foldKeymaps.closeOnlyOnFirstColumn = M.config.hOnlyOpensOnFirstColumn
 	end
-	if M.config.hOnlyOpensOnFirstColumn then
+	if M.config.hOnlyOpensOnFirstColumn ~= nil then
 		warn(
-			"nvim-origami config `foldKeymaps.hOnlyOpensOnFirstColumn` was renamed to `foldKeymaps.hOnlyOpensOnFirstColumn`."
+			"nvim-origami config `foldKeymaps.hOnlyOpensOnFirstColumn` was renamed to `foldKeymaps.closeOnlyOnFirstColumn`."
 		)
 		M.config.foldKeymaps.closeOnlyOnFirstColumn = M.config.foldKeymaps.hOnlyOpensOnFirstColumn
 	end

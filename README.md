@@ -39,7 +39,6 @@ manner and adds some features that `nvim-ufo` does not provide.
 
 <!-- toc -->
 
-- [Breaking changes in v2.0](#breaking-changes-in-v20)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [FAQ](#faq)
@@ -50,13 +49,6 @@ manner and adds some features that `nvim-ufo` does not provide.
 - [About the developer](#about-the-developer)
 
 <!-- tocstop -->
-
-## Breaking changes in v2.0
-- nvim 0.11 is now required.
-- `nvim-ufo` is ****no longer compatible**** with this plugin (most of its
-  features are now offered by `nvim-origami` in a more lightweight way).
-- [Saving folds across sessions is no longer supported.](https://github.com/chrisgrieser/nvim-origami/issues/21)
-- If you do not like the changes, you can pin `nvim-origami` to the tag `v1.9`.
 
 ## Installation
 **Requirements** <!-- rumdl-disable MD033 -->
