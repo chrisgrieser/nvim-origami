@@ -75,7 +75,10 @@ manner and adds some features that `nvim-ufo` does not provide.
 ```lua
 -- default settings
 require("origami").setup {
-	useLspFoldsWithTreesitterFallback = true,
+	useLspFoldsWithTreesitterFallback = {
+		enabled = true,
+		foldmethodIfNeitherIsAvailable = "indent", ---@type string|fun(bufnr: number): string
+	},
 	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,

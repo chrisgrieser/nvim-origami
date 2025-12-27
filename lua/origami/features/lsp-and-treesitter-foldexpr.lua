@@ -17,7 +17,7 @@ end
 
 ---@param bufnr? number defaults to 0 for the current buffer
 ---@param filetype? string
-local function checkForTreesitter(bufnr, filetype)
+local function checkForTreesitterWithFallback(bufnr, filetype)
 	if not bufnr then bufnr = 0 end
 	-- always prioritize treesitter parser over LSP for folding
 	if vim.b[bufnr].origami_folding_provider == "lsp" then return end
@@ -32,9 +32,12 @@ local function checkForTreesitter(bufnr, filetype)
 			vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
 			vim.b[bufnr].origami_folding_provider = "treesitter"
 		else
-			vim.wo[win][0].foldmethod = "indent"
+			local fallback =
+				require("origami.config").config.useLspFoldsWithTreesitterFallback.foldmethodIfNeitherIsAvailable
+			if type(fallback) == "function" then fallback = fallback(bufnr) end
+			vim.wo[win][0].foldmethod = fallback
 			vim.wo[win][0].foldexpr = ""
-			vim.b[bufnr].origami_folding_provider = "indent"
+			vim.b[bufnr].origami_folding_provider = fallback
 		end
 	end)
 end
@@ -52,12 +55,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("FileType", {
 	desc = "Origami: Use Treesitter as folding provider if there is a parser for it",
 	group = group,
-	callback = function(ctx) checkForTreesitter(ctx.buf, ctx.match) end,
+	callback = function(ctx) checkForTreesitterWithFallback(ctx.buf, ctx.match) end,
 })
 
 -- initialize on the existing buffer in case of lazy-loading
 local listedBufs = vim.fn.getbufinfo { buflisted = 1 }
 for _, buf in ipairs(listedBufs) do
 	checkForLsp(buf.bufnr)
-	checkForTreesitter(buf.bufnr)
+	checkForTreesitterWithFallback(buf.bufnr)
 end

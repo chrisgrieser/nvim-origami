@@ -4,7 +4,10 @@ local warn = require("origami.utils").warn
 
 ---@class Origami.config
 local defaultConfig = {
-	useLspFoldsWithTreesitterFallback = true,
+	useLspFoldsWithTreesitterFallback = {
+		enabled = true,
+		foldmethodIfNeitherIsAvailable = "indent", ---@type string|fun(bufnr: number): string
+	},
 	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,
@@ -61,6 +64,15 @@ function M.setup(userConfig)
 			"nvim-origami config `foldKeymaps.hOnlyOpensOnFirstColumn` was renamed to `foldKeymaps.closeOnlyOnFirstColumn`."
 		)
 		M.config.foldKeymaps.closeOnlyOnFirstColumn = M.config.foldKeymaps.hOnlyOpensOnFirstColumn
+	end
+
+	-- DEPRECATION (2025-12-27)
+	if type(M.config.useLspFoldsWithTreesitterFallback) == "boolean" then
+		warn(
+			"nvim-origami config `useLspFoldsWithTreesitterFallback` was renamed to `useLspFoldsWithTreesitterFallback.enabled`."
+		)
+		M.config.useLspFoldsWithTreesitterFallback.enabled =
+			M.config.useLspFoldsWithTreesitterFallback
 	end
 	---@diagnostic enable: undefined-field
 	-----------------------------------------------------------------------------
