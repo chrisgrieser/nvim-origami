@@ -1,4 +1,4 @@
-# nvim-origami 🐦📄 <!-- rumdl-disable-line MD063 `nvim` lowercased -->
+# nvim-origami 🐦📄 <!-- rumdl-disable-line MD063 -->
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
