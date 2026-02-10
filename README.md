@@ -2,47 +2,47 @@
 <a href="https://dotfyle.com/plugins/chrisgrieser/nvim-origami">
 <img alt="badge" src="https://dotfyle.com/plugins/chrisgrieser/nvim-origami/shield"/></a>
 
-A collection of quality-of-life features related to folding.
+Fold with relentless elegance. A collection of quality-of-life features related
+to folding.
 
 <img alt="Showcase" width=75% src="https://github.com/user-attachments/assets/64da0d38-c220-44e3-ac50-20f9df835c8a">
 
 ## Features
 - Use the **LSP to provide folds**, with Treesitter as fallback if the LSP does
-  not provide folding information (and indent-based folding as fallback if
-  neither is available).
-- **Fold-text decorations**: Displays the number of lines, diagnostics, and
-  changes in the fold, while preserving the syntax highlighting of the line
-  (displaying git changes requires
-  [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)).
+  not provide folding information. (And indent-based folding if neither is
+  available.)
+- **Fold-text decorations**: Display the number of lines, diagnostics, and git
+  changes in the fold, while preserving syntax highlighting. (Displaying git
+  changes requires [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim).)
 - **Overload `h`, `l`, `^`, and `$` as fold keymaps**:
-    - `h` will fold a line when used on the first non-blank character (or
-      before), and behaves as regular `h` otherwise.
-    - `l` unfolds the cursorline when used on a folded line, and behaves as
+    - `h` folds a line when used on the first non-blank character or before and
+      behaves as regular `h` otherwise.
+    - `l` unfolds the cursorline when used on a folded line and behaves as
       regular `l` otherwise.
-    - `$` unfolds the cursorline *recursively* when used on a folded line, and
-      behaves as regular `$` otherwise
+    - `^` and `$` work the same as `h` and `l`, except that they fold/unfold
+      *recursively*.
     - This allows you to ditch `zc`, `zo`, `za`, `zC`, and `zO`, since you only
       need `h`, `l`, `^`, `$`.
-- **Auto-fold**: Automatically fold comments and/or imports when opening a file
-  (requires an LSP that provides that information).
-- **Pause folds while searching**, and restore folds when done with searching.
+- **Auto-fold**: Automatically fold comments and/or imports when opening a file.
+  (Requires that the folding information is provided by an LSP.)
+- **Pause folds while searching**, restore them when done.
   (Normally, folds are opened when you search for text inside them and stay open
   afterward.)
 
-All features are independent of each other, so you can choose to only enable
-some of them.
+All features are independent of each other, so you can freely choose to only
+enable the ones you want.
 
 `nvim-origami` replaces most features of `nvim-ufo` in a much more lightweight
-manner and adds some features that `nvim-ufo` does not provide.
+manner and adds some features of its own.
 
-## Table of content
+## Table of contents
 
 <!-- toc -->
 
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [FAQ](#faq)
-    - [Error when opening or reloading a file](#error-when-opening-or-reloading-a-file)
+    - [Error when opening a file](#error-when-opening-a-file)
     - [Folds are opened after running a formatter](#folds-are-opened-after-running-a-formatter)
     - [Debug folding issues](#debug-folding-issues)
 - [Credits](#credits)
@@ -60,7 +60,7 @@ manner and adds some features that `nvim-ufo` does not provide.
 {
 	"chrisgrieser/nvim-origami",
 	event = "VeryLazy",
-	opts = {}, -- needed even when using default config
+	opts = {}, -- required even when using default config
 
 	-- recommended: disable vim's auto-folding
 	init = function()
@@ -71,6 +71,7 @@ manner and adds some features that `nvim-ufo` does not provide.
 ```
 
 ## Configuration
+The `.setup` call is required.
 
 ```lua
 -- default settings
@@ -97,25 +98,25 @@ require("origami").setup {
 	},
 	foldKeymaps = {
 		setup = true, -- modifies `h`, `l`, `^`, and `$`
-		closeOnlyOnFirstColumn = false, -- `h` and `^` only close in the 1st column
+		closeOnlyOnFirstColumn = false, -- `h` and `^` only fold in the 1st column
 		scrollLeftOnCaret = false, -- `^` should scroll left (basically mapped to `0^`)
 	},
 }
 ```
 
-If you use other keys than `h`, `l`, and `$` for horizontal movement, set
-`opts.foldKeymaps.setup = false` and map the keys yourself:
+If you use other keys than `h`, `l`, `^`, and `$` for horizontal movement, set
+`opts.foldKeymaps.setup = false` and map them yourself:
 
 ```lua
 vim.keymap.set("n", "<Left>", function() require("origami").h() end)
 vim.keymap.set("n", "<Right>", function() require("origami").l() end)
-vim.keymap.set("n", "<End>", function() require("origami").dollar() end)
 vim.keymap.set("n", "<Home>", function() require("origami").caret() end)
+vim.keymap.set("n", "<End>", function() require("origami").dollar() end)
 ```
 
 ## FAQ
 
-### Error when opening or reloading a file
+### Error when opening a file
 
 ```txt
 Error executing vim.schedule lua callback: 
@@ -139,7 +140,7 @@ The only two tools I am aware of that are able to preserve folds are the
 Debug issues with folds provided by the LSP:
 
 ```lua
-require("origami").inspectLspFolds("special") -- comment & import only
+require("origami").inspectLspFolds("special") -- comments & imports only
 require("origami").inspectLspFolds("all")
 ```
 
