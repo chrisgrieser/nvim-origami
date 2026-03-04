@@ -80,7 +80,7 @@ function M.setup(userConfig)
 	if M.config.pauseFoldsOnSearch then require("origami.features.pause-folds-on-search") end
 	if M.config.foldtext.enabled then require("origami.features.foldtext") end
 	if M.config.autoFold.enabled then require("origami.features.autofold-comments-imports") end
-	if M.config.useLspFoldsWithTreesitterFallback then
+	if M.config.useLspFoldsWithTreesitterFallback.enabled then
 		require("origami.features.lsp-and-treesitter-foldexpr")
 	end
 	if M.config.foldKeymaps.setup then require("origami.features.fold-keymaps").setupKeymaps() end
