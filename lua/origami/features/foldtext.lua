@@ -117,7 +117,6 @@ local function renderFoldedSegments(win, buf, foldstart)
 	-- get virtual text components
 	local lineCountText = config.foldtext.lineCount.template:format(foldend - foldstart)
 	local virtText = { ---@type Origami.VirtTextChunk[]
-		{ (" "):rep(config.foldtext.padding) },
 		{ lineCountText, { config.foldtext.lineCount.hlgroup } },
 	}
 	if config.foldtext.diagnosticsCount then
@@ -130,6 +129,18 @@ local function renderFoldedSegments(win, buf, foldstart)
 		if #hunks > 0 then table.insert(virtText, { " " }) end
 		vim.list_extend(virtText, hunks)
 	end
+	local padding = config.foldtext.padding.width
+	if type(padding) == "function" then
+		local currentVirtualTextLength = 0
+		for _, inner in ipairs(virtText) do
+			currentVirtualTextLength = currentVirtualTextLength + #inner[1]
+		end
+		padding = padding(win, foldstart, currentVirtualTextLength)
+	end
+	table.insert(virtText, 1, {
+		(config.foldtext.padding.character):rep(padding),
+		config.foldtext.padding.hlgroup,
+	})
 
 	-- add text as extmark
 	local line = vim.api.nvim_buf_get_lines(buf, foldstart - 1, foldstart, false)[1]
