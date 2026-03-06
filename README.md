@@ -83,7 +83,11 @@ require("origami").setup {
 	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,
-		padding = 3,
+		padding = {
+			character = " ",
+			width = 3,  ---@type number|fun(win: number, foldstart: number, currentVirtualTextLength: number): number
+			hlgroup = nil,
+		},
 		lineCount = {
 			template = "%d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",

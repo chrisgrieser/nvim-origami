@@ -11,7 +11,11 @@ local defaultConfig = {
 	pauseFoldsOnSearch = true,
 	foldtext = {
 		enabled = true,
-		padding = 3,
+		padding = {
+			character = " ",
+			width = 3, ---@type number|fun(win: number, foldstart: number, currentVirtualTextLength: number): number
+			hlgroup = nil,
+		},
 		lineCount = {
 			template = "%d lines", -- `%d` is replaced with the number of folded lines
 			hlgroup = "Comment",
@@ -73,6 +77,16 @@ function M.setup(userConfig)
 		)
 		M.config.useLspFoldsWithTreesitterFallback.enabled =
 			M.config.useLspFoldsWithTreesitterFallback
+	end
+
+	-- DEPRECATION (2026-03-06)
+	if type(M.config.foldtext.padding) == "number" then
+		warn("nvim-origami config `foldtext.padding` was renamed to `foldtext.padding.width`.")
+		M.config.foldtext.padding = {
+			character = " ",
+			width = M.config.foldtext.padding,
+			hlgroup = nil,
+		}
 	end
 	---@diagnostic enable: undefined-field
 	-----------------------------------------------------------------------------
