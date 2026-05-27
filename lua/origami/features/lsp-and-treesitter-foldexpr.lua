@@ -19,7 +19,7 @@ end
 ---@param filetype? string
 local function checkForTreesitterWithFallback(bufnr, filetype)
 	if not bufnr then bufnr = 0 end
-	-- always prioritize treesitter parser over LSP for folding
+	-- always prioritize LSP over treesitter parser for folding
 	if vim.b[bufnr].origami_folding_provider == "lsp" then return end
 	local win = vim.api.nvim_get_current_win()
 	if vim.wo[win].diff then return end -- not in diff mode, see #30
