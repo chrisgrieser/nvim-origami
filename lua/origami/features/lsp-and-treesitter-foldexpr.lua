@@ -24,10 +24,12 @@ local function checkForTreesitterWithFallback(bufnr, filetype)
 	local win = vim.api.nvim_get_current_win()
 	if vim.wo[win].diff then return end -- not in diff mode, see #30
 
-	if not filetype then filetype = vim.bo[bufnr].filetype end
-	local ok, hasParser = pcall(vim.treesitter.query.get, filetype, "folds")
+	local ok, parser = pcall(vim.treesitter.get_parser, bufnr)
+	local lang = ok and parser and parser:lang()
+	local folds = lang and vim.treesitter.query.get(lang, "folds")
+
 	vim.api.nvim_buf_call(bufnr, function()
-		if ok and hasParser then
+		if folds then
 			vim.wo[win][0].foldmethod = "expr"
 			vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
 			vim.b[bufnr].origami_folding_provider = "treesitter"
