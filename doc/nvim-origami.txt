@@ -1,4 +1,5 @@
-*nvim-origami.txt*            For Neovim            Last change: 2026 March 06
+*nvim-origami.txt*
+                                       For Neovim    Last change: 2026 June 22
 
 ==============================================================================
 Table of Contents                             *nvim-origami-table-of-contents*
