@@ -13,7 +13,8 @@ to folding.
   available.)
 - **Fold-text decorations**: Display the number of lines, diagnostics, and git
   changes in the fold, while preserving syntax highlighting. (Displaying git
-  changes requires [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim).)
+  changes requires [gitsigns.nvim](http://github.com/lewis6991/gitsigns.nvim)
+  or [mini.diff](https://github.com/nvim-mini/mini.diff).)
 - **Overload `h`, `l`, `^`, and `$` as fold keymaps**:
     - `h` folds a line when used on the first non-blank character or before and
       behaves as regular `h` otherwise.
@@ -93,7 +94,7 @@ require("origami").setup {
 			hlgroup = "Comment",
 		},
 		diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
-		gitsignsCount = true, -- requires `gitsigns.nvim`
+		gitsignsCount = true, -- requires `gitsigns.nvim` or `mini.diff`
 		disableOnFt = { "snacks_picker_input" }, ---@type string[]
 	},
 	autoFold = {

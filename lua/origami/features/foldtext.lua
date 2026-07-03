@@ -104,6 +104,48 @@ local function getGitHunksInFold(buf, foldstart, foldend)
 	return chunks
 end
 
+---@type Origami.FoldtextComponentProvider
+local function getGitHunksInFoldWithMiniDiff(buf, foldstart, foldend)
+	local minidiffInstalled, MiniDiff = pcall(require, "mini.diff")
+	if not minidiffInstalled then return {} end
+
+	local typeIcons = { change = "~", delete = "-", add = "+" }
+	local typeHls =
+		{ change = "MiniDiffSignChange", delete = "MiniDiffSignDelete", add = "MiniDiffSignAdd" }
+
+	local buf_data = MiniDiff.get_buf_data(buf)
+	if not buf_data or not buf_data.hunks then return {} end
+
+	-- get count by type in the folded lines: for deletions check if deletion is
+	-- in the fold, for additions/changes, calculate the overlap of hunk and fold
+	local hunksInFold = { change = 0, delete = 0, add = 0 }
+	for _, h in ipairs(buf_data.hunks) do
+		if h.type == "delete" then
+			local deletionLine = h.buf_start > 0 and h.buf_start or 1
+			local isInFold = deletionLine >= foldstart and deletionLine <= foldend
+			if isInFold then hunksInFold["delete"] = hunksInFold["delete"] + h.ref_count end
+		else
+			local hunkStart = h.buf_start
+			local hunkEnd = hunkStart - 1 + h.buf_count
+			local overlapStart = math.max(foldstart + 1, hunkStart)
+			local overlapEnd = math.min(foldend, hunkEnd)
+			local overlap = overlapEnd - overlapStart + 1
+			if overlap > 0 then hunksInFold[h.type] = hunksInFold[h.type] + overlap end
+		end
+	end
+
+	-- Convert counts into virtual text chunks for `set_extmark`
+	local chunks = {} ---@type Origami.VirtTextChunk[]
+	for _, typ in ipairs { "add", "change", "delete" } do
+		if hunksInFold[typ] > 0 then
+			table.insert(chunks, { " " }) -- separate, so the padding does not get hlgroup
+			local text = typeIcons[typ] .. hunksInFold[typ]
+			table.insert(chunks, { text, { typeHls[typ] } })
+		end
+	end
+
+	return chunks
+end
 --------------------------------------------------------------------------------
 
 ---@param win number
@@ -125,7 +167,16 @@ local function renderFoldedSegments(win, buf, foldstart)
 		vim.list_extend(virtText, diagnostics)
 	end
 	if config.foldtext.gitsignsCount then
-		local hunks = getGitHunksInFold(buf, foldstart, foldend)
+		local hunks
+		local gitsignsInstalled, _ = pcall(require, "gitsigns")
+		if gitsignsInstalled then
+			hunks = getGitHunksInFold(buf, foldstart, foldend)
+		else
+			local minidiffInstalled, _ = pcall(require, "mini.diff")
+			if minidiffInstalled then
+				hunks = getGitHunksInFoldWithMiniDiff(buf, foldstart, foldend)
+			end
+		end
 		if #hunks > 0 then table.insert(virtText, { " " }) end
 		vim.list_extend(virtText, hunks)
 	end
