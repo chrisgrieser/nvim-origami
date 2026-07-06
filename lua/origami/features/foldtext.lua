@@ -167,7 +167,7 @@ local function renderFoldedSegments(win, buf, foldstart)
 		vim.list_extend(virtText, diagnostics)
 	end
 	if config.foldtext.gitsignsCount then
-		local hunks
+		local hunks = {} ---@type Origami.VirtTextChunk[]
 		local gitsignsInstalled, _ = pcall(require, "gitsigns")
 		if gitsignsInstalled then
 			hunks = getGitHunksInFold(buf, foldstart, foldend)
